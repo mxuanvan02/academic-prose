@@ -1,0 +1,103 @@
+[
+  {
+    "id": "usage-discussion-from-evidence",
+    "synthetic": true,
+    "claim": "Viết phần Thảo luận từ bằng chứng",
+    "input": {"evidence": "Chênh lệch trung bình 2,4 điểm; KTC 95% 0,2-4,6; thiết kế không ngẫu nhiên."},
+    "output": {
+      "text": "Nhóm can thiệp đạt điểm cao hơn trung bình 2,4 điểm (KTC 95%: 0,2-4,6). Tuy nhiên, thiết kế không ngẫu nhiên không cho phép kết luận quan hệ nhân quả.",
+      "claims": [
+        {"id": "C1", "status": "supported", "evidence_refs": ["E1"]},
+        {"id": "C2", "status": "needs_source", "evidence_refs": []}
+      ]
+    },
+    "checks": [
+      {"type": "contains", "path": "output.text", "values": ["2,4", "KTC 95%", "0,2-4,6", "không cho phép kết luận quan hệ nhân quả"]},
+      {"type": "excludes", "path": "output.text", "values": ["chứng minh", "gây ra"]},
+      {"type": "claim_status", "path": "output.claims"}
+    ]
+  },
+  {
+    "id": "usage-argument-outline",
+    "synthetic": true,
+    "claim": "Xây dựng lập luận và dàn ý khi đầu vào còn thiếu",
+    "input": {"known": ["so sánh hai quy trình chấm"], "missing": ["cỡ mẫu", "tiêu chí chọn mẫu"]},
+    "output": {
+      "outline": ["Vấn đề", "Cơ sở so sánh", "Giới hạn bằng chứng", "Mục tiêu nghiên cứu"],
+      "unresolved_inputs": ["cỡ mẫu", "tiêu chí chọn mẫu"],
+      "text": "Cỡ mẫu và tiêu chí chọn mẫu vẫn cần được cung cấp trước khi hình thành kết luận."
+    },
+    "checks": [
+      {"type": "contains", "path": "output.outline", "values": ["Giới hạn bằng chứng", "Mục tiêu nghiên cứu"]},
+      {"type": "equals", "path": "output.unresolved_inputs", "source_path": "input.missing"},
+      {"type": "excludes", "path": "output.text", "values": ["120 người", "đã chứng minh"]}
+    ]
+  },
+  {
+    "id": "usage-en-vi-translation",
+    "synthetic": true,
+    "claim": "Dịch học thuật Anh - Việt",
+    "input": {"text": "The findings may suggest an association; median error fell from 8.1% to 4.9% [12]."},
+    "output": {
+      "text": "Kết quả có thể gợi ý một mối liên hệ; sai số trung vị giảm từ 8,1% xuống 4,9% [12].",
+      "glossary": [{"source": "median error", "preferred": "sai số trung vị"}]
+    },
+    "checks": [
+      {"type": "contains", "path": "output.text", "values": ["có thể gợi ý", "8,1%", "4,9%", "[12]"]},
+      {"type": "excludes", "path": "output.text", "values": ["chứng minh", "gây ra"]},
+      {"type": "contains", "path": "output.glossary", "values": ["median error", "sai số trung vị"]}
+    ]
+  },
+  {
+    "id": "usage-vietnamese-revision",
+    "synthetic": true,
+    "claim": "Biên tập bản thảo tiếng Việt",
+    "input": {"text": "Trường gold_index chứng minh mô hình hiểu luật và gây ra độ chính xác cao."},
+    "output": {"text": "Vị trí đáp án đúng phục vụ chấm điểm tự động; kết quả hiện có chỉ cho thấy độ chính xác trong thiết lập đánh giá này."},
+    "checks": [
+      {"type": "contains", "path": "output.text", "values": ["Vị trí đáp án đúng", "chỉ cho thấy", "trong thiết lập đánh giá này"]},
+      {"type": "excludes", "path": "output.text", "values": ["gold_index", "chứng minh", "gây ra"]}
+    ]
+  },
+  {
+    "id": "usage-research-slides",
+    "synthetic": true,
+    "claim": "Soạn slide và lời thuyết trình nhất quán",
+    "input": {"evidence": "Sai số giảm trong tập kiểm tra mùa mưa; chưa đánh giá mùa khô."},
+    "output": {
+      "slides": [{"claim_id": "C1", "title": "Hiệu chỉnh làm giảm sai số trong tập kiểm tra mùa mưa", "stance": "descriptive", "source_anchor": "E1"}],
+      "speaker_notes": [{"claim_id": "C1", "stance": "descriptive", "text": "Kết quả chỉ áp dụng cho tập kiểm tra mùa mưa; chưa cho phép suy rộng sang mùa khô."}]
+    },
+    "checks": [
+      {"type": "paired_fields", "left_path": "output.slides", "right_path": "output.speaker_notes", "key": "claim_id", "fields": ["stance"]},
+      {"type": "contains", "path": "output.slides", "values": ["tập kiểm tra mùa mưa", "E1"]},
+      {"type": "contains", "path": "output.speaker_notes", "values": ["chưa cho phép suy rộng sang mùa khô"]}
+    ]
+  },
+  {
+    "id": "usage-university-lesson",
+    "synthetic": true,
+    "claim": "Soạn bài giảng và học liệu có liên kết",
+    "input": {"learner_level": "sinh viên năm thứ hai", "topic": "phân biệt tương quan và nhân quả"},
+    "output": {
+      "outcomes": [{"id": "LO1", "text": "Phân biệt được tương quan và quan hệ nhân quả"}],
+      "activities": [{"id": "A1", "outcome_refs": ["LO1"], "text": "Phân loại bốn phát biểu nghiên cứu"}],
+      "assessments": [{"id": "Q1", "outcome_refs": ["LO1"], "text": "Giải thích vì sao một phát biểu không cho phép kết luận nhân quả"}]
+    },
+    "checks": [
+      {"type": "alignment", "outcomes_path": "output.outcomes", "linked_paths": ["output.activities", "output.assessments"]},
+      {"type": "contains", "path": "output", "values": ["LO1", "tương quan", "nhân quả"]}
+    ]
+  },
+  {
+    "id": "usage-pdf-handoff",
+    "synthetic": true,
+    "claim": "Phối hợp bàn giao dịch PDF",
+    "input": {"text": "At 25 °C, <b0>E = mc^2</b0> was cited in [7]."},
+    "output": {"text": "Ở 25 °C, <b0>E = mc^2</b0> được trích dẫn trong [7]."},
+    "checks": [
+      {"type": "protected_tokens", "source_path": "input.text", "target_path": "output.text", "patterns": ["<b0>", "</b0>", "E = mc^2", "25 °C", "[7]"]},
+      {"type": "contains", "path": "output.text", "values": ["được trích dẫn"]}
+    ]
+  }
+]

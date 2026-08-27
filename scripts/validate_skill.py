@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -31,6 +33,8 @@ REQUIRED = (
     "schemas/paragraph-plan.schema.json",
     "evals/synthetic-cases.jsonl",
     "evals/writing-cases.jsonl",
+    "evals/usage-claim-cases.json",
+    "scripts/run_usage_simulations.py",
 )
 
 
@@ -141,9 +145,55 @@ def main() -> int:
                 + ", ".join(sorted(unknown_failures))
             )
 
+    usage_cases = json.loads(
+        (ROOT / "evals/usage-claim-cases.json").read_text(encoding="utf-8")
+    )
+    expected_usage_ids = {
+        "usage-discussion-from-evidence",
+        "usage-argument-outline",
+        "usage-en-vi-translation",
+        "usage-vietnamese-revision",
+        "usage-research-slides",
+        "usage-university-lesson",
+        "usage-pdf-handoff",
+    }
+    actual_usage_ids = {case.get("id") for case in usage_cases}
+    if actual_usage_ids != expected_usage_ids:
+        raise SystemExit("usage simulation matrix does not cover the canonical README claims")
+    for number, case in enumerate(usage_cases, 1):
+        if case.get("synthetic") is not True:
+            raise SystemExit(f"usage case {number} is not marked synthetic")
+        if not case.get("claim") or not isinstance(case.get("input"), dict):
+            raise SystemExit(f"usage case {number} needs a claim and structured input")
+        if not isinstance(case.get("output"), dict) or not case.get("checks"):
+            raise SystemExit(f"usage case {number} needs output and checks")
+
+    simulation = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/run_usage_simulations.py")],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if simulation.returncode != 0:
+        raise SystemExit(
+            "usage claim simulations failed:\n"
+            + simulation.stdout
+            + simulation.stderr
+        )
+    mutation_match = re.search(
+        r"(\d+) scenarios, (\d+) rejected mutations", simulation.stdout
+    )
+    if mutation_match is None or int(mutation_match.group(1)) != len(usage_cases):
+        raise SystemExit("usage simulation summary does not match the case matrix")
+    rejected_mutations = int(mutation_match.group(2))
+    if rejected_mutations < 40:
+        raise SystemExit("usage simulations do not exercise enough atomic mutations")
+
     print(
         "academic-vi validation passed "
-        f"({len(cases)} translation/revision evals, {len(writing_cases)} writing evals)"
+        f"({len(cases)} translation/revision evals, {len(writing_cases)} writing evals, "
+        f"{len(usage_cases)} usage simulations, {rejected_mutations} rejected mutations)"
     )
     return 0
 

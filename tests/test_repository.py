@@ -35,6 +35,8 @@ class RepositoryContractTests(unittest.TestCase):
             "schemas/rhetorical-brief.schema.json",
             "schemas/paragraph-plan.schema.json",
             "evals/writing-cases.jsonl",
+            "evals/usage-claim-cases.json",
+            "scripts/run_usage_simulations.py",
         )
         for relative_path in required:
             with self.subTest(path=relative_path):
@@ -190,6 +192,45 @@ class RepositoryContractTests(unittest.TestCase):
                 self.assertIn("evidence", record)
                 self.assertIn("expected_moves", record)
 
+    def test_usage_claim_matrix_covers_every_readme_example(self) -> None:
+        cases = json.loads(
+            (ROOT / "evals/usage-claim-cases.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(len(cases), 7)
+        self.assertEqual(len({case["id"] for case in cases}), 7)
+        claims = {case["claim"] for case in cases}
+        for expected in (
+            "Viết phần Thảo luận từ bằng chứng",
+            "Xây dựng lập luận và dàn ý khi đầu vào còn thiếu",
+            "Dịch học thuật Anh - Việt",
+            "Biên tập bản thảo tiếng Việt",
+            "Soạn slide và lời thuyết trình nhất quán",
+            "Soạn bài giảng và học liệu có liên kết",
+            "Phối hợp bàn giao dịch PDF",
+        ):
+            with self.subTest(claim=expected):
+                self.assertIn(expected, claims)
+        for case in cases:
+            with self.subTest(case=case["id"]):
+                self.assertTrue(case["synthetic"])
+                self.assertTrue(case["input"])
+                self.assertTrue(case["output"])
+                self.assertTrue(case["checks"])
+
+    def test_usage_claim_simulator_rejects_mutations(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/run_usage_simulations.py")],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("7 scenarios", result.stdout)
+        match = __import__("re").search(r"(\d+) rejected mutations", result.stdout)
+        self.assertIsNotNone(match)
+        self.assertGreaterEqual(int(match.group(1)), 40)
+
     def test_examples_are_synthetic_and_do_not_contain_private_markers(self) -> None:
         eval_text = (ROOT / "evals/synthetic-cases.jsonl").read_text(encoding="utf-8")
         self.assertNotIn("PRIVATE_MANUSCRIPT", eval_text)
@@ -224,6 +265,8 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("academic-vi validation passed", result.stdout)
         self.assertIn("4 translation/revision evals", result.stdout)
         self.assertIn("4 writing evals", result.stdout)
+        self.assertIn("7 usage simulations", result.stdout)
+        self.assertIn("47 rejected mutations", result.stdout)
 
 
 if __name__ == "__main__":

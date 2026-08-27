@@ -155,6 +155,20 @@ mức độ khẳng định khoa học trước khi hoàn tất.
 Trong cách phối hợp này, `academic-vi` chịu trách nhiệm về nội dung tiếng Việt;
 công cụ PDF chịu trách nhiệm về trích xuất, bố cục và tái dựng tệp.
 
+### Phạm vi kiểm chứng các ví dụ
+
+Bảy nhóm cách sử dụng trên được bao phủ bởi các kịch bản tổng hợp trong
+`evals/usage-claim-cases.json`. Trình mô phỏng kiểm tra các bất biến có thể quan
+sát như bảo toàn số liệu và trích dẫn, giữ mức độ khẳng định, đánh dấu phần còn
+thiếu bằng chứng, loại chi tiết triển khai khỏi văn bản công bố, nhất quán giữa
+slide và lời thuyết trình, liên kết chuẩn đầu ra với hoạt động và đánh giá, và
+bảo toàn công thức cùng ký hiệu khi bàn giao PDF.
+
+Đây là **kiểm định hợp đồng bằng dữ liệu tổng hợp**, không phải benchmark chất
+lượng của một mô hình ngôn ngữ hay bảo đảm rằng mọi đầu ra thực tế đều đạt
+chuẩn. Chất lượng thực tế còn phụ thuộc vào mô hình, dữ liệu đầu vào, công cụ
+điều phối và việc thẩm định của con người.
+
 ## Quy trình viết
 
 Mọi tác vụ viết đáng kể đi qua bảy bước, với độ sâu tỷ lệ theo độ phức tạp:
@@ -312,6 +326,12 @@ Chạy toàn bộ kiểm thử:
 
 ```bash
 python3 -m unittest discover -s tests -v
+```
+
+Chạy riêng mô phỏng các tuyên bố trong mục “Cách sử dụng”:
+
+```bash
+python3 scripts/run_usage_simulations.py
 ```
 
 Bộ đánh giá hiện gồm các tình huống tổng hợp cho viết mới, dịch và biên tập.
