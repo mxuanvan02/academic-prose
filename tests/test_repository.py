@@ -163,6 +163,17 @@ class RepositoryContractTests(unittest.TestCase):
         openai_adapter = (ROOT / "agents/openai.yaml").read_text(encoding="utf-8")
         self.assertNotIn("$academic-vi", openai_adapter)
 
+    def test_readme_credits_external_reference_repositories(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        normalized = " ".join(readme.lower().split())
+        self.assertIn("https://github.com/agentskills/agentskills", readme)
+        self.assertIn("https://github.com/vercel-labs/skills", readme)
+        self.assertIn("https://github.com/breslee1707/vi-translate", readme.lower())
+        self.assertIn("chuẩn đóng gói và tích hợp", normalized)
+        self.assertIn("chỉ là một phương án cài đặt", normalized)
+        self.assertIn("quy trình bàn giao dịch pdf", normalized)
+        self.assertIn("không phải nguồn của lõi viết học thuật", normalized)
+
     def test_writing_eval_starts_from_notes_and_evidence(self) -> None:
         records = [
             json.loads(line)

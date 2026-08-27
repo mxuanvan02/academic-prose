@@ -282,6 +282,24 @@ phương pháp, dịch PDF, tạo slide hoặc dàn trang. Ranh giới sở hữ
 `academic-vi` kiểm soát nội dung học thuật tiếng Việt; công cụ chuyên dụng kiểm
 soát lớp kỹ thuật tương ứng.
 
+## Nguồn tham khảo và quan hệ kế thừa
+
+Dự án tham khảo các nguồn công khai sau đây. Bảng này phân biệt rõ phần được
+tham khảo với phần được xây dựng độc lập, tránh tạo ấn tượng rằng toàn bộ dự án
+được phân nhánh hoặc sao chép từ một kho mã khác.
+
+| Nguồn | Phạm vi tham khảo | Quan hệ với `academic-vi` |
+| --- | --- | --- |
+| [Agent Skills](https://github.com/agentskills/agentskills) | Chuẩn đóng gói và tích hợp dựa trên `SKILL.md` | Cung cấp quy ước để môi trường tương thích khám phá và sử dụng năng lực; không phải nguồn của lõi viết học thuật |
+| [Vercel Skills](https://github.com/vercel-labs/skills) | Trình cài đặt được minh họa bằng lệnh `npx skills add` | Chỉ là một phương án cài đặt; dự án không phụ thuộc vào một trình cài hoặc môi trường thực thi duy nhất |
+| [VI-Translate](https://github.com/breslee1707/VI-Translate) | Quy trình bàn giao dịch PDF, bảo toàn thành phần và tái dựng tài liệu | Là nguồn tham khảo trực tiếp cho lớp phối hợp dịch PDF; không phải nguồn của lõi viết học thuật, cổng chất lượng hoặc các lược đồ dữ liệu |
+
+Lõi kiến tạo diễn ngôn, quy trình tuyên bố - bằng chứng, tiêu chuẩn tiếng Việt
+học thuật, cổng chất lượng sáu chiều, các lược đồ và bộ đánh giá trong kho mã
+này được phát triển cho `academic-vi`. Nếu một thành phần sau này kế thừa mã
+hoặc nội dung từ dự án khác, nguồn và giấy phép tương ứng phải được ghi rõ tại
+đây hoặc trong tệp thông báo dành cho bên thứ ba.
+
 ## Phát triển và kiểm định
 
 Chạy trình kiểm định:
