@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/rhetorical-brief.schema.json",
+  "title": "Vietnamese academic rhetorical brief",
+  "type": "object",
+  "required": ["discipline", "genre", "section", "audience", "communicative_purpose", "central_question", "length_constraint", "unresolved_inputs"],
+  "properties": {
+    "discipline": {"type": "string", "minLength": 1},
+    "genre": {"type": "string", "minLength": 1},
+    "section": {"type": "string", "minLength": 1},
+    "audience": {"type": "string", "minLength": 1},
+    "communicative_purpose": {"type": "string", "minLength": 1},
+    "central_question": {"type": "string", "minLength": 1},
+    "central_claim": {"type": "string"},
+    "length_constraint": {"type": "string", "minLength": 1},
+    "terminology_policy": {"type": "string"},
+    "citation_policy": {"type": "string"},
+    "unresolved_inputs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/paragraph-plan.schema.json",
+  "title": "Vietnamese academic paragraph plan",
+  "type": "object",
+  "required": ["paragraph_id", "dominant_function", "claim_ids", "moves", "transition_basis"],
+  "properties": {
+    "paragraph_id": {"type": "string", "minLength": 1},
+    "dominant_function": {"type": "string", "minLength": 1},
+    "claim_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "moves": {"type": "array", "items": {"enum": ["territory", "problem", "synthesized_gap", "purpose", "method", "result", "answer", "interpretation", "comparison_dimension", "convergence_or_tension", "alternative_explanation", "limitation", "evidence_boundary", "bounded_contribution", "bounded_implication", "research_need"]}, "minItems": 1},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "topic_anchor": {"type": "string"},
+    "new_information": {"type": "string"},
+    "transition_basis": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

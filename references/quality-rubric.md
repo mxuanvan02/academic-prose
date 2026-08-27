@@ -4,10 +4,10 @@ Score each dimension from 0 to 5. The gate requires all dimensions at least 4, w
 
 | ID | Dimension | 5 means |
 | --- | --- | --- |
-| `SEM` | Semantic fidelity | propositions, roles, conditions, quantities, and protected elements are preserved |
+| `SEM` | Claim and evidence integrity | propositions are supported or visibly qualified; roles, conditions, quantities, and protected elements are preserved |
 | `TERM` | Terminology | domain meanings are correct and glossary use is stable |
 | `STANCE` | Scientific stance | modality, causality, attribution, and inference strength are calibrated |
-| `LOGIC` | Discourse logic | relations and paragraph functions are clear and source-licensed |
+| `LOGIC` | Argument and discourse logic | claim-evidence-warrant relations, section moves, and paragraph functions are clear and licensed |
 | `VI` | Vietnamese academic naturalness | syntax, collocation, register, and information flow are idiomatic and restrained |
 | `CONS` | Document consistency | terms, abbreviations, names, tense/aspect policy, and formatting remain coherent |
 
@@ -24,6 +24,8 @@ Any occurrence forces `revise` or `human_review`, regardless of average score:
 - `scope_shift`: sample- or condition-bound evidence becomes broader or narrower.
 - `stance_upgrade`: possibility, suggestion, or recommendation becomes certainty or obligation.
 - `placeholder_corruption`: a protected structured token changes order, identity, or count.
+- `evidence_fabrication`: a source, datum, quotation, method detail, or empirical fact is invented.
+- `claim_without_status`: a consequential new-writing claim is presented as established although its evidence status is unknown or `needs_source`.
 
 ## Decision
 

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/claim-ledger.schema.json",
+  "title": "Vietnamese academic claim-evidence ledger entry",
+  "type": "object",
+  "required": ["claim_id", "claim_text", "claim_type", "evidence_status", "evidence_refs", "scope", "stance", "section_role"],
+  "properties": {
+    "claim_id": {"type": "string", "minLength": 1},
+    "claim_text": {"type": "string", "minLength": 1},
+    "claim_type": {"enum": ["observation", "interpretation", "method", "literature", "contribution", "limitation", "recommendation"]},
+    "evidence_status": {"enum": ["supported", "author_input", "inference", "needs_source", "contested"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "scope": {"type": "string", "minLength": 1},
+    "stance": {"enum": ["certain", "probable", "possible", "descriptive", "normative"]},
+    "section_role": {"type": "string", "minLength": 1},
+    "warrant": {"type": "string"},
+    "qualification": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"evidence_status": {"const": "supported"}}, "required": ["evidence_status"]},
+      "then": {"properties": {"evidence_refs": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"evidence_status": {"const": "needs_source"}}, "required": ["evidence_status"]},
+      "then": {"properties": {"evidence_refs": {"maxItems": 0}}}
+    }
+  ],
+  "additionalProperties": false
+}

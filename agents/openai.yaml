@@ -1,4 +1,4 @@
 interface:
   display_name: "Tiếng Việt học thuật"
-  short_description: "Dịch, viết và kiểm định văn phong học thuật tiếng Việt"
-  default_prompt: "Use $academic-vi to translate or revise this text into precise Vietnamese academic prose and audit semantic fidelity."
+  short_description: "Tư duy, kiến tạo và kiểm định văn bản học thuật tiếng Việt"
+  default_prompt: "Use $academic-vi to structure the claims and evidence, then write precise Vietnamese academic discourse and audit its reasoning, stance, and prose."

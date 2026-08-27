@@ -18,12 +18,22 @@ class RepositoryContractTests(unittest.TestCase):
             "LICENSE",
             "agents/openai.yaml",
             "references/academic-vietnamese-standard.md",
+            "references/composition-workflow.md",
+            "references/capability-matrix.md",
+            "references/argument-and-evidence.md",
+            "references/genre-playbooks.md",
+            "references/rhetorical-moves.md",
+            "references/writing-failure-taxonomy.md",
             "references/en-vi-transfer-taxonomy.md",
             "references/domain-profiles.md",
             "references/quality-rubric.md",
             "references/pdf-translate-integration.md",
             "schemas/audit-record.schema.json",
             "schemas/glossary-entry.schema.json",
+            "schemas/claim-ledger.schema.json",
+            "schemas/rhetorical-brief.schema.json",
+            "schemas/paragraph-plan.schema.json",
+            "evals/writing-cases.jsonl",
         )
         for relative_path in required:
             with self.subTest(path=relative_path):
@@ -50,6 +60,62 @@ class RepositoryContractTests(unittest.TestCase):
             "citation_corruption",
         ):
             self.assertIn(blocking_error, rubric)
+
+    def test_writing_is_the_primary_workflow(self) -> None:
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        workflow = (ROOT / "references/composition-workflow.md").read_text(
+            encoding="utf-8"
+        )
+        for stage in (
+            "Rhetorical brief",
+            "Claim-evidence ledger",
+            "Discourse architecture",
+            "Paragraph design",
+            "Draft",
+            "Adversarial review",
+        ):
+            self.assertIn(stage, skill + workflow)
+        self.assertIn("write-first", skill.lower())
+
+    def test_capability_matrix_covers_all_academic_vietnamese_work(self) -> None:
+        matrix = (ROOT / "references/capability-matrix.md").read_text(
+            encoding="utf-8"
+        )
+        capabilities = (
+            "conceptualize",
+            "outline",
+            "argue",
+            "synthesize",
+            "draft",
+            "develop",
+            "compress",
+            "expand",
+            "paraphrase",
+            "revise",
+            "audit",
+            "translate",
+        )
+        for capability in capabilities:
+            with self.subTest(capability=capability):
+                self.assertIn(f"`{capability}`", matrix)
+        self.assertIn("composition engine", matrix.lower())
+        self.assertIn("adapter", matrix.lower())
+
+    def test_writing_eval_starts_from_notes_and_evidence(self) -> None:
+        records = [
+            json.loads(line)
+            for line in (ROOT / "evals/writing-cases.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
+        self.assertGreaterEqual(len(records), 4)
+        for record in records:
+            with self.subTest(case=record["id"]):
+                self.assertTrue(record["synthetic"])
+                self.assertEqual(record["mode"], "write")
+                self.assertIn("notes", record)
+                self.assertIn("evidence", record)
+                self.assertIn("expected_moves", record)
 
     def test_examples_are_synthetic_and_do_not_contain_private_markers(self) -> None:
         eval_text = (ROOT / "evals/synthetic-cases.jsonl").read_text(encoding="utf-8")
@@ -83,6 +149,8 @@ class RepositoryContractTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("academic-vi validation passed", result.stdout)
+        self.assertIn("4 translation/revision evals", result.stdout)
+        self.assertIn("4 writing evals", result.stdout)
 
 
 if __name__ == "__main__":
