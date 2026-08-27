@@ -141,6 +141,28 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("reproducibility", normalized)
         self.assertIn("technical documentation", normalized)
 
+    def test_core_documentation_is_runtime_neutral(self) -> None:
+        core_paths = (
+            "README.md",
+            "SKILL.md",
+            "references/capability-matrix.md",
+            "references/pdf-translate-integration.md",
+        )
+        core_text = "\n".join(
+            (ROOT / path).read_text(encoding="utf-8") for path in core_paths
+        )
+        self.assertNotIn("$academic-vi", core_text)
+        self.assertNotIn("$pdf-translate", core_text)
+
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        normalized = " ".join(readme.lower().split())
+        self.assertIn("cú pháp gọi phụ thuộc vào môi trường", normalized)
+        self.assertIn("một cách cài đặt", normalized)
+        self.assertNotIn("dùng academic-vi để", normalized)
+
+        openai_adapter = (ROOT / "agents/openai.yaml").read_text(encoding="utf-8")
+        self.assertNotIn("$academic-vi", openai_adapter)
+
     def test_writing_eval_starts_from_notes_and_evidence(self) -> None:
         records = [
             json.loads(line)

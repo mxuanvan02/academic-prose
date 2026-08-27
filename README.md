@@ -44,10 +44,11 @@ dung tiếng Việt phục vụ nghiên cứu, khoa học hoặc giáo dục đ�
 - dịch Anh - Việt, diễn đạt lại, rút gọn, mở rộng và biên tập học thuật;
 - kiểm định lập luận, bằng chứng, thuật ngữ và văn phong của bản thảo có sẵn.
 
-Việc tự động kích hoạt phụ thuộc vào cơ chế khám phá skill của tác tử hoặc
-môi trường điều phối đang sử dụng. Mô tả trong `SKILL.md` đã khai báo rõ các tín hiệu định
-tuyến; người dùng vẫn có thể gọi tường minh bằng `$academic-vi` khi cần khóa
-chắc quy trình.
+Việc tự động kích hoạt phụ thuộc vào cơ chế khám phá năng lực của tác tử hoặc
+môi trường điều phối đang sử dụng. `SKILL.md` khai báo các tín hiệu định tuyến
+chung; cú pháp gọi phụ thuộc vào môi trường. Nếu môi trường không hỗ trợ tự
+động định tuyến, người dùng chỉ cần nêu rõ yêu cầu áp dụng `academic-vi` trong
+lời nhắc.
 
 Nội dung tiếng Việt thông thường chỉ nhắc đến một chủ đề kỹ thuật không mặc
 nhiên thuộc phạm vi này. Mục đích giao tiếp phải thực sự là học thuật, nghiên
@@ -74,56 +75,60 @@ cứu, khoa học hoặc giảng dạy ở cấp phù hợp.
 
 ## Cài đặt
 
-Yêu cầu một tác tử hoặc môi trường hỗ trợ chuẩn Agent Skills.
+Repository không phụ thuộc vào một tác tử duy nhất. Có thể tích hợp bằng bất kỳ
+cơ chế nào đọc được hợp đồng trong `SKILL.md` và các tài liệu tham chiếu đi
+kèm. Lệnh dưới đây là một cách cài đặt cho môi trường hỗ trợ trình quản lý
+Agent Skills tương thích:
 
 ```bash
 npx skills add mxuanvan02/academic-vi -g --all
 ```
 
-Để cài từ bản clone cục bộ, đặt repo vào thư mục skill mà agent của bạn có thể
-khám phá. Tệp định tuyến chính là `SKILL.md`; cấu hình giao diện cho Codex nằm
-trong `agents/openai.yaml`.
+Khi tích hợp thủ công, đặt repository tại vị trí mà môi trường có thể khám phá
+và đăng ký `SKILL.md` làm hợp đồng định tuyến chính. Tệp
+`agents/openai.yaml` chỉ là bộ điều hợp giao diện tùy chọn cho các môi trường
+tương thích; nó không xác định hành vi cốt lõi của dự án.
 
 ## Cách sử dụng
 
 ### Viết bài từ bằng chứng
 
 ```text
-Dùng $academic-vi để viết phần Thảo luận bằng tiếng Việt từ các kết quả và
-nguồn dưới đây. Lập sổ tuyên bố - bằng chứng, đánh dấu nội dung cần nguồn,
-thiết kế tiến trình đoạn văn, sau đó viết và phản biện đối nghịch.
+Viết phần Thảo luận bằng tiếng Việt từ các kết quả và nguồn dưới đây. Lập sổ
+tuyên bố - bằng chứng, đánh dấu nội dung cần nguồn, thiết kế tiến trình đoạn
+văn, sau đó viết và phản biện đối nghịch.
 ```
 
 ### Xây dựng lập luận trước khi viết
 
 ```text
-Dùng $academic-vi để xác định vấn đề nghiên cứu, phạm vi, giả định và cấu trúc
-tuyên bố. Tạo dàn ý chú giải bằng tiếng Việt; không trình bày nội dung chưa có
-bằng chứng như một sự thật đã xác lập.
+Xác định vấn đề nghiên cứu, phạm vi, giả định và cấu trúc tuyên bố. Tạo dàn ý
+chú giải bằng tiếng Việt; không trình bày nội dung chưa có bằng chứng như một
+sự thật đã xác lập.
 ```
 
 ### Dịch học thuật Anh - Việt
 
 ```text
-Dùng $academic-vi để dịch phần tóm tắt này sang tiếng Việt học thuật. Giữ
-nguyên mức độ khẳng định, số liệu, trích dẫn và thuật ngữ; trả kèm bảng thuật
-ngữ và kiểm toán các điểm có nguy cơ lệch nghĩa.
+Dịch phần tóm tắt này sang tiếng Việt học thuật. Giữ nguyên mức độ khẳng định,
+số liệu, trích dẫn và thuật ngữ; trả kèm bảng thuật ngữ và kiểm toán các điểm
+có nguy cơ lệch nghĩa.
 ```
 
 ### Biên tập một bản thảo tiếng Việt
 
 ```text
-Dùng $academic-vi để biên tập phần Kết quả này. Phát hiện tuyên bố vượt bằng
-chứng, nhiễu cú pháp tiếng Anh, thuật ngữ trôi nghĩa, chi tiết triển khai thừa
-và câu chữ không tự nhiên. Không tự bổ sung dữ kiện hoặc nguồn dẫn.
+Biên tập phần Kết quả này theo chuẩn tiếng Việt học thuật. Phát hiện tuyên bố
+vượt bằng chứng, nhiễu cú pháp tiếng Anh, thuật ngữ trôi nghĩa, chi tiết triển
+khai thừa và câu chữ không tự nhiên. Không tự bổ sung dữ kiện hoặc nguồn dẫn.
 ```
 
 ### Soạn slide báo cáo khoa học
 
 ```text
-Tạo slide báo cáo nghiên cứu bằng tiếng Việt. Dùng $academic-vi cho mạch lập
-luận, tiêu đề mang thông điệp, nội dung từng slide, thuật ngữ và lời thuyết
-trình; dùng công cụ slide cho bố cục, phân cấp thị giác và xuất tệp.
+Tạo slide báo cáo nghiên cứu bằng tiếng Việt. Xây dựng mạch lập luận, tiêu đề
+mang thông điệp, nội dung từng slide, thuật ngữ và lời thuyết trình; dùng công
+cụ trình chiếu cho bố cục, phân cấp thị giác và xuất tệp.
 ```
 
 Với slide, mỗi trang nên có một chức năng giao tiếp và một tuyên bố chính. Việc
@@ -134,17 +139,17 @@ nội dung trên trang.
 ### Soạn bài giảng và học liệu
 
 ```text
-Dùng $academic-vi để xây dựng bài giảng đại học bằng tiếng Việt từ các tài liệu
-này. Xác định người học, kiến thức đầu vào và chuẩn đầu ra; thiết kế phần giải
-thích, ví dụ, hoạt động thực hành và đánh giá sao cho liên kết với nhau.
+Xây dựng bài giảng đại học bằng tiếng Việt từ các tài liệu này. Xác định người
+học, kiến thức đầu vào và chuẩn đầu ra; thiết kế phần giải thích, ví dụ, hoạt
+động thực hành và đánh giá sao cho liên kết với nhau.
 ```
 
 ### Phối hợp với dịch PDF
 
 ```text
-Dùng $pdf-translate ở chế độ handoff để trích xuất và tái dựng PDF; dùng
-$academic-vi cho phần dịch Anh - Việt. Giữ nguyên công thức, ký hiệu, số liệu,
-trích dẫn và kiểm định mức độ khẳng định khoa học.
+Trích xuất nội dung PDF ở chế độ bàn giao, dịch sang tiếng Việt học thuật rồi
+tái dựng tệp. Giữ nguyên công thức, ký hiệu, số liệu và trích dẫn; kiểm định
+mức độ khẳng định khoa học trước khi hoàn tất.
 ```
 
 Trong cách phối hợp này, `academic-vi` chịu trách nhiệm về nội dung tiếng Việt;
@@ -241,7 +246,7 @@ bản đã sửa, kiểm toán thay đổi và quyết định cổng. Các sche
 ```text
 academic-vi/
 ├── SKILL.md                         # Hợp đồng và bộ định tuyến chính
-├── agents/openai.yaml               # Metadata giao diện cho Codex
+├── agents/openai.yaml               # Bộ điều hợp giao diện tùy chọn
 ├── references/
 │   ├── academic-vietnamese-standard.md
 │   ├── composition-workflow.md

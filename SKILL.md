@@ -24,7 +24,7 @@ input. Use `compress`, `expand`, `paraphrase`, `revise`, and `audit` to transfor
 or evaluate an existing Vietnamese text. Use `translate` only when a
 source-language text must be reconstructed as Vietnamese academic discourse.
 
-This skill owns reasoning expressed through Vietnamese academic discourse: rhetorical purpose, claim hierarchy, evidence placement, paragraph progression, stance, cohesion, and sentence realization. It does not establish whether a method, statistic, citation, or factual claim is true. When used with `$pdf-translate`, it supplies handoff translations; `$pdf-translate` owns extraction and reconstruction.
+This skill owns reasoning expressed through Vietnamese academic discourse: rhetorical purpose, claim hierarchy, evidence placement, paragraph progression, stance, cohesion, and sentence realization. It does not establish whether a method, statistic, citation, or factual claim is true. When paired with a PDF translation tool, it supplies handoff translations while that tool owns extraction and reconstruction.
 
 ## Writing Workflow
 

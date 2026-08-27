@@ -1,4 +1,4 @@
 interface:
   display_name: "Tiếng Việt học thuật"
   short_description: "Kiến tạo và kiểm định mọi nội dung học thuật tiếng Việt"
-  default_prompt: "Automatically use $academic-vi for any Vietnamese academic-purpose content, including prose, slides, teaching materials, and speaker notes. Structure claims and evidence, write precise Vietnamese, and audit reasoning, stance, terminology, and medium-specific compression."
+  default_prompt: "Automatically apply academic-vi to Vietnamese academic-purpose content, including prose, slides, teaching materials, and speaker notes. Structure claims and evidence, write precise Vietnamese, and audit reasoning, stance, terminology, and medium-specific compression."

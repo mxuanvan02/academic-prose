@@ -29,8 +29,8 @@ they do not define the skill's primary capability.
   search for missing literature or invent citation metadata.
 - Route shortening, expansion, and paraphrase through the existing claim ledger.
   These are semantic transformations, not surface-only rewriting.
-- Use `translate` only when a source language text is an input. Use
-  `$pdf-translate` only when PDF extraction or reconstruction is also required.
+- Use `translate` only when a source language text is an input. Pair it with a
+  PDF translation tool only when extraction or reconstruction is also required.
 
 Every capability that introduces or reorganizes a consequential claim must use
 the rhetorical brief, claim-evidence ledger, and paragraph plan at a depth
