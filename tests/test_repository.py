@@ -22,6 +22,7 @@ class RepositoryContractTests(unittest.TestCase):
             "references/capability-matrix.md",
             "references/argument-and-evidence.md",
             "references/genre-playbooks.md",
+            "references/deliverable-playbooks.md",
             "references/rhetorical-moves.md",
             "references/writing-failure-taxonomy.md",
             "references/en-vi-transfer-taxonomy.md",
@@ -100,6 +101,45 @@ class RepositoryContractTests(unittest.TestCase):
                 self.assertIn(f"`{capability}`", matrix)
         self.assertIn("composition engine", matrix.lower())
         self.assertIn("adapter", matrix.lower())
+
+    def test_routing_covers_structured_academic_deliverables(self) -> None:
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        playbooks = (ROOT / "references/deliverable-playbooks.md").read_text(
+            encoding="utf-8"
+        )
+        routing_contract = skill + playbooks
+        for deliverable in (
+            "slide",
+            "bài giảng",
+            "học liệu",
+            "lời thuyết trình",
+            "đề cương",
+            "câu hỏi đánh giá",
+        ):
+            with self.subTest(deliverable=deliverable):
+                self.assertIn(deliverable, routing_contract.lower())
+        self.assertIn("tự động kích hoạt", routing_contract.lower())
+        self.assertIn("mục đích học thuật", routing_contract.lower())
+
+    def test_content_ownership_is_separate_from_layout_tools(self) -> None:
+        playbooks = (ROOT / "references/deliverable-playbooks.md").read_text(
+            encoding="utf-8"
+        )
+        normalized = " ".join(playbooks.lower().split())
+        self.assertIn("academic-vi chịu trách nhiệm", normalized)
+        self.assertIn("công cụ định dạng", normalized)
+        self.assertIn("không làm suy giảm", normalized)
+
+    def test_publication_prose_excludes_unnecessary_implementation_tokens(self) -> None:
+        standard = (ROOT / "references/academic-vietnamese-standard.md").read_text(
+            encoding="utf-8"
+        )
+        normalized = " ".join(standard.lower().split())
+        self.assertIn("publication-facing", normalized)
+        self.assertIn("schema field names", normalized)
+        self.assertIn("configuration keys", normalized)
+        self.assertIn("reproducibility", normalized)
+        self.assertIn("technical documentation", normalized)
 
     def test_writing_eval_starts_from_notes_and_evidence(self) -> None:
         records = [

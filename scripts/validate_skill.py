@@ -21,6 +21,7 @@ REQUIRED = (
     "references/capability-matrix.md",
     "references/argument-and-evidence.md",
     "references/genre-playbooks.md",
+    "references/deliverable-playbooks.md",
     "references/rhetorical-moves.md",
     "references/writing-failure-taxonomy.md",
     "schemas/audit-record.schema.json",

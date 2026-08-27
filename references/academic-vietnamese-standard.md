@@ -37,6 +37,26 @@ Preserve the source's epistemic force:
 
 Use precise contemporary Vietnamese. Formality does not require archaic wording, excessive Sino-Vietnamese vocabulary, long nominal chains, or pervasive passive voice. Avoid promotional adjectives (`đột phá`, `vượt trội`) unless they are explicitly attributed and evidenced.
 
+## Publication-Facing Abstraction
+
+In publication-facing prose, express the research object, procedure, and data
+structure through disciplinary concepts. Do not expose schema field names,
+configuration keys, internal flags, directory names, or pipeline labels merely
+because they occur in code or technical documentation. Retain a software tool,
+model name, parameter, or identifier only when it is necessary for
+reproducibility, identifies the object under study, or prevents substantive
+ambiguity. Put operational lookup details in the data card, repository,
+appendix, or other technical documentation instead of the main argument.
+
+This abstraction must not conceal a consequential methodological choice. For
+example, report that records were split at document level and that answer
+positions were deterministically balanced; the internal names of the fields
+that store those values are normally unnecessary.
+
 ## Protected Elements
 
-Copy formulas, symbols, values, units, citations, DOI, URLs, code, dataset names, model names, quoted text, and structured placeholders exactly unless the task explicitly changes their formatting.
+When a protected element is substantively required, copy formulas, symbols,
+values, units, citations, DOI, URLs, code, dataset names, model names, quoted
+text, and structured placeholders exactly unless the task explicitly changes
+their formatting. Preservation does not require including implementation
+tokens that have no publication-facing function.

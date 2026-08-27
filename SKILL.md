@@ -1,6 +1,6 @@
 ---
 name: academic-vi
-description: Think through, structure, write, translate, revise, and audit Vietnamese academic discourse. Use whenever the primary deliverable is Vietnamese scholarly prose, including arguments, paragraphs, sections, abstracts, manuscripts, theses, reports, synthesis from supplied evidence, and English-to-Vietnamese translation. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate PDF layout.
+description: Think through, structure, write, translate, revise, and audit Vietnamese academic discourse in any deliverable. Automatically use whenever Vietnamese content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, and English-to-Vietnamese translation. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 ---
 
@@ -10,7 +10,14 @@ Build Vietnamese academic discourse from claims and evidence, then realize it as
 
 ## Scope
 
-Use this skill whenever Vietnamese academic discourse is the main work product.
+Use this skill whenever Vietnamese academic discourse is the main work product
+or a substantive component of another product. Routing follows **academic
+purpose**, not file type or output format. Automatically activate it for
+Vietnamese research communication, scientific reporting, scholarly analysis,
+university-level teaching, and academically grounded assessment, including
+slides, bài giảng, học liệu, lời thuyết trình, đề cương, and câu hỏi đánh giá.
+It may run with a slide, document, PDF, or publishing skill; it remains the
+authority for Vietnamese content while the companion tool owns rendering.
 Writing is the default path: route the task to `conceptualize`, `outline`,
 `argue`, `synthesize`, `draft`, or `develop` according to the maturity of the
 input. Use `compress`, `expand`, `paraphrase`, `revise`, and `audit` to transform
@@ -32,6 +39,9 @@ For any writing capability, do not begin with polished sentences. Use this order
 7. **Revision and gate**: repair evidence, architecture, stance, and coherence before surface polish.
 
 Read [Composition workflow](references/composition-workflow.md), [Argument and evidence](references/argument-and-evidence.md), and [Genre playbooks](references/genre-playbooks.md) for substantial writing.
+
+For slides, teaching content, course materials, speaker notes, outlines, and
+assessment items, also read [Deliverable playbooks](references/deliverable-playbooks.md).
 
 ## Capability Routing
 
@@ -59,6 +69,7 @@ Read these references as needed:
 - [Capability matrix](references/capability-matrix.md)
 - [Argument and evidence](references/argument-and-evidence.md)
 - [Genre playbooks](references/genre-playbooks.md)
+- [Deliverable playbooks](references/deliverable-playbooks.md)
 - [Rhetorical move registry](references/rhetorical-moves.md)
 - [Writing failure taxonomy](references/writing-failure-taxonomy.md)
 - [English-Vietnamese transfer taxonomy](references/en-vi-transfer-taxonomy.md)

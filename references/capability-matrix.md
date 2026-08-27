@@ -36,3 +36,9 @@ Every capability that introduces or reorganizes a consequential claim must use
 the rhetorical brief, claim-evidence ledger, and paragraph plan at a depth
 proportional to the task. Short edits may keep those artifacts implicit, but the
 same evidence and no-fabrication constraints still apply.
+
+The capability describes the semantic operation, not the final medium. Apply
+the same operation to manuscripts, reports, slide content, speaker notes, bài
+giảng, học liệu, đề cương, and assessment items. For structured deliverables,
+use `deliverable-playbooks.md` to adapt density, sequencing, and content layers
+without weakening the common quality gate.
