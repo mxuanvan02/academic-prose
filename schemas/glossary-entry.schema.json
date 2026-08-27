@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/glossary-entry.schema.json",
+  "title": "Academic Vietnamese glossary entry",
+  "type": "object",
+  "required": ["source", "preferred", "domain", "definition", "status"],
+  "properties": {
+    "source": {"type": "string", "minLength": 1},
+    "preferred": {"type": "string", "minLength": 1},
+    "alternatives": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "avoid": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "domain": {"type": "string", "minLength": 1},
+    "definition": {"type": "string", "minLength": 1},
+    "context_rules": {"type": "array", "items": {"type": "string"}},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "status": {"enum": ["proposed", "approved", "deprecated", "needs_review"]}
+  },
+  "additionalProperties": false
+}

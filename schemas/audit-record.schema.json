@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/audit-record.schema.json",
+  "title": "Academic Vietnamese audit record",
+  "type": "object",
+  "required": ["segment_id", "source_text", "draft_vi", "revised_vi", "error_types", "severity", "rationale", "semantic_change", "confidence", "decision"],
+  "properties": {
+    "segment_id": {"type": "string", "minLength": 1},
+    "source_text": {"type": "string"},
+    "draft_vi": {"type": "string"},
+    "revised_vi": {"type": "string"},
+    "error_types": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "severity": {"enum": ["block", "major", "minor", "none"]},
+    "rationale": {"type": "string", "minLength": 1},
+    "semantic_change": {"type": "boolean"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "decision": {"enum": ["accept", "revise", "human_review"]}
+  },
+  "additionalProperties": false
+}
