@@ -159,7 +159,7 @@ class RepositoryContractTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         normalized = " ".join(readme.lower().split())
         self.assertIn("cú pháp gọi phụ thuộc vào môi trường", normalized)
-        self.assertIn("một cách cài đặt", normalized)
+        self.assertIn("cài đặt bằng trình quản lý skills", normalized)
         self.assertNotIn("dùng academic-vi để", normalized)
 
         openai_adapter = (ROOT / "agents/openai.yaml").read_text(encoding="utf-8")
@@ -172,9 +172,12 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("https://github.com/vercel-labs/skills", readme)
         self.assertIn("https://github.com/breslee1707/vi-translate", readme.lower())
         self.assertIn("chuẩn đóng gói và tích hợp", normalized)
-        self.assertIn("chỉ là một phương án cài đặt", normalized)
         self.assertIn("quy trình bàn giao dịch pdf", normalized)
-        self.assertIn("không phải nguồn của lõi viết học thuật", normalized)
+        self.assertIn("quy ước để môi trường tương thích khám phá", normalized)
+        self.assertIn("trình quản lý skills và cú pháp cài đặt", normalized)
+        self.assertIn("bảo toàn thành phần và tái dựng tài liệu", normalized)
+        self.assertNotIn("không phải nguồn", normalized)
+        self.assertNotIn("những việc skill không thực hiện", normalized)
 
     def test_writing_eval_starts_from_notes_and_evidence(self) -> None:
         records = [

@@ -1,8 +1,8 @@
 # academic-vi
 
 `academic-vi` là Agent Skill chuyên kiến tạo, dịch, biên tập và kiểm định nội
-dung học thuật bằng tiếng Việt. Skill không chỉ sửa câu chữ ở bước cuối mà tổ
-chức nội dung từ **tuyên bố, bằng chứng và mục đích tu từ** trước khi viết.
+dung học thuật bằng tiếng Việt. Skill tổ chức nội dung từ **tuyên bố, bằng
+chứng và mục đích tu từ**, sau đó phát triển thành văn bản hoàn chỉnh.
 
 Nguyên tắc trung tâm:
 
@@ -26,14 +26,13 @@ thuật vào bài báo.
 5. viết bằng tiếng Việt học thuật tự nhiên;
 6. phản biện đối nghịch và kiểm định trước khi bàn giao.
 
-Skill không tạo uy tín học thuật bằng cách bịa dữ liệu, nguồn dẫn hoặc lời giải
-thích. Nội dung chưa có căn cứ phải được đánh dấu `needs_source`, thu hẹp mức
-khẳng định hoặc tách khỏi bản thảo.
+Nội dung chưa có căn cứ được đánh dấu `needs_source`, thu hẹp mức khẳng định
+hoặc tách khỏi bản thảo để bảo toàn quan hệ giữa tuyên bố và bằng chứng.
 
 ## Phạm vi sử dụng
 
-Skill được định tuyến theo **mục đích học thuật**, không theo đuôi tệp. Khi nội
-dung tiếng Việt phục vụ nghiên cứu, khoa học hoặc giáo dục đại học,
+Skill được định tuyến theo **mục đích học thuật** của nội dung. Khi tiếng Việt
+được dùng cho nghiên cứu, khoa học hoặc giáo dục đại học,
 `academic-vi` có thể tự động được chọn cho:
 
 - bài báo, luận văn, luận án, báo cáo và đề cương nghiên cứu;
@@ -46,13 +45,11 @@ dung tiếng Việt phục vụ nghiên cứu, khoa học hoặc giáo dục đ�
 
 Việc tự động kích hoạt phụ thuộc vào cơ chế khám phá năng lực của tác tử hoặc
 môi trường điều phối đang sử dụng. `SKILL.md` khai báo các tín hiệu định tuyến
-chung; cú pháp gọi phụ thuộc vào môi trường. Nếu môi trường không hỗ trợ tự
-động định tuyến, người dùng chỉ cần nêu rõ yêu cầu áp dụng `academic-vi` trong
-lời nhắc.
+chung; cú pháp gọi phụ thuộc vào môi trường. Trong chế độ định tuyến thủ công,
+người dùng có thể nêu rõ yêu cầu áp dụng `academic-vi` trong lời nhắc.
 
-Nội dung tiếng Việt thông thường chỉ nhắc đến một chủ đề kỹ thuật không mặc
-nhiên thuộc phạm vi này. Mục đích giao tiếp phải thực sự là học thuật, nghiên
-cứu, khoa học hoặc giảng dạy ở cấp phù hợp.
+Tín hiệu định tuyến chính là mục đích nghiên cứu, khoa học, học thuật hoặc
+giảng dạy ở cấp phù hợp.
 
 ## Năng lực
 
@@ -75,10 +72,8 @@ cứu, khoa học hoặc giảng dạy ở cấp phù hợp.
 
 ## Cài đặt
 
-Repository không phụ thuộc vào một tác tử duy nhất. Có thể tích hợp bằng bất kỳ
-cơ chế nào đọc được hợp đồng trong `SKILL.md` và các tài liệu tham chiếu đi
-kèm. Lệnh dưới đây là một cách cài đặt cho môi trường hỗ trợ trình quản lý
-Agent Skills tương thích:
+Repository sử dụng `SKILL.md` làm hợp đồng định tuyến và có thể tích hợp vào
+các môi trường hỗ trợ Agent Skills. Cài đặt bằng trình quản lý Skills:
 
 ```bash
 npx skills add mxuanvan02/academic-vi -g --all
@@ -86,8 +81,8 @@ npx skills add mxuanvan02/academic-vi -g --all
 
 Khi tích hợp thủ công, đặt repository tại vị trí mà môi trường có thể khám phá
 và đăng ký `SKILL.md` làm hợp đồng định tuyến chính. Tệp
-`agents/openai.yaml` chỉ là bộ điều hợp giao diện tùy chọn cho các môi trường
-tương thích; nó không xác định hành vi cốt lõi của dự án.
+`agents/openai.yaml` cung cấp metadata giao diện cho các môi trường tương
+thích.
 
 ## Cách sử dụng
 
@@ -164,10 +159,9 @@ thiếu bằng chứng, loại chi tiết triển khai khỏi văn bản công b
 slide và lời thuyết trình, liên kết chuẩn đầu ra với hoạt động và đánh giá, và
 bảo toàn công thức cùng ký hiệu khi bàn giao PDF.
 
-Đây là **kiểm định hợp đồng bằng dữ liệu tổng hợp**, không phải benchmark chất
-lượng của một mô hình ngôn ngữ hay bảo đảm rằng mọi đầu ra thực tế đều đạt
-chuẩn. Chất lượng thực tế còn phụ thuộc vào mô hình, dữ liệu đầu vào, công cụ
-điều phối và việc thẩm định của con người.
+Đây là **kiểm định hợp đồng bằng dữ liệu tổng hợp**. Kết quả xác nhận độ bao
+phủ của các bất biến đã khai báo; chất lượng đầu ra thực tế còn phụ thuộc vào
+mô hình, dữ liệu đầu vào, công cụ điều phối và việc thẩm định của con người.
 
 ## Quy trình viết
 
@@ -275,44 +269,35 @@ academic-vi/
 │   ├── quality-rubric.md
 │   └── pdf-translate-integration.md
 ├── schemas/                         # Lược đồ JSON cho các hiện vật trung gian
-├── evals/                           # Tình huống đánh giá tổng hợp, không chứa bản thảo riêng tư
+├── evals/                           # Tình huống đánh giá tổng hợp
 ├── scripts/validate_skill.py        # Trình kiểm định cấu trúc và hợp đồng
 └── tests/                           # Kiểm thử kho mã và lược đồ
 ```
 
-## Những việc skill không thực hiện
+## Phối hợp công cụ
 
-`academic-vi` không thay thế các công cụ hoặc chuyên gia ở lớp khác:
+`academic-vi` phụ trách kiến trúc lập luận, quan hệ tuyên bố - bằng chứng,
+thuật ngữ, lập trường khoa học và diễn đạt tiếng Việt. Trong một quy trình hoàn
+chỉnh, có thể kết hợp skill với:
 
-- không tự tìm tài liệu hoặc phát hiện nguồn dẫn còn thiếu;
-- không xác minh DOI, trích dẫn hay dữ kiện với cơ sở dữ liệu bên ngoài;
-- không thẩm định thiết kế nghiên cứu, phương pháp thống kê hoặc giá trị pháp lý;
-- không tự xác nhận tính đúng đắn lâm sàng, pháp luật hay sư phạm;
-- không thao tác bố cục PDF, thiết kế slide hoặc xuất bản tệp;
-- không biến đầu ra trôi chảy thành bằng chứng rằng nội dung đã đúng.
+- công cụ tìm kiếm tài liệu và xác minh trích dẫn;
+- công cụ phản biện phương pháp và thống kê;
+- công cụ dịch, tái dựng và kiểm tra bố cục PDF;
+- công cụ thiết kế slide, dàn trang và xuất bản tệp;
+- chuyên gia ngành cho nội dung pháp lý, lâm sàng, khoa học hoặc sư phạm.
 
-Khi cần, hãy phối hợp skill này với công cụ nghiên cứu tài liệu, phản biện
-phương pháp, dịch PDF, tạo slide hoặc dàn trang. Ranh giới sở hữu phải rõ:
-`academic-vi` kiểm soát nội dung học thuật tiếng Việt; công cụ chuyên dụng kiểm
-soát lớp kỹ thuật tương ứng.
+Mỗi thành phần đảm nhiệm lớp chuyên môn tương ứng và trao đổi qua dữ liệu,
+trích dẫn, thuật ngữ cùng các thành phần được bảo vệ.
 
-## Nguồn tham khảo và quan hệ kế thừa
+## Nguồn tham khảo
 
-Dự án tham khảo các nguồn công khai sau đây. Bảng này phân biệt rõ phần được
-tham khảo với phần được xây dựng độc lập, tránh tạo ấn tượng rằng toàn bộ dự án
-được phân nhánh hoặc sao chép từ một kho mã khác.
+Dự án đã tham khảo các nguồn công khai sau:
 
-| Nguồn | Phạm vi tham khảo | Quan hệ với `academic-vi` |
-| --- | --- | --- |
-| [Agent Skills](https://github.com/agentskills/agentskills) | Chuẩn đóng gói và tích hợp dựa trên `SKILL.md` | Cung cấp quy ước để môi trường tương thích khám phá và sử dụng năng lực; không phải nguồn của lõi viết học thuật |
-| [Vercel Skills](https://github.com/vercel-labs/skills) | Trình cài đặt được minh họa bằng lệnh `npx skills add` | Chỉ là một phương án cài đặt; dự án không phụ thuộc vào một trình cài hoặc môi trường thực thi duy nhất |
-| [VI-Translate](https://github.com/breslee1707/VI-Translate) | Quy trình bàn giao dịch PDF, bảo toàn thành phần và tái dựng tài liệu | Là nguồn tham khảo trực tiếp cho lớp phối hợp dịch PDF; không phải nguồn của lõi viết học thuật, cổng chất lượng hoặc các lược đồ dữ liệu |
-
-Lõi kiến tạo diễn ngôn, quy trình tuyên bố - bằng chứng, tiêu chuẩn tiếng Việt
-học thuật, cổng chất lượng sáu chiều, các lược đồ và bộ đánh giá trong kho mã
-này được phát triển cho `academic-vi`. Nếu một thành phần sau này kế thừa mã
-hoặc nội dung từ dự án khác, nguồn và giấy phép tương ứng phải được ghi rõ tại
-đây hoặc trong tệp thông báo dành cho bên thứ ba.
+| Nguồn | Nội dung được tham khảo |
+| --- | --- |
+| [Agent Skills](https://github.com/agentskills/agentskills) | Chuẩn đóng gói và tích hợp dựa trên `SKILL.md`, gồm quy ước để môi trường tương thích khám phá và sử dụng skill |
+| [Vercel Skills](https://github.com/vercel-labs/skills) | Trình quản lý Skills và cú pháp cài đặt `npx skills add` được dùng trong hướng dẫn cài đặt |
+| [VI-Translate](https://github.com/breslee1707/VI-Translate) | Quy trình bàn giao dịch PDF, bảo toàn thành phần và tái dựng tài liệu trong lớp phối hợp PDF |
 
 ## Phát triển và kiểm định
 
@@ -334,12 +319,12 @@ Chạy riêng mô phỏng các tuyên bố trong mục “Cách sử dụng”:
 python3 scripts/run_usage_simulations.py
 ```
 
-Bộ đánh giá hiện gồm các tình huống tổng hợp cho viết mới, dịch và biên tập.
-Không có bản thảo riêng tư trong kho mã.
+Bộ đánh giá hiện gồm các tình huống tổng hợp cho viết mới, dịch, biên tập và
+các nhóm cách sử dụng được công bố trong README.
 
-Khi đóng góp một quy tắc mới, cần nêu rõ ngành, thể loại, ngữ cảnh, lý do, ví
-dụ đúng, phản ví dụ và phạm vi áp dụng. Không biến một sửa đổi cá biệt thành
-quy tắc phổ quát nếu chưa có căn cứ.
+Khi đóng góp một quy tắc mới, hãy nêu rõ ngành, thể loại, ngữ cảnh, lý do, ví
+dụ đúng, phản ví dụ và phạm vi áp dụng. Cấu trúc này giúp phân biệt quy tắc có
+khả năng khái quát với lựa chọn chỉ phù hợp cho một trường hợp.
 
 ## Giấy phép
 
