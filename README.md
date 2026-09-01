@@ -1,15 +1,16 @@
-# academic-vi
+# Academic Prose
 
-`academic-vi` là Agent Skill chuyên kiến tạo, dịch, biên tập và kiểm định nội
-dung học thuật bằng tiếng Việt. Skill tổ chức nội dung từ **tuyên bố, bằng
-chứng và mục đích tu từ**, sau đó phát triển thành văn bản hoàn chỉnh.
+`academic-prose` là Agent Skill song ngữ chuyên kiến tạo, dịch, biên tập,
+humanize và kiểm định diễn ngôn học thuật bằng tiếng Việt và tiếng Anh. Skill
+tổ chức nội dung từ **tuyên bố, bằng chứng và mục đích tu từ**, sau đó phát
+triển thành văn bản hoàn chỉnh trong ngôn ngữ đích.
 
 Nguyên tắc trung tâm:
 
 > Tuyên bố và bằng chứng có trước câu chữ; toàn vẹn ngữ nghĩa có trước độ trôi
 > chảy.
 
-## Vì sao cần academic-vi?
+## Vì sao cần Academic Prose?
 
 Một văn bản có vẻ trang trọng chưa chắc đã là văn bản học thuật tốt. Những lỗi
 nghiêm trọng thường nằm dưới bề mặt ngôn ngữ: khẳng định mạnh hơn bằng chứng,
@@ -17,7 +18,7 @@ nghiêm trọng thường nằm dưới bề mặt ngôn ngữ: khẳng định 
 ngữ không nhất quán hoặc bê nguyên cú pháp và tên trường dữ liệu từ tài liệu kỹ
 thuật vào bài báo.
 
-`academic-vi` xử lý các vấn đề đó bằng một quy trình viết có thể kiểm tra:
+`academic-prose` xử lý các vấn đề đó bằng một quy trình viết có thể kiểm tra:
 
 1. xác định thể loại, độc giả, mục đích và phạm vi;
 2. lập bản đồ giữa tuyên bố và bằng chứng;
@@ -33,7 +34,7 @@ hoặc tách khỏi bản thảo để bảo toàn quan hệ giữa tuyên bố 
 
 Skill được định tuyến theo **mục đích học thuật** của nội dung. Khi tiếng Việt
 được dùng cho nghiên cứu, khoa học hoặc giáo dục đại học,
-`academic-vi` có thể tự động được chọn cho:
+`academic-prose` có thể tự động được chọn cho:
 
 - bài báo, luận văn, luận án, báo cáo và đề cương nghiên cứu;
 - tóm tắt, tổng quan, phương pháp, kết quả, thảo luận và kết luận;
@@ -46,14 +47,14 @@ Skill được định tuyến theo **mục đích học thuật** của nội d
 Việc tự động kích hoạt phụ thuộc vào cơ chế khám phá năng lực của tác tử hoặc
 môi trường điều phối đang sử dụng. `SKILL.md` khai báo các tín hiệu định tuyến
 chung; cú pháp gọi phụ thuộc vào môi trường. Trong chế độ định tuyến thủ công,
-người dùng có thể nêu rõ yêu cầu áp dụng `academic-vi` trong lời nhắc.
+người dùng có thể nêu rõ yêu cầu áp dụng `academic-prose` trong lời nhắc.
 
 Tín hiệu định tuyến chính là mục đích nghiên cứu, khoa học, học thuật hoặc
 giảng dạy ở cấp phù hợp.
 
 ## Năng lực
 
-`academic-vi` dùng chung một động cơ kiến tạo diễn ngôn cho 12 thao tác:
+`academic-prose` dùng chung một động cơ kiến tạo diễn ngôn cho 13 thao tác:
 
 | Năng lực | Khi sử dụng | Sản phẩm chính |
 | --- | --- | --- |
@@ -68,7 +69,8 @@ giảng dạy ở cấp phù hợp.
 | `paraphrase` | Cần đổi cách diễn đạt, giữ nguyên nội dung | Văn bản diễn đạt lại với ngữ nghĩa ổn định |
 | `revise` | Bản thảo cần sửa ở cấp nội dung và diễn ngôn | Bản sửa cùng kiểm toán thay đổi |
 | `audit` | Cần đánh giá mà không âm thầm viết lại | Phát hiện theo mức độ và quyết định cổng |
-| `translate` | Chuyển nội dung học thuật sang tiếng Việt | Bản dịch, bảng thuật ngữ và kiểm toán |
+| `humanize` | Loại bỏ dấu hiệu văn bản do máy tạo mà không đổi nội dung | Văn bản đã làm sạch, nhật ký pattern và cổng kiểm định |
+| `translate` | Chuyển nội dung học thuật Anh - Việt hoặc Việt - Anh | Bản dịch, bảng thuật ngữ và kiểm toán |
 
 ## Cài đặt
 
@@ -78,6 +80,9 @@ các môi trường hỗ trợ Agent Skills. Cài đặt bằng trình quản l�
 ```bash
 npx skills add mxuanvan02/academic-vi -g --all
 ```
+
+Tên skill hiện hành là `academic-prose`; đường dẫn cài đặt vẫn dùng tên
+repository hiện tại `academic-vi` cho đến khi GitHub repository được đổi tên.
 
 Khi tích hợp thủ công, đặt repository tại vị trí mà môi trường có thể khám phá
 và đăng ký `SKILL.md` làm hợp đồng định tuyến chính. Tệp
@@ -147,7 +152,8 @@ tái dựng tệp. Giữ nguyên công thức, ký hiệu, số liệu và tríc
 mức độ khẳng định khoa học trước khi hoàn tất.
 ```
 
-Trong cách phối hợp này, `academic-vi` chịu trách nhiệm về nội dung tiếng Việt;
+Trong cách phối hợp này, `academic-prose` chịu trách nhiệm về nội dung ngôn ngữ
+đích;
 công cụ PDF chịu trách nhiệm về trích xuất, bố cục và tái dựng tệp.
 
 ### Phạm vi kiểm chứng các ví dụ
@@ -178,9 +184,9 @@ Mọi tác vụ viết đáng kể đi qua bảy bước, với độ sâu tỷ 
 Với yêu cầu ngắn, các hiện vật trung gian có thể được giữ ngầm. Hợp đồng về
 bằng chứng và không bịa đặt vẫn được áp dụng đầy đủ.
 
-## Tiêu chuẩn tiếng Việt học thuật
+## Tiêu chuẩn ngôn ngữ học thuật
 
-Skill ưu tiên theo thứ tự:
+Skill ưu tiên theo thứ tự ở cả hai ngôn ngữ:
 
 **nghĩa -> thuật ngữ -> lập trường khoa học -> logic -> diễn đạt tiếng Việt -> hình thức**
 
@@ -221,7 +227,7 @@ Mỗi sản phẩm đáng kể được đánh giá trên sáu chiều, theo tha
 | `TERM` | Thuật ngữ | Đúng nghĩa chuyên ngành và nhất quán toàn tài liệu |
 | `STANCE` | Lập trường khoa học | Đúng mức độ chắc chắn, quan hệ nhân quả và phạm vi suy luận |
 | `LOGIC` | Lập luận và diễn ngôn | Quan hệ tuyên bố - bằng chứng và chức năng các phần rõ ràng |
-| `VI` | Độ tự nhiên của tiếng Việt học thuật | Cú pháp, kết hợp từ, văn phong và luồng thông tin phù hợp |
+| `LANG` | Độ tự nhiên của ngôn ngữ đích | Cú pháp, kết hợp từ, văn phong và luồng thông tin phù hợp với tiếng Việt hoặc tiếng Anh |
 | `CONS` | Tính nhất quán | Tên gọi, viết tắt, thời, định dạng và chính sách thuật ngữ ổn định |
 
 Quyết định `pass` yêu cầu mọi chiều đạt ít nhất 4/5 và không có lỗi chặn. Một
@@ -252,7 +258,7 @@ bản đã sửa, kiểm toán thay đổi và quyết định cổng. Các sche
 ## Kiến trúc kho mã
 
 ```text
-academic-vi/
+academic-prose/
 ├── SKILL.md                         # Hợp đồng và bộ định tuyến chính
 ├── agents/openai.yaml               # Bộ điều hợp giao diện tùy chọn
 ├── references/
@@ -264,7 +270,10 @@ academic-vi/
 │   ├── deliverable-playbooks.md
 │   ├── rhetorical-moves.md
 │   ├── writing-failure-taxonomy.md
-│   ├── en-vi-transfer-taxonomy.md
+│   ├── cross-language-transfer-taxonomy.md
+│   ├── academic-english-standard.md
+│   ├── ai-pattern-taxonomy.md
+│   ├── ai-pattern-vietnamese.md
 │   ├── domain-profiles.md
 │   ├── quality-rubric.md
 │   └── pdf-translate-integration.md
@@ -276,8 +285,8 @@ academic-vi/
 
 ## Phối hợp công cụ
 
-`academic-vi` phụ trách kiến trúc lập luận, quan hệ tuyên bố - bằng chứng,
-thuật ngữ, lập trường khoa học và diễn đạt tiếng Việt. Trong một quy trình hoàn
+`academic-prose` phụ trách kiến trúc lập luận, quan hệ tuyên bố - bằng chứng,
+thuật ngữ, lập trường khoa học và diễn đạt ở ngôn ngữ đích. Trong một quy trình hoàn
 chỉnh, có thể kết hợp skill với:
 
 - công cụ tìm kiếm tài liệu và xác minh trích dẫn;
@@ -298,6 +307,7 @@ Dự án đã tham khảo các nguồn công khai sau:
 | [Agent Skills](https://github.com/agentskills/agentskills) | Chuẩn đóng gói và tích hợp dựa trên `SKILL.md`, gồm quy ước để môi trường tương thích khám phá và sử dụng skill |
 | [Vercel Skills](https://github.com/vercel-labs/skills) | Trình quản lý Skills và cú pháp cài đặt `npx skills add` được dùng trong hướng dẫn cài đặt |
 | [VI-Translate](https://github.com/breslee1707/VI-Translate) | Quy trình bàn giao dịch PDF, bảo toàn thành phần và tái dựng tài liệu trong lớp phối hợp PDF |
+| [Humanizer](https://github.com/blader/humanizer) | 35 pattern nhận diện văn phong do máy tạo, được chuyển thành lớp humanize có guardrail học thuật và hỗ trợ tiếng Việt |
 
 ## Phát triển và kiểm định
 

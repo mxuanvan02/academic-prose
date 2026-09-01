@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/rhetorical-brief.schema.json",
-  "title": "Vietnamese academic rhetorical brief",
+  "$id": "https://github.com/mxuanvan02/academic-prose/schemas/rhetorical-brief.schema.json",
+  "title": "Bilingual academic rhetorical brief",
   "type": "object",
   "required": ["discipline", "genre", "section", "audience", "communicative_purpose", "central_question", "length_constraint", "unresolved_inputs"],
   "properties": {

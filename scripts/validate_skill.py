@@ -15,7 +15,10 @@ REQUIRED = (
     "LICENSE",
     "agents/openai.yaml",
     "references/academic-vietnamese-standard.md",
-    "references/en-vi-transfer-taxonomy.md",
+    "references/academic-english-standard.md",
+    "references/cross-language-transfer-taxonomy.md",
+    "references/ai-pattern-taxonomy.md",
+    "references/ai-pattern-vietnamese.md",
     "references/domain-profiles.md",
     "references/quality-rubric.md",
     "references/pdf-translate-integration.md",
@@ -33,9 +36,77 @@ REQUIRED = (
     "schemas/paragraph-plan.schema.json",
     "evals/synthetic-cases.jsonl",
     "evals/writing-cases.jsonl",
+    "evals/humanize-cases.jsonl",
     "evals/usage-claim-cases.json",
     "scripts/run_usage_simulations.py",
 )
+
+CAPABILITIES = {
+    "conceptualize",
+    "outline",
+    "argue",
+    "synthesize",
+    "draft",
+    "develop",
+    "compress",
+    "expand",
+    "paraphrase",
+    "revise",
+    "humanize",
+    "audit",
+    "translate",
+}
+
+VERDICTS = {"apply", "guard", "redirect", "restrict", "defer"}
+LANGUAGES = {"vi", "en"}
+DECISIONS = {"revise", "human_review"}
+
+
+def read(relative_path: str) -> str:
+    return (ROOT / relative_path).read_text(encoding="utf-8")
+
+
+def validate_humanize_cases(
+    defined_errors: set[str], blocking_errors: set[str]
+) -> int:
+    lines = read("evals/humanize-cases.jsonl").splitlines()
+    if not lines:
+        raise SystemExit("humanize eval set is empty")
+
+    ids: set[str] = set()
+    for number, line in enumerate(lines, 1):
+        record = json.loads(line)
+        case_id = record.get("id")
+        if not isinstance(case_id, str) or not case_id:
+            raise SystemExit(f"humanize eval line {number} needs a nonempty id")
+        if case_id in ids:
+            raise SystemExit(f"humanize eval line {number} duplicates id {case_id}")
+        ids.add(case_id)
+        if record.get("synthetic") is not True or record.get("mode") != "humanize":
+            raise SystemExit(f"humanize eval line {number} is not a synthetic humanize case")
+        if record.get("language") not in LANGUAGES:
+            raise SystemExit(f"humanize eval line {number} needs language vi or en")
+        if not isinstance(record.get("pattern"), int) or not 1 <= record["pattern"] <= 35:
+            raise SystemExit(f"humanize eval line {number} needs a pattern number from 1 to 35")
+        if record.get("verdict") not in VERDICTS:
+            raise SystemExit(f"humanize eval line {number} uses an unknown verdict")
+        for field in ("source", "expected_output", "expected_errors", "minimum_decision"):
+            if field not in record:
+                raise SystemExit(f"humanize eval line {number} needs {field}")
+        if not isinstance(record["expected_errors"], list) or not record["expected_errors"]:
+            raise SystemExit(f"humanize eval line {number} needs nonempty expected_errors")
+        unknown = set(record["expected_errors"]) - defined_errors
+        if unknown:
+            raise SystemExit(
+                f"humanize eval line {number} uses undefined errors: "
+                + ", ".join(sorted(unknown))
+            )
+        if blocking_errors.intersection(record["expected_errors"]):
+            if record["minimum_decision"] not in DECISIONS:
+                raise SystemExit(
+                    f"humanize eval line {number} has a blocking error without a blocking decision"
+                )
+    return len(lines)
 
 
 def main() -> int:
@@ -43,26 +114,18 @@ def main() -> int:
     if missing:
         raise SystemExit("missing required files: " + ", ".join(missing))
 
-    skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    if not skill.startswith("---\nname: academic-vi\n"):
+    skill = read("SKILL.md")
+    if not skill.startswith("---\nname: academic-prose\n"):
         raise SystemExit("invalid SKILL.md frontmatter")
 
-    capability_matrix = (ROOT / "references/capability-matrix.md").read_text(
-        encoding="utf-8"
-    )
-    required_capabilities = {
-        "conceptualize", "outline", "argue", "synthesize", "draft", "develop",
-        "compress", "expand", "paraphrase", "revise", "audit", "translate",
-    }
+    capability_matrix = read("references/capability-matrix.md")
     defined_capabilities = set(
         re.findall(r"^\| `([a-z][a-z0-9_]+)` \|", capability_matrix, re.MULTILINE)
     )
-    if defined_capabilities != required_capabilities:
+    if defined_capabilities != CAPABILITIES:
         raise SystemExit("capability matrix does not define the canonical capability set")
     missing_routes = {
-        capability
-        for capability in required_capabilities
-        if f"`{capability}`" not in skill
+        capability for capability in CAPABILITIES if f"`{capability}`" not in skill
     }
     if missing_routes:
         raise SystemExit(
@@ -76,20 +139,28 @@ def main() -> int:
         "schemas/rhetorical-brief.schema.json",
         "schemas/paragraph-plan.schema.json",
     ):
-        schema = json.loads((ROOT / path).read_text(encoding="utf-8"))
+        schema = json.loads(read(path))
         if schema.get("additionalProperties") is not False:
             raise SystemExit(f"{path} must reject unknown properties")
 
-    cases = (ROOT / "evals/synthetic-cases.jsonl").read_text(encoding="utf-8").splitlines()
-    if not cases:
-        raise SystemExit("eval set is empty")
-    taxonomy = (ROOT / "references/en-vi-transfer-taxonomy.md").read_text(encoding="utf-8")
-    rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")
-    defined_errors = set(re.findall(r"`([a-z][a-z0-9_]*)`", taxonomy + rubric))
+    taxonomy = read("references/cross-language-transfer-taxonomy.md")
+    rubric = read("references/quality-rubric.md")
+    failure_registry = read("references/writing-failure-taxonomy.md")
+    ai_taxonomy = read("references/ai-pattern-taxonomy.md")
+    ai_vietnamese = read("references/ai-pattern-vietnamese.md")
+    defined_errors = set(
+        re.findall(
+            r"`([a-z][a-z0-9_]*)`",
+            "\n".join((taxonomy, rubric, failure_registry, ai_taxonomy, ai_vietnamese)),
+        )
+    )
     blocking_errors = set(
         re.findall(r"^- `([a-z][a-z0-9_]*)`:", rubric, flags=re.MULTILINE)
     )
 
+    cases = read("evals/synthetic-cases.jsonl").splitlines()
+    if not cases:
+        raise SystemExit("eval set is empty")
     for number, line in enumerate(cases, 1):
         record = json.loads(line)
         if record.get("synthetic") is not True:
@@ -97,30 +168,23 @@ def main() -> int:
         unknown = set(record.get("expected_errors", [])) - defined_errors
         if unknown:
             raise SystemExit(
-                f"eval line {number} uses undefined errors: {', '.join(sorted(unknown))}"
+                f"eval line {number} uses undefined errors: ", ", ".join(sorted(unknown))
             )
         if blocking_errors.intersection(record.get("expected_errors", [])):
-            if record.get("minimum_decision") not in {"revise", "human_review"}:
+            if record.get("minimum_decision") not in DECISIONS:
                 raise SystemExit(
                     f"eval line {number} has a blocking error without a blocking decision"
                 )
 
-    writing_cases = (ROOT / "evals/writing-cases.jsonl").read_text(
-        encoding="utf-8"
-    ).splitlines()
+    writing_cases = read("evals/writing-cases.jsonl").splitlines()
     if not writing_cases:
         raise SystemExit("writing eval set is empty")
-    move_registry = (ROOT / "references/rhetorical-moves.md").read_text(encoding="utf-8")
-    failure_registry = (ROOT / "references/writing-failure-taxonomy.md").read_text(
-        encoding="utf-8"
-    )
+    move_registry = read("references/rhetorical-moves.md")
     allowed_moves = set(re.findall(r"^\| `([a-z][a-z0-9_]+)` \|", move_registry, re.MULTILINE))
     allowed_failures = set(
         re.findall(r"^\| `([a-z][a-z0-9_]+)` \|", failure_registry, re.MULTILINE)
     )
-    paragraph_schema = json.loads(
-        (ROOT / "schemas/paragraph-plan.schema.json").read_text(encoding="utf-8")
-    )
+    paragraph_schema = json.loads(read("schemas/paragraph-plan.schema.json"))
     schema_moves = set(paragraph_schema["properties"]["moves"]["items"]["enum"])
     if schema_moves != allowed_moves:
         raise SystemExit("paragraph-plan move enum differs from rhetorical move registry")
@@ -145,9 +209,9 @@ def main() -> int:
                 + ", ".join(sorted(unknown_failures))
             )
 
-    usage_cases = json.loads(
-        (ROOT / "evals/usage-claim-cases.json").read_text(encoding="utf-8")
-    )
+    humanize_count = validate_humanize_cases(defined_errors, blocking_errors)
+
+    usage_cases = json.loads(read("evals/usage-claim-cases.json"))
     expected_usage_ids = {
         "usage-discussion-from-evidence",
         "usage-argument-outline",
@@ -177,9 +241,7 @@ def main() -> int:
     )
     if simulation.returncode != 0:
         raise SystemExit(
-            "usage claim simulations failed:\n"
-            + simulation.stdout
-            + simulation.stderr
+            "usage claim simulations failed:\n" + simulation.stdout + simulation.stderr
         )
     mutation_match = re.search(
         r"(\d+) scenarios, (\d+) rejected mutations", simulation.stdout
@@ -191,9 +253,10 @@ def main() -> int:
         raise SystemExit("usage simulations do not exercise enough atomic mutations")
 
     print(
-        "academic-vi validation passed "
+        "academic-prose validation passed "
         f"({len(cases)} translation/revision evals, {len(writing_cases)} writing evals, "
-        f"{len(usage_cases)} usage simulations, {rejected_mutations} rejected mutations)"
+        f"{humanize_count} humanize evals, {len(usage_cases)} usage simulations, "
+        f"{rejected_mutations} rejected mutations)"
     )
     return 0
 

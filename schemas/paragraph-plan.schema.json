@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/paragraph-plan.schema.json",
-  "title": "Vietnamese academic paragraph plan",
+  "$id": "https://github.com/mxuanvan02/academic-prose/schemas/paragraph-plan.schema.json",
+  "title": "Bilingual academic paragraph plan",
   "type": "object",
   "required": ["paragraph_id", "dominant_function", "claim_ids", "moves", "transition_basis"],
   "properties": {
