@@ -17,9 +17,11 @@ class SchemaContractTests(unittest.TestCase):
         self.assertTrue(
             {
                 "segment_id",
+                "source_language",
+                "target_language",
                 "source_text",
-                "draft_vi",
-                "revised_vi",
+                "draft_text",
+                "revised_text",
                 "error_types",
                 "severity",
                 "rationale",

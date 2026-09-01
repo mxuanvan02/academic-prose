@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 import unittest
@@ -18,6 +19,7 @@ class RepositoryContractTests(unittest.TestCase):
             "LICENSE",
             "agents/openai.yaml",
             "references/academic-vietnamese-standard.md",
+            "references/academic-english-standard.md",
             "references/composition-workflow.md",
             "references/capability-matrix.md",
             "references/argument-and-evidence.md",
@@ -25,7 +27,9 @@ class RepositoryContractTests(unittest.TestCase):
             "references/deliverable-playbooks.md",
             "references/rhetorical-moves.md",
             "references/writing-failure-taxonomy.md",
-            "references/en-vi-transfer-taxonomy.md",
+            "references/cross-language-transfer-taxonomy.md",
+            "references/ai-pattern-taxonomy.md",
+            "references/ai-pattern-vietnamese.md",
             "references/domain-profiles.md",
             "references/quality-rubric.md",
             "references/pdf-translate-integration.md",
@@ -34,7 +38,9 @@ class RepositoryContractTests(unittest.TestCase):
             "schemas/claim-ledger.schema.json",
             "schemas/rhetorical-brief.schema.json",
             "schemas/paragraph-plan.schema.json",
+            "evals/synthetic-cases.jsonl",
             "evals/writing-cases.jsonl",
+            "evals/humanize-cases.jsonl",
             "evals/usage-claim-cases.json",
             "scripts/run_usage_simulations.py",
         )
@@ -42,17 +48,20 @@ class RepositoryContractTests(unittest.TestCase):
             with self.subTest(path=relative_path):
                 self.assertTrue((ROOT / relative_path).is_file())
 
-    def test_skill_frontmatter_is_narrow_and_vietnamese_specific(self) -> None:
+    def test_skill_frontmatter_is_bilingual_academic_prose(self) -> None:
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-        self.assertTrue(text.startswith("---\nname: academic-vi\n"))
+        self.assertTrue(text.startswith("---\nname: academic-prose\n"))
         frontmatter = text.split("---", 2)[1]
         self.assertIn("Vietnamese", frontmatter)
+        self.assertIn("English", frontmatter)
         self.assertIn("academic", frontmatter.lower())
+        self.assertIn("humanize", frontmatter.lower())
         self.assertIn("English-to-Vietnamese", frontmatter)
+        self.assertIn("Vietnamese-to-English", frontmatter)
 
-    def test_rubric_declares_six_dimensions_and_blocking_failures(self) -> None:
+    def test_rubric_declares_seven_dimensions_and_blocking_failures(self) -> None:
         rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")
-        for dimension in ("SEM", "TERM", "STANCE", "LOGIC", "VI", "CONS"):
+        for dimension in ("SEM", "TERM", "STANCE", "LOGIC", "LANG", "VOICE", "CONS"):
             self.assertIn(f"`{dimension}`", rubric)
         for blocking_error in (
             "meaning_reversal",
@@ -61,6 +70,10 @@ class RepositoryContractTests(unittest.TestCase):
             "unsupported_claim",
             "numeric_corruption",
             "citation_corruption",
+            "scope_shift",
+            "stance_upgrade",
+            "range_notation_corruption",
+            "required_move_deletion",
         ):
             self.assertIn(blocking_error, rubric)
 
@@ -80,7 +93,7 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertIn(stage, skill + workflow)
         self.assertIn("write-first", skill.lower())
 
-    def test_capability_matrix_covers_all_academic_vietnamese_work(self) -> None:
+    def test_capability_matrix_covers_bilingual_academic_work(self) -> None:
         matrix = (ROOT / "references/capability-matrix.md").read_text(
             encoding="utf-8"
         )
@@ -95,6 +108,7 @@ class RepositoryContractTests(unittest.TestCase):
             "expand",
             "paraphrase",
             "revise",
+            "humanize",
             "audit",
             "translate",
         )
@@ -103,6 +117,7 @@ class RepositoryContractTests(unittest.TestCase):
                 self.assertIn(f"`{capability}`", matrix)
         self.assertIn("composition engine", matrix.lower())
         self.assertIn("adapter", matrix.lower())
+        self.assertIn("Vietnamese-to-English", matrix)
 
     def test_routing_covers_structured_academic_deliverables(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -128,12 +143,12 @@ class RepositoryContractTests(unittest.TestCase):
             encoding="utf-8"
         )
         normalized = " ".join(playbooks.lower().split())
-        self.assertIn("academic-vi chịu trách nhiệm", normalized)
+        self.assertIn("academic-prose chịu trách nhiệm", normalized)
         self.assertIn("công cụ định dạng", normalized)
         self.assertIn("không làm suy giảm", normalized)
 
     def test_publication_prose_excludes_unnecessary_implementation_tokens(self) -> None:
-        standard = (ROOT / "references/academic-vietnamese-standard.md").read_text(
+        standard = (ROOT / "references/academic-english-standard.md").read_text(
             encoding="utf-8"
         )
         normalized = " ".join(standard.lower().split())
@@ -153,17 +168,17 @@ class RepositoryContractTests(unittest.TestCase):
         core_text = "\n".join(
             (ROOT / path).read_text(encoding="utf-8") for path in core_paths
         )
-        self.assertNotIn("$academic-vi", core_text)
+        self.assertNotIn("$academic-prose", core_text)
         self.assertNotIn("$pdf-translate", core_text)
 
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         normalized = " ".join(readme.lower().split())
         self.assertIn("cú pháp gọi phụ thuộc vào môi trường", normalized)
         self.assertIn("cài đặt bằng trình quản lý skills", normalized)
-        self.assertNotIn("dùng academic-vi để", normalized)
+        self.assertNotIn("dùng academic-prose để", normalized)
 
         openai_adapter = (ROOT / "agents/openai.yaml").read_text(encoding="utf-8")
-        self.assertNotIn("$academic-vi", openai_adapter)
+        self.assertNotIn("$academic-prose", openai_adapter)
 
     def test_readme_credits_external_reference_repositories(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -171,6 +186,7 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("https://github.com/agentskills/agentskills", readme)
         self.assertIn("https://github.com/vercel-labs/skills", readme)
         self.assertIn("https://github.com/breslee1707/vi-translate", readme.lower())
+        self.assertIn("https://github.com/blader/humanizer", readme)
         self.assertIn("chuẩn đóng gói và tích hợp", normalized)
         self.assertIn("quy trình bàn giao dịch pdf", normalized)
         self.assertIn("quy ước để môi trường tương thích khám phá", normalized)
@@ -194,6 +210,25 @@ class RepositoryContractTests(unittest.TestCase):
                 self.assertIn("notes", record)
                 self.assertIn("evidence", record)
                 self.assertIn("expected_moves", record)
+
+    def test_humanize_eval_is_bilingual_and_preserves_claims(self) -> None:
+        records = [
+            json.loads(line)
+            for line in (ROOT / "evals/humanize-cases.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+        ]
+        self.assertEqual(len(records), 15)
+        self.assertEqual({record["language"] for record in records}, {"vi", "en"})
+        self.assertEqual({record["mode"] for record in records}, {"humanize"})
+        self.assertEqual(len({record["id"] for record in records}), len(records))
+        for record in records:
+            with self.subTest(case=record["id"]):
+                self.assertTrue(record["synthetic"])
+                self.assertTrue(record["source"])
+                self.assertIn("expected_output", record)
+                self.assertIn("expected_errors", record)
+                self.assertIn(record["verdict"], {"apply", "guard", "redirect", "restrict", "defer"})
 
     def test_usage_claim_matrix_covers_every_readme_example(self) -> None:
         cases = json.loads(
@@ -230,31 +265,45 @@ class RepositoryContractTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("7 scenarios", result.stdout)
-        match = __import__("re").search(r"(\d+) rejected mutations", result.stdout)
+        match = re.search(r"(\d+) rejected mutations", result.stdout)
         self.assertIsNotNone(match)
         self.assertGreaterEqual(int(match.group(1)), 40)
 
     def test_examples_are_synthetic_and_do_not_contain_private_markers(self) -> None:
-        eval_text = (ROOT / "evals/synthetic-cases.jsonl").read_text(encoding="utf-8")
-        self.assertNotIn("PRIVATE_MANUSCRIPT", eval_text)
-        self.assertNotIn("CONFIDENTIAL_SOURCE", eval_text)
-        for line in eval_text.splitlines():
-            record = json.loads(line)
-            self.assertTrue(record["synthetic"])
+        for relative_path in (
+            "evals/synthetic-cases.jsonl",
+            "evals/writing-cases.jsonl",
+            "evals/humanize-cases.jsonl",
+        ):
+            eval_text = (ROOT / relative_path).read_text(encoding="utf-8")
+            self.assertNotIn("PRIVATE_MANUSCRIPT", eval_text)
+            self.assertNotIn("CONFIDENTIAL_SOURCE", eval_text)
+            for line in eval_text.splitlines():
+                record = json.loads(line)
+                self.assertTrue(record["synthetic"])
 
     def test_eval_error_labels_are_defined_by_the_skill(self) -> None:
-        taxonomy = (ROOT / "references/en-vi-transfer-taxonomy.md").read_text(
-            encoding="utf-8"
+        registry_paths = (
+            "references/cross-language-transfer-taxonomy.md",
+            "references/quality-rubric.md",
+            "references/writing-failure-taxonomy.md",
+            "references/ai-pattern-taxonomy.md",
+            "references/ai-pattern-vietnamese.md",
         )
-        rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")
-        definitions = taxonomy + rubric
-        for line in (ROOT / "evals/synthetic-cases.jsonl").read_text(
-            encoding="utf-8"
-        ).splitlines():
-            record = json.loads(line)
-            for error_type in record["expected_errors"]:
-                with self.subTest(case=record["id"], error_type=error_type):
-                    self.assertIn(f"`{error_type}`", definitions)
+        definitions = "\n".join(
+            (ROOT / path).read_text(encoding="utf-8") for path in registry_paths
+        )
+        for relative_path in (
+            "evals/synthetic-cases.jsonl",
+            "evals/humanize-cases.jsonl",
+        ):
+            for line in (ROOT / relative_path).read_text(
+                encoding="utf-8"
+            ).splitlines():
+                record = json.loads(line)
+                for error_type in record["expected_errors"]:
+                    with self.subTest(case=record["id"], error_type=error_type):
+                        self.assertIn(f"`{error_type}`", definitions)
 
     def test_validator_accepts_repository(self) -> None:
         result = subprocess.run(
@@ -265,9 +314,10 @@ class RepositoryContractTests(unittest.TestCase):
             check=False,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn("academic-vi validation passed", result.stdout)
+        self.assertIn("academic-prose validation passed", result.stdout)
         self.assertIn("4 translation/revision evals", result.stdout)
         self.assertIn("4 writing evals", result.stdout)
+        self.assertIn("15 humanize evals", result.stdout)
         self.assertIn("7 usage simulations", result.stdout)
         self.assertIn("47 rejected mutations", result.stdout)
 

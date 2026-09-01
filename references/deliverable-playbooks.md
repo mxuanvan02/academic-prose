@@ -1,4 +1,4 @@
-# Vietnamese Academic Deliverable Playbooks
+# Academic Prose Deliverable Playbooks
 
 Apply the shared claim-evidence and terminology contracts to every Vietnamese
 academic deliverable. The medium changes information density and sequencing;
@@ -6,19 +6,19 @@ it does not relax semantic integrity, scientific stance, or language quality.
 
 ## Automatic Routing
 
-Automatically activate `academic-vi` when Vietnamese content has an academic,
+Automatically activate `academic-prose` when Vietnamese or English content has an academic,
 scientific, research, scholarly, or higher-education purpose. Route by purpose,
 not by extension: a slide deck, worksheet, script, or web page can all carry
 academic discourse. Do not activate solely because ordinary Vietnamese text
 mentions a technical topic; the communicative purpose must be academic or
 instructional at an appropriate disciplinary level.
 
-Nói cách khác, academic-vi phải **tự động kích hoạt** theo **mục đích học thuật**,
+Nói cách khác, academic-prose phải **tự động kích hoạt** theo **mục đích học thuật**,
 kể cả khi văn bản tiếng Việt chỉ là một lớp nội dung trong sản phẩm lớn hơn.
 
 ## Ownership Boundary
 
-academic-vi chịu trách nhiệm về kiến trúc lập luận, trạng thái bằng chứng,
+academic-prose chịu trách nhiệm về kiến trúc lập luận, trạng thái bằng chứng,
 thuật ngữ, văn phong chuyên ngành, cách giải thích và câu chữ tiếng Việt. Công
 cụ định dạng chịu trách nhiệm về phân cấp thị giác, bố cục, phân trang, hoạt
 ảnh và xuất tệp. Việc rút gọn nội dung cho một định dạng trực quan không làm

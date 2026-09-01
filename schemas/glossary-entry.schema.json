@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/glossary-entry.schema.json",
-  "title": "Academic Vietnamese glossary entry",
+  "$id": "https://github.com/mxuanvan02/academic-prose/schemas/glossary-entry.schema.json",
+  "title": "Bilingual academic glossary entry",
   "type": "object",
   "required": ["source", "preferred", "domain", "definition", "status"],
   "properties": {

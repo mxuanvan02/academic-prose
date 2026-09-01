@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mxuanvan02/academic-vi/schemas/claim-ledger.schema.json",
-  "title": "Vietnamese academic claim-evidence ledger entry",
+  "$id": "https://github.com/mxuanvan02/academic-prose/schemas/claim-ledger.schema.json",
+  "title": "Bilingual academic claim-evidence ledger entry",
   "type": "object",
   "required": ["claim_id", "claim_text", "claim_type", "evidence_status", "evidence_refs", "scope", "stance", "section_role"],
   "properties": {
