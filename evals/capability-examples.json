@@ -1,0 +1,535 @@
+[
+  {
+    "id": "cap-conceptualize-vi",
+    "capability": "conceptualize",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Biến một chủ đề chưa định hình thành nhiệm vụ viết có thể bảo vệ được, không sinh số liệu",
+    "input": {
+      "topic": "dùng mô hình ngôn ngữ lớn để chấm bài tự luận tiếng Việt",
+      "supplied_evidence": [],
+      "unknown": [
+        "số bài được chấm kép",
+        "mức tương hợp giữa hai giám khảo người",
+        "tiêu chí rubric đang dùng"
+      ]
+    },
+    "output": {
+      "brief": {
+        "target_language": "vi",
+        "discipline": "đo lường và đánh giá trong giáo dục",
+        "genre": "bài báo nghiên cứu",
+        "audience": "giảng viên và nghiên cứu viên đánh giá giáo dục",
+        "central_question": "Điểm do mô hình ngôn ngữ lớn sinh ra tương hợp đến mức nào với điểm của giám khảo người trên bài tự luận bậc đại học?"
+      },
+      "candidate_claims": [
+        {
+          "id": "C1",
+          "text": "Nghiên cứu giới hạn ở bài tự luận bậc đại học",
+          "status": "author_input"
+        },
+        {
+          "id": "C2",
+          "text": "Mức tương hợp giữa máy và người thay đổi theo loại đề",
+          "status": "needs_source"
+        }
+      ],
+      "evidence_gaps": [
+        "số bài được chấm kép",
+        "mức tương hợp giữa hai giám khảo người",
+        "tiêu chí rubric đang dùng"
+      ]
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.brief",
+        "values": ["tương hợp", "bậc đại học", "đo lường và đánh giá"]
+      },
+      {
+        "type": "contains",
+        "path": "output.candidate_claims",
+        "values": ["author_input", "needs_source"]
+      },
+      {
+        "type": "equals",
+        "path": "output.evidence_gaps",
+        "source_path": "input.unknown"
+      },
+      {
+        "type": "excludes",
+        "path": "output",
+        "values": ["QWK 0,82", "đã chứng minh", "supported"]
+      }
+    ]
+  },
+  {
+    "id": "cap-outline-vi",
+    "capability": "outline",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Dàn ý mã hoá chức năng lập luận, không phải danh sách chủ đề",
+    "input": {
+      "section": "Tổng quan tài liệu",
+      "known": ["ba nghiên cứu về chấm tự động do người dùng cung cấp"],
+      "missing": ["cỡ mẫu của nghiên cứu thứ ba", "ngôn ngữ đích của nghiên cứu thứ hai"]
+    },
+    "output": {
+      "sections": [
+        {
+          "id": "S1",
+          "heading": "Phạm vi chấm tự động được xem xét",
+          "move": "territory"
+        },
+        {
+          "id": "S2",
+          "heading": "Chấm tự động tiếng Việt chưa được đo bằng thang tương hợp chuẩn",
+          "move": "synthesized_gap"
+        },
+        {
+          "id": "S3",
+          "heading": "Bằng chứng hiện có chỉ bao phủ đề luận nghị luận",
+          "move": "evidence_boundary"
+        },
+        {
+          "id": "S4",
+          "heading": "Mục tiêu của nghiên cứu này",
+          "move": "purpose"
+        }
+      ],
+      "unresolved_evidence": [
+        "cỡ mẫu của nghiên cứu thứ ba",
+        "ngôn ngữ đích của nghiên cứu thứ hai"
+      ]
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.sections",
+        "values": ["synthesized_gap", "evidence_boundary", "purpose"]
+      },
+      {
+        "type": "equals",
+        "path": "output.unresolved_evidence",
+        "source_path": "input.missing"
+      },
+      {
+        "type": "excludes",
+        "path": "output.sections",
+        "values": ["Khái niệm chung", "Tình hình nghiên cứu trong và ngoài nước"]
+      }
+    ]
+  },
+  {
+    "id": "cap-argue-en",
+    "capability": "argue",
+    "language": "en",
+    "synthetic": true,
+    "claim": "An argument map exposes the warrant and its qualification instead of asserting a cause",
+    "input": {
+      "position": "automatic scoring can replace one of two human raters",
+      "evidence": [
+        "machine to human quadratic weighted kappa 0.79 on 240 double-scored essays",
+        "human to human quadratic weighted kappa 0.81 on the same 240 essays"
+      ]
+    },
+    "output": {
+      "map": {
+        "claim": "Automatic scoring may substitute for one rater in a two-rater design for this essay type.",
+        "evidence": [
+          "machine to human agreement reached 0.79 on 240 double-scored essays",
+          "human to human agreement reached 0.81 on the same essays"
+        ],
+        "warrant": "A substitute rater is acceptable when its agreement with a human rater is close to the agreement between two humans on the same material.",
+        "qualification": "The comparison holds for the 240 essays of this single prompt type and does not extend to other prompts or grade levels.",
+        "counterposition": "Comparable agreement does not show that the two raters fail in the same places, so a shared blind spot remains possible."
+      }
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.map",
+        "values": ["may substitute", "0.79", "0.81", "240", "does not extend"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.map",
+        "values": ["proves", "causes", "guarantees", "state-of-the-art"]
+      }
+    ]
+  },
+  {
+    "id": "cap-synthesize-en",
+    "capability": "synthesize",
+    "language": "en",
+    "synthetic": true,
+    "claim": "Supplied sources are compared on a shared dimension, and absence of evidence is reported as absence",
+    "input": {
+      "sources": [
+        "Tran (2021): agreement 0.79, Vietnamese, argumentative prompts",
+        "Ito (2022): agreement 0.74, Japanese, narrative prompts",
+        "Silva (2023): agreement 0.83, Portuguese, argumentative prompts"
+      ]
+    },
+    "output": {
+      "dimension": "prompt genre rather than language family",
+      "convergence": "Tran (2021) reports 0.79 and Silva (2023) reports 0.83 on argumentative prompts.",
+      "tension": "Ito (2022) reports 0.74 on narrative prompts, which is lower than either argumentative result.",
+      "absence": "No supplied source reports agreement for expository prompts, so the pattern cannot be extended to that genre."
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output",
+        "values": [
+          "prompt genre",
+          "0.79",
+          "0.74",
+          "0.83",
+          "No supplied source reports"
+        ]
+      },
+      {
+        "type": "excludes",
+        "path": "output",
+        "values": ["establishes that", "proves", "it is widely accepted"]
+      }
+    ]
+  },
+  {
+    "id": "cap-draft-vi",
+    "capability": "draft",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Viết văn bản mới từ bằng chứng, giữ trạng thái từng luận điểm",
+    "input": {
+      "section": "Thảo luận",
+      "evidence": [
+        "E1: tương hợp máy với người 0,79 trên 240 bài chấm kép",
+        "E2: thiết kế không ngẫu nhiên, một loại đề duy nhất"
+      ]
+    },
+    "output": {
+      "text": "Mức tương hợp giữa điểm máy và điểm giám khảo người đạt 0,79 trên 240 bài được chấm kép. Vì toàn bộ dữ liệu thuộc một loại đề và không được phân nhóm ngẫu nhiên, kết quả này chưa cho phép suy rộng sang các loại đề khác.",
+      "claims": [
+        {
+          "id": "C1",
+          "text": "Tương hợp máy với người đạt 0,79 trên 240 bài chấm kép",
+          "status": "supported",
+          "evidence_refs": ["E1"]
+        },
+        {
+          "id": "C2",
+          "text": "Mức tương hợp này ổn định qua các loại đề khác",
+          "status": "needs_source",
+          "evidence_refs": []
+        }
+      ]
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["0,79", "240", "chưa cho phép suy rộng"]
+      },
+      {
+        "type": "claim_status",
+        "path": "output.claims"
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["chứng minh", "gây ra", "vượt trội"]
+      }
+    ]
+  },
+  {
+    "id": "cap-develop-vi",
+    "capability": "develop",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Bổ sung bước suy luận còn thiếu mà không thêm dữ kiện mới",
+    "input": {
+      "paragraph": "Tương hợp đạt 0,79. Có thể dùng máy thay một giám khảo.",
+      "evidence": ["E1: tương hợp giữa hai giám khảo người là 0,81 trên cùng tập bài"]
+    },
+    "output": {
+      "text": "Tương hợp giữa điểm máy và điểm giám khảo người đạt 0,79, trong khi tương hợp giữa hai giám khảo người trên cùng tập bài là 0,81. Vì khoảng cách giữa hai mức này nhỏ, máy có thể được xem xét thay cho một trong hai giám khảo ở loại đề đã khảo sát.",
+      "added": ["warrant nối 0,79 với ngưỡng tham chiếu 0,81", "phạm vi loại đề"]
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["0,81", "có thể được xem xét", "loại đề đã khảo sát"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["1.200 bài", "p < 0,05", "chứng minh"]
+      }
+    ]
+  },
+  {
+    "id": "cap-compress-en",
+    "capability": "compress",
+    "language": "en",
+    "synthetic": true,
+    "claim": "Shortening preserves the hedge, the quantity, and the scope statement",
+    "input": {
+      "text": "In this study, which was conducted over the course of a single academic semester, we set out to examine the extent to which an automatic scoring procedure may be able to approximate the judgements of trained human raters. Our analysis, which was based on a set of 240 essays that had been double scored, indicates that agreement may reach 0.79, although it should be noted that this figure applies only to the argumentative prompt that was used in the present study."
+    },
+    "output": {
+      "text": "On 240 double-scored essays, agreement between automatic and human scores may reach 0.79 for the argumentative prompt used here."
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["may reach", "0.79", "240", "argumentative prompt used here"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["reaches 0.79", "in all settings", "demonstrates"]
+      }
+    ]
+  },
+  {
+    "id": "cap-expand-en",
+    "capability": "expand",
+    "language": "en",
+    "synthetic": true,
+    "claim": "Expansion exposes warranted steps and marks the missing support instead of padding",
+    "input": {
+      "text": "Agreement was acceptable, so the procedure is usable."
+    },
+    "output": {
+      "text": "Agreement between automatic and human scores reached 0.79 on the 240 double-scored essays. Because two human raters agreed at 0.81 on the same material, the gap between the automatic procedure and a second human rater is small for this prompt. Whether 0.79 clears the threshold required by an institutional grading policy is [needs_source: no policy threshold was supplied]."
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["0.79", "0.81", "needs_source", "no policy threshold was supplied"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["(Smith, 2019)", "widely regarded", "industry standard"]
+      }
+    ]
+  },
+  {
+    "id": "cap-paraphrase-vi",
+    "capability": "paraphrase",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Đổi cách diễn đạt nhưng giữ nguyên trích dẫn, con số và mức độ khẳng định",
+    "input": {
+      "text": "Nhóm tác giả báo cáo rằng chỉ số tương hợp có thể đạt 0,847 trong điều kiện chấm kép [15]."
+    },
+    "output": {
+      "text": "Theo báo cáo của nhóm tác giả, chỉ số tương hợp có thể đạt 0,847 khi bài được chấm kép [15]."
+    },
+    "checks": [
+      {
+        "type": "protected_tokens",
+        "source_path": "input.text",
+        "target_path": "output.text",
+        "patterns": ["0,847", "[15]"]
+      },
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["có thể đạt"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["0.847", "chắc chắn đạt", "chứng minh"]
+      }
+    ]
+  },
+  {
+    "id": "cap-revise-vi",
+    "capability": "revise",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Sửa nội dung: hạ cấp khẳng định nhân quả về đúng mức bằng chứng quan sát",
+    "input": {
+      "text": "Kết quả chứng minh rằng việc dùng máy chấm gây ra sự gia tăng độ chính xác trong toàn bộ hệ thống đánh giá."
+    },
+    "output": {
+      "text": "Kết quả cho thấy điểm máy tương hợp với điểm giám khảo người ở mức 0,79 trên tập bài đã khảo sát. Dữ liệu hiện có không cho phép kết luận rằng việc dùng máy chấm làm tăng độ chính xác của toàn hệ thống.",
+      "audit": [
+        {
+          "code": "causal_overclaim",
+          "span": "gây ra sự gia tăng độ chính xác",
+          "severity": "blocking"
+        },
+        {
+          "code": "population_generalization",
+          "span": "trong toàn bộ hệ thống đánh giá",
+          "severity": "blocking"
+        }
+      ],
+      "gate": {
+        "decision": "revise"
+      }
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output",
+        "values": [
+          "causal_overclaim",
+          "population_generalization",
+          "không cho phép kết luận",
+          "revise"
+        ]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["chứng minh", "gây ra", "toàn bộ hệ thống đánh giá"]
+      }
+    ]
+  },
+  {
+    "id": "cap-humanize-vi",
+    "capability": "humanize",
+    "language": "vi",
+    "synthetic": true,
+    "claim": "Xoá dấu vết máy nhưng giữ en dash trong khoảng số và giữ một dấu hiệu dè dặt",
+    "input": {
+      "text": "Phương pháp đề xuất mang tính đột phá, đóng vai trò then chốt và cho thấy hiệu quả vượt trội một cách toàn diện. Có thể có khả năng phần nào cho thấy rằng liều dùng trong khoảng 12–18 mg ở giai đoạn 2018–2023 là phù hợp."
+    },
+    "output": {
+      "text": "Phương pháp đề xuất đạt F1 0,847, cao hơn 2,3 điểm so với baseline. Kết quả gợi ý liều dùng trong khoảng 12–18 mg ở giai đoạn 2018–2023 là phù hợp."
+    },
+    "checks": [
+      {
+        "type": "protected_tokens",
+        "source_path": "input.text",
+        "target_path": "output.text",
+        "patterns": ["12–18 mg", "2018–2023"]
+      },
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["gợi ý", "0,847"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": [
+          "mang tính đột phá",
+          "đóng vai trò then chốt",
+          "vượt trội",
+          "12-18 mg",
+          "Kết quả cho thấy liều dùng"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cap-audit-en",
+    "capability": "audit",
+    "language": "en",
+    "synthetic": true,
+    "claim": "Audit reports severity-ranked findings and a gate decision without silently rewriting the text",
+    "input": {
+      "text": "The intervention significantly improved outcomes across all student populations, as numerous studies have shown."
+    },
+    "output": {
+      "findings": [
+        {
+          "id": "F1",
+          "code": "stance_upgrade",
+          "severity": "blocking",
+          "span": "significantly improved",
+          "note": "no statistical test was supplied for the word significantly"
+        },
+        {
+          "id": "F2",
+          "code": "population_generalization",
+          "severity": "blocking",
+          "span": "across all student populations",
+          "note": "the supplied evidence covers one cohort"
+        },
+        {
+          "id": "F3",
+          "code": "claim_without_status",
+          "severity": "major",
+          "span": "as numerous studies have shown",
+          "note": "attribute or mark needs_source; do not delete the proposition"
+        }
+      ],
+      "gate": {
+        "decision": "revise",
+        "blocking": ["stance_upgrade", "population_generalization"]
+      }
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.findings",
+        "values": [
+          "stance_upgrade",
+          "population_generalization",
+          "claim_without_status",
+          "blocking",
+          "major"
+        ]
+      },
+      {
+        "type": "contains",
+        "path": "output.gate",
+        "values": ["revise"]
+      },
+      {
+        "type": "excludes",
+        "path": "output",
+        "values": ["revised_text", "pass"]
+      }
+    ]
+  },
+  {
+    "id": "cap-translate-vi-en",
+    "capability": "translate",
+    "language": "en",
+    "synthetic": true,
+    "claim": "Dịch Việt sang Anh: đổi dấu thập phân theo ngôn ngữ đích, giữ hedge và trích dẫn",
+    "input": {
+      "text": "Kết quả có thể gợi ý một mối liên hệ; chỉ số tương hợp đạt 0,847 trên tập kiểm tra [15]."
+    },
+    "output": {
+      "text": "The results may suggest an association; agreement reached 0.847 on the test set [15].",
+      "glossary": [
+        {
+          "source": "chỉ số tương hợp",
+          "preferred": "agreement",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "checks": [
+      {
+        "type": "contains",
+        "path": "output.text",
+        "values": ["may suggest", "an association", "0.847", "[15]"]
+      },
+      {
+        "type": "contains",
+        "path": "output.glossary",
+        "values": ["chỉ số tương hợp", "agreement"]
+      },
+      {
+        "type": "excludes",
+        "path": "output.text",
+        "values": ["0,847", "proves", "causes", "demonstrates a causal"]
+      }
+    ]
+  }
+]

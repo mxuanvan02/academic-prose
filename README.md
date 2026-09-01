@@ -156,7 +156,27 @@ Trong cách phối hợp này, `academic-prose` chịu trách nhiệm về nội
 đích;
 công cụ PDF chịu trách nhiệm về trích xuất, bố cục và tái dựng tệp.
 
-### Phạm vi kiểm chứng các ví dụ
+### Ví dụ cho từng năng lực
+
+Ngoài bảy nhóm trên, mỗi năng lực trong ma trận có một ví dụ đã làm sẵn ở
+`evals/capability-examples.json`. Mỗi ví dụ gồm đầu vào, đầu ra mong đợi và các
+phép kiểm tra, nên nó vừa là tài liệu vừa là ca kiểm thử.
+
+| Năng lực | Ví dụ | Bất biến được kiểm |
+| --- | --- | --- |
+| `conceptualize` | chủ đề chấm tự luận chưa định hình thành câu hỏi nghiên cứu | không sinh số liệu; khoảng trống bằng chứng khớp đúng đầu vào |
+| `outline` | dàn ý Tổng quan tài liệu | tiêu đề mã hoá chức năng lập luận, không phải tên chủ đề |
+| `argue` | máy có thể thay một trong hai giám khảo | bảo chứng và giới hạn hiện diện; không có `proves`, `causes` |
+| `synthesize` | ba nguồn về mức tương hợp | so sánh theo một chiều chung; thiếu bằng chứng được báo là thiếu |
+| `draft` | viết phần Thảo luận từ hai mục bằng chứng | trạng thái từng luận điểm hợp lệ; giữ `0,79` và phạm vi |
+| `develop` | bổ sung bước suy luận còn thiếu | thêm bảo chứng, không thêm dữ kiện mới |
+| `compress` | rút gọn một đoạn dài dòng | giữ hedge `may reach`, số `0.79`, phạm vi loại đề |
+| `expand` | mở rộng một câu quá cô đặc | phơi bước suy luận; đánh dấu `needs_source` thay vì bịa nguồn |
+| `paraphrase` | đổi cách diễn đạt một câu có trích dẫn | `0,847` và `[15]` bất biến; giữ `có thể đạt` |
+| `revise` | hạ cấp khẳng định nhân quả | báo `causal_overclaim`, `population_generalization`, cổng `revise` |
+| `humanize` | xoá từ ngữ tán dương trong bản thảo tiếng Việt | giữ en dash `12–18 mg`, `2018–2023`; còn lại một dấu hiệu dè dặt |
+| `audit` | soi một câu khẳng định quá mức | trả phát hiện xếp theo mức nặng, không âm thầm viết lại |
+| `translate` | dịch Việt sang Anh | `0,847` thành `0.847` theo ngôn ngữ đích; giữ hedge và `[15]` |
 
 Bảy nhóm cách sử dụng trên được bao phủ bởi các kịch bản tổng hợp trong
 `evals/usage-claim-cases.json`. Trình mô phỏng kiểm tra các bất biến có thể quan
@@ -164,6 +184,10 @@ sát như bảo toàn số liệu và trích dẫn, giữ mức độ khẳng đ
 thiếu bằng chứng, loại chi tiết triển khai khỏi văn bản công bố, nhất quán giữa
 slide và lời thuyết trình, liên kết chuẩn đầu ra với hoạt động và đánh giá, và
 bảo toàn công thức cùng ký hiệu khi bàn giao PDF.
+
+Cả hai bộ đều chạy theo cùng một nguyên tắc: mỗi phép kiểm tra được đột biến có
+chủ đích để chứng minh rằng nó biết thất bại. Một phép kiểm tra không bao giờ đỏ
+thì không phải là bằng chứng.
 
 Đây là **kiểm định hợp đồng bằng dữ liệu tổng hợp**. Kết quả xác nhận độ bao
 phủ của các bất biến đã khai báo; chất lượng đầu ra thực tế còn phụ thuộc vào
@@ -278,8 +302,16 @@ academic-prose/
 │   ├── quality-rubric.md
 │   └── pdf-translate-integration.md
 ├── schemas/                         # Lược đồ JSON cho các hiện vật trung gian
-├── evals/                           # Tình huống đánh giá tổng hợp
-├── scripts/validate_skill.py        # Trình kiểm định cấu trúc và hợp đồng
+├── evals/
+│   ├── synthetic-cases.jsonl        # Tình huống dịch và biên tập
+│   ├── writing-cases.jsonl          # Tình huống viết mới từ ghi chú
+│   ├── humanize-cases.jsonl         # Tình huống xoá dấu vết máy
+│   ├── usage-claim-cases.json       # Mô phỏng bảy nhóm cách sử dụng
+│   └── capability-examples.json     # Ví dụ cho từng năng lực
+├── scripts/
+│   ├── validate_skill.py            # Trình kiểm định cấu trúc và hợp đồng
+│   ├── run_usage_simulations.py     # Mô phỏng tuyên bố trong README
+│   └── run_capability_examples.py   # Chạy ví dụ của 13 năng lực
 └── tests/                           # Kiểm thử kho mã và lược đồ
 ```
 
@@ -329,8 +361,16 @@ Chạy riêng mô phỏng các tuyên bố trong mục “Cách sử dụng”:
 python3 scripts/run_usage_simulations.py
 ```
 
-Bộ đánh giá hiện gồm các tình huống tổng hợp cho viết mới, dịch, biên tập và
-các nhóm cách sử dụng được công bố trong README.
+Chạy riêng ví dụ của từng năng lực:
+
+```bash
+python3 scripts/run_capability_examples.py
+```
+
+Bộ đánh giá hiện gồm các tình huống tổng hợp cho viết mới, dịch, biên tập, xoá
+dấu vết máy, bảy nhóm cách sử dụng được công bố trong README, và một ví dụ cho
+mỗi năng lực trong ma trận. Trình kiểm định gọi lại hai trình mô phỏng, nên một
+ví dụ hỏng sẽ làm cổng đỏ.
 
 Khi đóng góp một quy tắc mới, hãy nêu rõ ngành, thể loại, ngữ cảnh, lý do, ví
 dụ đúng, phản ví dụ và phạm vi áp dụng. Cấu trúc này giúp phân biệt quy tắc có
