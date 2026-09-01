@@ -78,11 +78,11 @@ Repository sử dụng `SKILL.md` làm hợp đồng định tuyến và có th�
 các môi trường hỗ trợ Agent Skills. Cài đặt bằng trình quản lý Skills:
 
 ```bash
-npx skills add mxuanvan02/academic-vi -g --all
+npx skills add mxuanvan02/academic-prose -g --all
 ```
 
 Tên skill hiện hành là `academic-prose`; đường dẫn cài đặt vẫn dùng tên
-repository hiện tại `academic-vi` cho đến khi GitHub repository được đổi tên.
+repository `academic-prose`.
 
 Khi tích hợp thủ công, đặt repository tại vị trí mà môi trường có thể khám phá
 và đăng ký `SKILL.md` làm hợp đồng định tuyến chính. Tệp
