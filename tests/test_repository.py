@@ -305,6 +305,51 @@ class RepositoryContractTests(unittest.TestCase):
                     with self.subTest(case=record["id"], error_type=error_type):
                         self.assertIn(f"`{error_type}`", definitions)
 
+    def test_every_capability_has_a_worked_example(self) -> None:
+        cases = json.loads(
+            (ROOT / "evals/capability-examples.json").read_text(encoding="utf-8")
+        )
+        capabilities = {
+            "conceptualize",
+            "outline",
+            "argue",
+            "synthesize",
+            "draft",
+            "develop",
+            "compress",
+            "expand",
+            "paraphrase",
+            "revise",
+            "humanize",
+            "audit",
+            "translate",
+        }
+        self.assertEqual({case["capability"] for case in cases}, capabilities)
+        self.assertEqual(len({case["id"] for case in cases}), len(cases))
+        self.assertEqual({case["language"] for case in cases}, {"vi", "en"})
+        for case in cases:
+            with self.subTest(case=case["id"]):
+                self.assertTrue(case["synthetic"])
+                self.assertTrue(case["claim"])
+                self.assertTrue(case["input"])
+                self.assertTrue(case["output"])
+                self.assertTrue(case["checks"])
+
+    def test_capability_examples_reject_mutations(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/run_capability_examples.py")],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("13 examples", result.stdout)
+        self.assertIn("13 capabilities", result.stdout)
+        match = re.search(r"(\d+) rejected mutations", result.stdout)
+        assert match is not None, result.stdout
+        self.assertGreaterEqual(int(match.group(1)), 60)
+
     def test_validator_accepts_repository(self) -> None:
         result = subprocess.run(
             [sys.executable, str(ROOT / "scripts/validate_skill.py")],
@@ -319,7 +364,8 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("4 writing evals", result.stdout)
         self.assertIn("15 humanize evals", result.stdout)
         self.assertIn("7 usage simulations", result.stdout)
-        self.assertIn("47 rejected mutations", result.stdout)
+        self.assertIn("13 capability examples", result.stdout)
+        self.assertIn("150 rejected mutations", result.stdout)
 
 
 if __name__ == "__main__":

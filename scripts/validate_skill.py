@@ -38,7 +38,9 @@ REQUIRED = (
     "evals/writing-cases.jsonl",
     "evals/humanize-cases.jsonl",
     "evals/usage-claim-cases.json",
+    "evals/capability-examples.json",
     "scripts/run_usage_simulations.py",
+    "scripts/run_capability_examples.py",
 )
 
 CAPABILITIES = {
@@ -252,11 +254,45 @@ def main() -> int:
     if rejected_mutations < 40:
         raise SystemExit("usage simulations do not exercise enough atomic mutations")
 
+    capability_examples = json.loads(read("evals/capability-examples.json"))
+    documented_capabilities = {case.get("capability") for case in capability_examples}
+    if documented_capabilities != CAPABILITIES:
+        raise SystemExit(
+            "capability examples do not cover every capability: missing "
+            + ", ".join(sorted(CAPABILITIES - documented_capabilities))
+        )
+
+    examples = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/run_capability_examples.py")],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if examples.returncode != 0:
+        raise SystemExit(
+            "capability examples failed:\n" + examples.stdout + examples.stderr
+        )
+    example_match = re.search(
+        r"(\d+) examples, (\d+) capabilities, (\d+) rejected mutations",
+        examples.stdout,
+    )
+    if example_match is None:
+        raise SystemExit("capability example summary is unreadable")
+    if int(example_match.group(1)) != len(capability_examples):
+        raise SystemExit("capability example summary does not match the example set")
+    if int(example_match.group(2)) != len(CAPABILITIES):
+        raise SystemExit("capability example run does not cover every capability")
+    example_mutations = int(example_match.group(3))
+    if example_mutations < 60:
+        raise SystemExit("capability examples do not exercise enough atomic mutations")
+
     print(
         "academic-prose validation passed "
         f"({len(cases)} translation/revision evals, {len(writing_cases)} writing evals, "
         f"{humanize_count} humanize evals, {len(usage_cases)} usage simulations, "
-        f"{rejected_mutations} rejected mutations)"
+        f"{len(capability_examples)} capability examples, "
+        f"{rejected_mutations + example_mutations} rejected mutations)"
     )
     return 0
 
