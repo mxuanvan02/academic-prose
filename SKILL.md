@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.3.0"
+  version: "3.4.0"
 ---
 
 # Academic Prose
@@ -131,6 +131,25 @@ the former yields a finding/non-zero exit and the latter yields zero. Treat a
 scanner hit as a candidate for the recorded four-verdict review, never as an
 automatic rewrite or final scholarly judgment.
 
+## Process Logic (chronology and modifier scope)
+
+Prose that reports a research process must make three propositions separately
+recoverable: **what already existed**, **what happened later**, and **what role
+the later procedure served**. Compressing them into one noun chain produces a
+sentence a reader cannot parse even when every fact in it is true, and the usual
+casualty is role assignment: a coverage-checking search reads as the source that
+generated a pre-existing corpus.
+
+A phrase asserting priority (`hình thành trước`, `assembled beforehand`) must
+name the event it precedes, or state the sequence in a full clause. Reminder
+framing (`cần lưu ý`, *it should be noted*) is not a substitute for a stated
+evidence boundary.
+
+Run [`scripts/process_logic_scan.py`](scripts/process_logic_scan.py) on every
+`draft`, `revise`, `translate`, and `audit` delivery. A hit is a candidate for
+the three-proposition test, never an automatic rewrite; a clean scan is a
+partial verification only. See [Process logic gate](references/process-logic-gate.md).
+
 ## Writing Workflow
 
 For any writing capability, do not begin with polished sentences. Use this order:
@@ -243,6 +262,7 @@ Read these references as needed:
 - [Rhetorical move registry](references/rhetorical-moves.md)
 - [Writing failure taxonomy](references/writing-failure-taxonomy.md)
 - [Internal register gate](references/internal-register-gate.md)
+- [Process logic gate](references/process-logic-gate.md)
 - [Skill repository maintenance](references/skill-repository-maintenance.md)
 - [Self-narration and config dump](references/self-narration-and-config-dump.md)
 - [Artifact register to scientific register](references/artifact-register-to-scientific-register.md)

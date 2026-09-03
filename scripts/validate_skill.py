@@ -47,6 +47,13 @@ REQUIRED = (
     "scripts/run_usage_simulations.py",
     "scripts/run_capability_examples.py",
     "scripts/internal_register_scan.py",
+    "scripts/process_logic_scan.py",
+    "scripts/test_process_logic_scan.py",
+    "references/process-logic-gate.md",
+    "scripts/fixtures/process_logic_dirty.md",
+    "scripts/fixtures/process_logic_dirty_en.md",
+    "scripts/fixtures/process_logic_clean.md",
+    "scripts/fixtures/process_logic_licensed.md",
     "scripts/test_internal_register_scan.py",
     "scripts/fixtures/internal_register_dirty.md",
     "scripts/fixtures/internal_register_dirty_en.md",
@@ -305,6 +312,19 @@ def main() -> int:
         capture_output=True,
         check=False,
     )
+    process_logic = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/test_process_logic_scan.py")],
+        cwd=ROOT / "scripts",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if process_logic.returncode != 0:
+        raise SystemExit(
+            "process-logic gate tests failed:\n"
+            + process_logic.stdout
+            + process_logic.stderr
+        )
     if register_scan.returncode != 0:
         raise SystemExit(
             "internal register scan tests failed:\n"
