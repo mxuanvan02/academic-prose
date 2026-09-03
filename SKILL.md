@@ -243,6 +243,7 @@ Read these references as needed:
 - [Rhetorical move registry](references/rhetorical-moves.md)
 - [Writing failure taxonomy](references/writing-failure-taxonomy.md)
 - [Internal register gate](references/internal-register-gate.md)
+- [Skill repository maintenance](references/skill-repository-maintenance.md)
 - [Self-narration and config dump](references/self-narration-and-config-dump.md)
 - [Artifact register to scientific register](references/artifact-register-to-scientific-register.md)
 - [AI pattern taxonomy](references/ai-pattern-taxonomy.md)

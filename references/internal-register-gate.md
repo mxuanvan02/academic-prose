@@ -220,6 +220,37 @@ The general rule these share: **severity follows what the reader can reach.** A
 public repository path is reachable and belongs in a data statement; a path on
 one machine, a chat turn, and a placeholder are unreachable and block.
 
+### Bilingual symmetry is part of the gate, not an extension of it
+
+The class inventory above was built from Vietnamese examples. Run against English
+prose carrying all ten defects, it reported **7 of 10** and a clean threshold table:
+`progress_state_limitation`, `verification_log_prose`, and
+`defensive_disclaimer_stack` had no English markers at all. Nothing in the output
+announced that English was unchecked — the gate simply passed.
+
+Every class therefore needs markers in both languages, a fixture in both languages,
+and a test asserting the same class set on both. The English markers that were
+missing:
+
+| Class | English markers |
+| --- | --- |
+| `progress_state_limitation` | *has/have not yet been completed / validated / annotated*, *will be added later*, *is still in progress / underway / pending* |
+| `verification_log_prose` | *we checked / verified / confirmed / reran / compiled*, *the checksum matched*, *zero errors*, *no errors were found*, *passed all checks* |
+| `defensive_disclaimer_stack` | *do/does not prove / guarantee / imply / establish*, *cannot guarantee*, *only establish(es) / show(s) / reflect(s) / applies to* |
+
+Two traps in the denial stack specifically:
+
+- **Person agreement.** The first pattern carried only `does not prove`, so a genuine
+  three-sentence stack containing `They do not prove Y` counted two markers and stayed
+  under threshold. The class appeared absent rather than under-detected.
+- **`not only … but also` must be excluded exactly as `không chỉ … mà còn` is.** It is
+  an intensifier; without the exclusion an emphatic Discussion paragraph is graded as
+  self-defence.
+
+When a marker does not fire, print the matcher's output sentence by sentence before
+editing the pattern. Guessing at the regex cost two revisions; one diagnostic print
+located the cause immediately.
+
 ## 8. Read mode: auditing a text you did not write
 
 Report; do not rewrite. For each finding give the span, the class, the failing

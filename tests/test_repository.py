@@ -35,6 +35,7 @@ class RepositoryContractTests(unittest.TestCase):
             "references/pdf-translate-integration.md",
             "references/terminology-localization.md",
             "references/internal-register-gate.md",
+            "references/skill-repository-maintenance.md",
             "references/self-narration-and-config-dump.md",
             "references/artifact-register-to-scientific-register.md",
             "schemas/audit-record.schema.json",
