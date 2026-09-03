@@ -71,6 +71,19 @@ Read [Composition workflow](references/composition-workflow.md), [Argument and e
 For slides, teaching content, course materials, speaker notes, outlines, and
 assessment items, also read [Deliverable playbooks](references/deliverable-playbooks.md).
 
+For empirical, computational, and engineering research, read
+[Research genre blueprints](references/research-genre-blueprints.md) before
+drafting. It selects a section order by evidence logic: systematic review,
+systematic mapping, design science, simulation study, controlled experiment,
+observational study, prediction model, protocol, and economic evaluation. Two
+invariants hold in every blueprint: `Results` reports while `Discussion`
+interprets, and every quantitative claim carries its denominator and uncertainty.
+
+For legal scholarship, read [Legal research genres](references/legal-research-genres.md)
+before selecting a structure. Legal work has several distinct reasoning logics;
+doctrinal and normative articles have no empirical `Results` section, so IMRAD
+must not be imposed as a template.
+
 ## Capability Routing
 
 Route any academic task through the shared composition engine. The supported
@@ -146,6 +159,8 @@ Read these references as needed:
 - [Capability matrix](references/capability-matrix.md)
 - [Argument and evidence](references/argument-and-evidence.md)
 - [Genre playbooks](references/genre-playbooks.md)
+- [Research genre blueprints](references/research-genre-blueprints.md)
+- [Legal research genres](references/legal-research-genres.md)
 - [Deliverable playbooks](references/deliverable-playbooks.md)
 - [Rhetorical move registry](references/rhetorical-moves.md)
 - [Writing failure taxonomy](references/writing-failure-taxonomy.md)
