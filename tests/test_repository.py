@@ -33,6 +33,10 @@ class RepositoryContractTests(unittest.TestCase):
             "references/domain-profiles.md",
             "references/quality-rubric.md",
             "references/pdf-translate-integration.md",
+            "references/terminology-localization.md",
+            "references/internal-register-gate.md",
+            "references/self-narration-and-config-dump.md",
+            "references/artifact-register-to-scientific-register.md",
             "schemas/audit-record.schema.json",
             "schemas/glossary-entry.schema.json",
             "schemas/claim-ledger.schema.json",
@@ -43,6 +47,12 @@ class RepositoryContractTests(unittest.TestCase):
             "evals/humanize-cases.jsonl",
             "evals/usage-claim-cases.json",
             "scripts/run_usage_simulations.py",
+            "scripts/internal_register_scan.py",
+            "scripts/test_internal_register_scan.py",
+            "scripts/fixtures/internal_register_dirty.md",
+            "scripts/fixtures/internal_register_dirty_en.md",
+            "scripts/fixtures/internal_register_clean.md",
+            "scripts/fixtures/internal_register_clean_en.md",
         )
         for relative_path in required:
             with self.subTest(path=relative_path):
@@ -74,8 +84,12 @@ class RepositoryContractTests(unittest.TestCase):
             "stance_upgrade",
             "range_notation_corruption",
             "required_move_deletion",
+            "assistant_residue",
+            "placeholder_residue",
+            "internal_artifact_reference",
         ):
             self.assertIn(blocking_error, rubric)
+        self.assertIn("Internal register gate", rubric)
 
     def test_writing_is_the_primary_workflow(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")

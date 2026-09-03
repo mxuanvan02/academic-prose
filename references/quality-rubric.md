@@ -37,10 +37,22 @@ Any occurrence forces `revise` or `human_review`, regardless of average score:
 - `claim_without_status`: a consequential new-writing claim is presented as established although its evidence status is unknown or `needs_source`.
 - `range_notation_corruption`: an en dash, minus sign, or numeric separator that carries range, eponym, or value meaning is altered, including a hyphen substituted for an en dash.
 - `required_move_deletion`: a limitation, evidence boundary, alternative explanation, attribution, or template-mandated section is deleted rather than repaired.
+- `overtranslation_of_designator`: a rigid designator is translated, so the named object is no longer reachable.
+- `distinction_collapse_by_translation`: two source concepts separated in the argument receive one target rendering.
+- `assistant_residue`: the drafting conversation is visible in the published text.
+- `placeholder_residue`: a drafting token (`TODO`, `TBD`, `[…]`, `???`) survived delivery.
+- `internal_artifact_reference`: a local path, working filename, ticket, commit, or sheet column appears in publication-facing prose.
 
-The last two are specific to surface-level rewriting. They exist because a
-style pass can destroy content without changing a single proposition: dashes
-carry quantitative meaning, and genre-mandated moves carry scope.
+`range_notation_corruption` and `required_move_deletion` are surface-rewriting
+traps: a style pass can destroy content without changing a proposition, because
+dashes carry quantitative meaning and genre-mandated moves carry scope.
+`overtranslation_of_designator` and `distinction_collapse_by_translation` are
+terminology traps: a localization pass can destroy retrieval or erase a contrast
+the argument depends on.
+`assistant_residue`, `placeholder_residue`, and `internal_artifact_reference`
+are register traps: the text is true and still unusable, because a reader of the
+published artifact cannot act on a conversation, a placeholder, or a path on the
+author's machine.
 
 ## Decision
 
@@ -64,3 +76,50 @@ maps to a blocking failure above.
 7. Number format follows the target-language convention in prose and is untouched inside protected tokens.
 
 A rewrite that reads better and fails any of these is a regression.
+
+## Terminology localization gate
+
+Run when the output is Vietnamese, when either language version contains
+source-language terms in body prose, or when a bilingual pair must stay aligned.
+Each check maps to a code in
+[Terminology localization policy](terminology-localization.md).
+
+1. Every source-language run in body prose has a recorded policy: `keep_source`,
+   `translate`, `translate_with_gloss`, `keep_with_gloss`, or `needs_review`.
+2. No rigid designator was translated, and no preserved designator lacks a
+   Vietnamese category noun where a reader outside the toolchain needs one.
+3. Every load-bearing distinction the argument uses has two distinct renderings.
+4. Each rendering has an authority at tier 1--4, or is reported as `needs_review`;
+   no tier-5 coinage is asserted as the field's term.
+5. One rendering per concept per language version, glossed at first use in the
+   abstract and at first use in the body, and paired across the two versions.
+
+`TERM` cannot score 4 while any check fails, and `CONS` cannot score 4 while a
+concept alternates renderings.
+
+## Internal register gate
+
+Run on every delivery of publication-facing prose, in any language, whether the
+text was authored or translated. Each check maps to a class in
+[Internal register gate](internal-register-gate.md).
+
+1. Every candidate sentence flagged by the scan has a recorded verdict:
+   `delete`, `recast`, `relocate`, or `license`. **`soften` is not a verdict** —
+   hedging an internal sentence leaves it internal and now also vague.
+2. Zero occurrences of the three blocking classes: `assistant_residue`,
+   `placeholder_residue`, `internal_artifact_reference`.
+3. Zero self-address constructions; at most one roadmap passage per document and
+   at most one document-as-subject sentence per section.
+4. No sentence in Limitations or Future Work has the project as its subject; each
+   names the inference it bounds or the question it opens.
+5. No verification confirmation stands as a result: each states the property the
+   check establishes and the property it does not.
+6. At most two claim-negation markers within any three consecutive sentences.
+7. Both language versions were cleaned, and the manual pass over Methods,
+   Limitations, Future Work, and integrity subsections is reported separately
+   from the scan.
+
+`SEM` cannot score 4 while a blocking class is present. `VOICE` cannot score 4
+while any self-address remains. `CONS` cannot score 4 while one language version
+was cleaned and the other was not. A scan-only clean report is a partial
+verification and must be labelled as one.

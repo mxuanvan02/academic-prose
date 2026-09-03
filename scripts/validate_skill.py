@@ -29,6 +29,10 @@ REQUIRED = (
     "references/deliverable-playbooks.md",
     "references/rhetorical-moves.md",
     "references/writing-failure-taxonomy.md",
+    "references/terminology-localization.md",
+    "references/internal-register-gate.md",
+    "references/self-narration-and-config-dump.md",
+    "references/artifact-register-to-scientific-register.md",
     "schemas/audit-record.schema.json",
     "schemas/glossary-entry.schema.json",
     "schemas/claim-ledger.schema.json",
@@ -41,6 +45,12 @@ REQUIRED = (
     "evals/capability-examples.json",
     "scripts/run_usage_simulations.py",
     "scripts/run_capability_examples.py",
+    "scripts/internal_register_scan.py",
+    "scripts/test_internal_register_scan.py",
+    "scripts/fixtures/internal_register_dirty.md",
+    "scripts/fixtures/internal_register_dirty_en.md",
+    "scripts/fixtures/internal_register_clean.md",
+    "scripts/fixtures/internal_register_clean_en.md",
 )
 
 CAPABILITIES = {
@@ -287,12 +297,31 @@ def main() -> int:
     if example_mutations < 60:
         raise SystemExit("capability examples do not exercise enough atomic mutations")
 
+    register_scan = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/test_internal_register_scan.py")],
+        cwd=ROOT / "scripts",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if register_scan.returncode != 0:
+        raise SystemExit(
+            "internal register scan tests failed:\n"
+            + register_scan.stdout
+            + register_scan.stderr
+        )
+    if "FAILED" in register_scan.stdout or "ERROR" in register_scan.stdout:
+        raise SystemExit(
+            "internal register scan tests reported failures:\n" + register_scan.stdout
+        )
+
     print(
         "academic-prose validation passed "
         f"({len(cases)} translation/revision evals, {len(writing_cases)} writing evals, "
         f"{humanize_count} humanize evals, {len(usage_cases)} usage simulations, "
         f"{len(capability_examples)} capability examples, "
-        f"{rejected_mutations + example_mutations} rejected mutations)"
+        f"{rejected_mutations + example_mutations} rejected mutations, "
+        "internal-register bilingual scan)"
     )
     return 0
 

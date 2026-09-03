@@ -3,10 +3,11 @@
   "$id": "https://github.com/mxuanvan02/academic-prose/schemas/paragraph-plan.schema.json",
   "title": "Bilingual academic paragraph plan",
   "type": "object",
-  "required": ["paragraph_id", "dominant_function", "claim_ids", "moves", "transition_basis"],
+  "required": ["paragraph_id", "dominant_function", "admissible_subject", "claim_ids", "moves", "transition_basis"],
   "properties": {
     "paragraph_id": {"type": "string", "minLength": 1},
     "dominant_function": {"type": "string", "minLength": 1},
+    "admissible_subject": {"description": "Semantic subject the paragraph is about; the manuscript, project, file, or drafting conversation are inadmissible. See references/internal-register-gate.md", "enum": ["object_of_study", "data", "method", "result", "cited_claim", "licensed_inference"]},
     "claim_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
     "moves": {"type": "array", "items": {"enum": ["territory", "problem", "synthesized_gap", "purpose", "method", "result", "answer", "interpretation", "comparison_dimension", "convergence_or_tension", "alternative_explanation", "limitation", "evidence_boundary", "bounded_contribution", "bounded_implication", "research_need"]}, "minItems": 1},
     "evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},

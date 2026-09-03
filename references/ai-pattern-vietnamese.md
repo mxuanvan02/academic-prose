@@ -18,8 +18,8 @@ Vietnamese equivalent of §1 and §4. These are the strongest single-word signal
 **Repair.** Replace the evaluation with the measurement, or delete it.
 
 - Before: `Phương pháp đề xuất mang tính đột phá và cho kết quả vượt trội đáng kể so với các phương pháp hiện có.`
-- After: `Phương pháp đề xuất đạt F1 0,847, cao hơn 2,3 điểm so với baseline BiLSTM-CRF.`
-- When no number exists: `Phương pháp đề xuất cho kết quả cao hơn baseline BiLSTM-CRF.` and mark the magnitude `needs_source`.
+- After: `Phương pháp đề xuất đạt F1 0,847, cao hơn 2,3 điểm so với mô hình cơ sở BiLSTM-CRF.`
+- When no number exists: `Phương pháp đề xuất cho kết quả cao hơn mô hình cơ sở BiLSTM-CRF.` and mark the magnitude `needs_source`.
 
 `đáng kể` deserves separate attention. In statistics it renders *significant* and is licensed only when a test supports it. Used as a vague intensifier it is padding; used for an unsupported statistical claim it is a stance upgrade. Distinguish `khác biệt có ý nghĩa thống kê (p < 0,05)` from `cải thiện đáng kể`.
 
@@ -85,7 +85,7 @@ Also watch: `sự` and `việc` stacked across a clause (`việc thực hiện s
 Vietnamese equivalent of §11, and a genuine hazard because Vietnamese offers a Sino-Vietnamese and a native word for most concepts. A model alternates them to avoid repetition; a reader infers two constructs.
 
 - Before: `Mô hình học sâu đạt độ chính xác cao. Mạng nơ-ron sâu này cho kết quả tốt. Kiến trúc đề xuất vượt các baseline.`
-- After: `Mô hình học sâu đề xuất đạt độ chính xác 94%, cao hơn cả ba baseline.`
+- After: `Mô hình học sâu đề xuất đạt độ chính xác 94%, cao hơn cả ba mô hình cơ sở.`
 
 Repetition of a locked term is correct. Never introduce a synonym to satisfy a repetition rule; that is `terminology_drift`, a major failure.
 
