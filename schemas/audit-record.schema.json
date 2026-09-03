@@ -16,6 +16,7 @@
     "rationale": {"type": "string", "minLength": 1},
     "semantic_change": {"type": "boolean"},
     "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "register_verdict": {"description": "Resolution of an internal-register finding. 'soften' is not available: hedging an internal sentence leaves it internal. See references/internal-register-gate.md", "enum": ["delete", "recast", "relocate", "license", "not_applicable"]},
     "decision": {"enum": ["accept", "revise", "human_review"]}
   },
   "additionalProperties": false

@@ -35,6 +35,10 @@ primary capability.
   Declare the target language; it selects the target-language standard and the
   `LANG` scoring reference. Pair translation with a PDF tool only when
   extraction or reconstruction is also required.
+- Terminology localization is not confined to `translate`. Authored text carries
+  source-language terms for the same reason translated text does, so `draft`,
+  `develop`, `revise`, and `audit` all run the localization decision and gate;
+  see [Terminology localization policy](terminology-localization.md).
 - The translation adapter explicitly covers both English-to-Vietnamese and
   Vietnamese-to-English academic transfer. Keep one claim ledger and glossary
   across the pair; direction changes the target-language realization, not the

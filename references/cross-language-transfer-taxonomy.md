@@ -9,6 +9,15 @@ even in a text written by a human translator; a ceremonial adjective is an
 AI tell even in a text that was never translated. When both apply to the same
 span, repair the transfer error first, because it changes meaning.
 
+They are also distinct from a terminology decision. Whether a term should be
+translated at all, kept as a designator, or glossed is not an error in transfer;
+it is a policy fixed once per concept in the glossary. `terminology_error` and
+`terminology_drift` below presuppose that decision has been made. When a source
+term appears untranslated in target-language prose, or a designator appears
+translated, classify it under
+[Terminology localization policy](terminology-localization.md) rather than as a
+calque.
+
 ## Direction-neutral errors
 
 These occur in both directions.

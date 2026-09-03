@@ -55,6 +55,12 @@ that store those values are normally unnecessary.
 
 ## Protected Elements
 
+Whether a required foreign term is translated, kept, or glossed is decided by
+[Terminology localization policy](terminology-localization.md), recorded once per
+concept in the glossary, and enforced across the document. The abstraction rule
+above removes implementation tokens with no publication-facing function; it does not
+license translating a name that carries the identity of an external object.
+
 When a protected element is substantively required, copy formulas, symbols,
 values, units, citations, DOI, URLs, code, dataset names, model names, quoted
 text, and structured placeholders exactly unless the task explicitly changes

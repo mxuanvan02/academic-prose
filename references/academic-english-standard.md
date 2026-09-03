@@ -101,4 +101,10 @@ The upstream watched-word lists are English and apply directly. Three additions 
 
 ## Cross-Language Symmetry
 
+Vietnamese institutional, legal, administrative, and academic-title terms are
+system-specific and rarely have an exact English equivalent. Preserve instrument
+numbering, and gloss the institutional difference rather than substituting a
+near-equivalent; see the reverse-direction section of
+[Terminology localization policy](terminology-localization.md).
+
 When a document exists in both languages, keep one glossary with paired renderings, one claim ledger, and one stance calibration. A hedge present in one language must be present in the other. A claim that is `needs_source` in Vietnamese is `needs_source` in English. Divergence between versions is a `CONS` failure, not a stylistic choice.

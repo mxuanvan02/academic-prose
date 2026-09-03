@@ -95,8 +95,12 @@ bằng chứng, `TERM` thuật ngữ, `STANCE` lập trường khoa học, `LOGI
 
 Quyết định `pass` yêu cầu mọi chiều đạt ít nhất 4/5 và không có lỗi chặn. Điểm
 trung bình cao không bù được lỗi đảo nghĩa, mất phủ định, nâng tương quan thành
-nhân quả, sai số liệu, hỏng trích dẫn, đổi phạm vi hoặc bịa bằng chứng. Hai
-quyết định còn lại là `revise` và `human_review`. Thang điểm và điều kiện chặn:
+nhân quả, sai số liệu, hỏng trích dẫn, đổi phạm vi, bịa bằng chứng, hay văn
+phong nội bộ/tự thuật. Văn phong đó bị cấm ở cả tiếng Việt và tiếng Anh: câu nói
+về bản thảo, dự án, log kiểm tra, đường dẫn máy, placeholder hoặc cuộc hội thoại
+soạn thảo không được xuất hiện trong văn bản công bố. Cơ chế kiểm định:
+[`references/internal-register-gate.md`](references/internal-register-gate.md).
+Hai quyết định còn lại là `revise` và `human_review`. Thang điểm và điều kiện chặn:
 [`references/quality-rubric.md`](references/quality-rubric.md).
 
 ## Kiến trúc kho mã
@@ -105,10 +109,10 @@ quyết định còn lại là `revise` và `human_review`. Thang điểm và đ
 academic-prose/
 ├── SKILL.md              # Hợp đồng và bộ định tuyến chính
 ├── agents/openai.yaml    # Bộ điều hợp giao diện tùy chọn
-├── references/           # 15 tài liệu chuẩn ngôn ngữ, quy trình và phân loại lỗi
+├── references/           # Tài liệu chuẩn ngôn ngữ, quy trình, thuật ngữ và phân loại lỗi
 ├── schemas/              # Lược đồ JSON cho hiện vật trung gian
 ├── evals/                # Tình huống tổng hợp cho viết, dịch, humanize và usage
-├── scripts/              # Trình kiểm định và hai trình mô phỏng
+├── scripts/              # Validator, scanner register nội bộ và mô phỏng
 └── tests/                # Kiểm thử kho mã và lược đồ
 ```
 
@@ -117,11 +121,12 @@ academic-prose/
 ```bash
 python3 scripts/validate_skill.py                  # cổng kiểm định đầy đủ
 python3 -m unittest discover -s tests -v           # kiểm thử kho mã
+python3 scripts/test_internal_register_scan.py     # cổng văn phong nội bộ, song ngữ
 python3 scripts/run_usage_simulations.py           # riêng mô phỏng usage
 python3 scripts/run_capability_examples.py         # riêng ví dụ năng lực
 ```
 
-Trình kiểm định gọi lại cả hai trình mô phỏng, nên một ví dụ hỏng sẽ làm cổng đỏ.
+Trình kiểm định gọi lại cả hai trình mô phỏng và bộ test scanner register nội bộ, nên một ví dụ hỏng hoặc một lớp tiếng Anh/tiếng Việt bị sót sẽ làm cổng đỏ.
 Mỗi phép kiểm tra được đột biến có chủ đích để chứng minh nó biết thất bại; một
 phép kiểm tra không bao giờ đỏ thì không phải là bằng chứng.
 

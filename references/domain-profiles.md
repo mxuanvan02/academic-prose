@@ -6,6 +6,14 @@ Profiles tune terminology and discourse; they never override the fidelity contra
 
 Record discipline, subfield, genre, section, intended readers, locale/institutional convention, and whether English terms should appear at first mention.
 
+The profile selects the terminology rendering, not only the register. The same
+source word takes different Vietnamese renderings across the profiles below —
+`baseline` is `mốc cơ sở` in an evaluation, `kỳ gốc` in econometrics, and `giá trị
+ban đầu` in a clinical trial — so a rendering copied from a neighbouring discipline
+is a terminology error even when the Vietnamese is idiomatic. Each glossary entry
+carries its domain; see
+[Terminology localization policy](terminology-localization.md).
+
 ## Natural Sciences and Engineering
 
 - Prefer operational verbs and explicit variables, conditions, mechanisms, and uncertainty.

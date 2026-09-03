@@ -4,7 +4,7 @@ Writing is not sentence expansion. It is the controlled conversion of a research
 
 ## 1. Rhetorical brief
 
-Record: discipline and subfield; genre; section; readers; communicative purpose; research question; central claim; supplied evidence; required length; terminology policy; citation convention; and unresolved inputs. If the requested text depends on missing evidence, mark the gap instead of filling it plausibly.
+Record: discipline and subfield; genre; section; readers; communicative purpose; research question; central claim; supplied evidence; required length; terminology policy; citation convention; and unresolved inputs. The terminology policy includes the localization stance — which source-language terms are kept, translated, or glossed — decided per concept rather than per sentence; see [Terminology localization policy](terminology-localization.md). If the requested text depends on missing evidence, mark the gap instead of filling it plausibly.
 
 ## 2. Claim-evidence ledger
 
@@ -27,7 +27,14 @@ Reject an outline if sections merely name subjects, evidence has no claim, or a 
 
 ## 4. Paragraph design
 
-Assign one dominant function to each paragraph. Select only moves needed for that function:
+Assign one dominant function to each paragraph, plus an **admissible subject**:
+the object of study, the data, the method, a result, a cited work's claim, or an
+inference available to the reader. A paragraph whose planned subject is the
+manuscript, its sections, the project, a file, or the drafting conversation is
+rejected here rather than repaired later; see
+[Internal register gate](internal-register-gate.md).
+
+Select only moves needed for that function:
 
 - establish context or a precise problem;
 - state a claim;
@@ -53,6 +60,7 @@ Review the draft independently:
 3. Does every paragraph perform its assigned role and advance the section purpose?
 4. Are causal, contrastive, and consequential connectives warranted?
 5. Could a reader identify the central claim and its limits without reconstructing the author's intention?
+6. Does every source-language term in the prose have a recorded reason to be there, and does every rendering hold one concept throughout?
 
 ## 7. Revision order
 
