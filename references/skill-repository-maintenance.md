@@ -70,6 +70,27 @@ check establishes and, separately, the property it does not.
 - **Keep those calibration cases as permanent tests.** They are the only thing
   preventing the same false positive from returning at the next pattern edit.
 
+- **A mutation harness must prove it mutated.** Three consecutive rounds reported
+  "not caught" for assertions that were in fact sound: the harness substituted a
+  string that did not occur, wrote the file back unchanged, and read the resulting
+  green run as missing stopping power. Before trusting a negative result, assert
+  inside the harness that the file hash changed *and* that the mutated construct is
+  absent afterwards. A mutation that cannot be shown to have happened is not
+  evidence about the check, and reporting it as one manufactures a defect in a
+  working gate.
+- **A name that is also link text cannot pin its heading.** `assertIn("Process
+  logic gate", rubric)` stayed green after the `## ` heading was deleted, because
+  the same words remain in the prose link
+  `[Process logic gate](process-logic-gate.md)`. Pin the heading form,
+  `assertIn("## Process logic gate", rubric)`, and mutate by deleting that exact
+  line to confirm red.
+- **A class-level detector test only needs one pattern to fire.** Deleting a single
+  regex from a scanner left every behavioural test green, because the class still
+  matched through its remaining patterns — so a gate whose patterns can be removed
+  silently has no stopping power. Pin the full pattern inventory by identity in the
+  test file so removing any one entry fails, and let the behavioural tests cover
+  semantics rather than coverage.
+
 ## 5. Publishing
 
 Branch, commit, push, open a pull request, wait for CI, then merge. The history here
