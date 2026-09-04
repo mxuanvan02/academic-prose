@@ -54,6 +54,21 @@ class RepositoryContractTests(unittest.TestCase):
             "scripts/fixtures/internal_register_dirty_en.md",
             "scripts/fixtures/internal_register_clean.md",
             "scripts/fixtures/internal_register_clean_en.md",
+            "scripts/process_logic_scan.py",
+            "scripts/test_process_logic_scan.py",
+            "scripts/fixtures/process_logic_dirty.md",
+            "scripts/fixtures/process_logic_dirty_en.md",
+            "scripts/fixtures/process_logic_clean.md",
+            "scripts/fixtures/process_logic_licensed.md",
+            "references/process-logic-gate.md",
+            "scripts/vi_ai_pattern_scan.py",
+            "scripts/test_vi_ai_pattern_scan.py",
+            "scripts/fixtures/vi_ai_pattern_dirty.md",
+            "scripts/fixtures/vi_ai_pattern_dirty_en.md",
+            "scripts/fixtures/vi_ai_pattern_clean.md",
+            "scripts/fixtures/vi_ai_pattern_licensed.md",
+            "scripts/fixtures/vi_ai_pattern_acknowledgement.md",
+            "references/vi-ai-pattern-gate.md",
         )
         for relative_path in required:
             with self.subTest(path=relative_path):
@@ -90,7 +105,21 @@ class RepositoryContractTests(unittest.TestCase):
             "internal_artifact_reference",
         ):
             self.assertIn(blocking_error, rubric)
-        self.assertIn("Internal register gate", rubric)
+        self.assertIn("## Internal register gate", rubric)
+        self.assertIn("## Process logic gate", rubric)
+        self.assertIn("## Vietnamese AI-pattern gate", rubric)
+        for gate_class in (
+            "chronology_inversion",
+            "modifier_scope_drift",
+            "ceremonial_padding",
+            "unquantified_intensifier",
+            "empty_framing",
+            "translation_calque",
+            "hedge_stack",
+            "machine_marked_passage",
+        ):
+            with self.subTest(gate_class=gate_class):
+                self.assertIn(gate_class, rubric)
 
     def test_writing_is_the_primary_workflow(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")

@@ -123,3 +123,46 @@ text was authored or translated. Each check maps to a class in
 while any self-address remains. `CONS` cannot score 4 while one language version
 was cleaned and the other was not. A scan-only clean report is a partial
 verification and must be labelled as one.
+
+## Process logic gate
+
+Run when the text narrates a procedure, a chronology, or a pipeline in any
+language. Codes are defined in
+[Process logic gate](process-logic-gate.md).
+
+1. Every ordered step sequence is checked for `chronology_inversion`: a later
+   step may not be described as a precondition of an earlier one.
+2. Every quantifier, negation, and comparative scope is checked for
+   `modifier_scope_drift`: the scope in the draft matches the scope in the
+   source or in the ledger entry.
+3. Each candidate carries a recorded verdict; a lexical hit is not a verdict.
+
+`LOGIC` cannot score 4 while a chronology inversion stands. `SEM` cannot score 4
+while a modifier scope differs from its source.
+
+## Vietnamese AI-pattern gate
+
+Run on every Vietnamese deliverable, and on English text carrying the same
+machine tells. Codes and the licensed list are defined in
+[Vietnamese AI-pattern gate](vi-ai-pattern-gate.md), whose evidence base is
+[Vietnamese AI pattern registry](ai-pattern-vietnamese.md).
+
+1. Every candidate has a recorded verdict: `replace_with_measurement`,
+   `delete`, `recast`, or `license`. Softening a ceremonial phrase is not a
+   verdict — the padding survives and the sentence is now also vague.
+2. `ceremonial_padding` and `unquantified_intensifier` are repaired by supplying
+   the measurement, or by deleting the evaluation when no number exists. Never
+   invent a magnitude to satisfy this check.
+3. `empty_framing`, `translation_calque`, and `symmetric_padding` are deleted or
+   recast; the proposition they wrap must survive unchanged.
+4. `hedge_stack` collapses to exactly one calibrated marker. Reducing hedges to
+   zero is `stance_upgrade`, a blocking failure.
+5. `machine_marked_passage` requires several independent signals to co-occur;
+   one ceremonial word is not evidence of machine authorship.
+6. The §7 licensed list is honoured: topic-comment structure, Sino-Vietnamese
+   terminology, genre-mandated Vietnamese sections, decimal comma, en dash in
+   ranges, and a repeated locked term are correct prose, not defects.
+
+`VOICE` cannot score 4 while an unresolved candidate remains. `LANG` cannot
+score 4 while a calque stands. A scan reporting zero candidates is a partial
+verification: hedge deletion and terminology drift have no lexical signature.
