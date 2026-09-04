@@ -49,6 +49,14 @@ REQUIRED = (
     "scripts/internal_register_scan.py",
     "scripts/process_logic_scan.py",
     "scripts/test_process_logic_scan.py",
+    "scripts/vi_ai_pattern_scan.py",
+    "scripts/test_vi_ai_pattern_scan.py",
+    "references/vi-ai-pattern-gate.md",
+    "scripts/fixtures/vi_ai_pattern_dirty.md",
+    "scripts/fixtures/vi_ai_pattern_dirty_en.md",
+    "scripts/fixtures/vi_ai_pattern_clean.md",
+    "scripts/fixtures/vi_ai_pattern_licensed.md",
+    "scripts/fixtures/vi_ai_pattern_acknowledgement.md",
     "references/process-logic-gate.md",
     "scripts/fixtures/process_logic_dirty.md",
     "scripts/fixtures/process_logic_dirty_en.md",
@@ -319,6 +327,23 @@ def main() -> int:
         capture_output=True,
         check=False,
     )
+    vi_pattern = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/test_vi_ai_pattern_scan.py")],
+        cwd=ROOT / "scripts",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if vi_pattern.returncode != 0:
+        raise SystemExit(
+            "vietnamese ai-pattern gate tests failed:\n"
+            + vi_pattern.stdout
+            + vi_pattern.stderr
+        )
+    if "FAILED" in vi_pattern.stdout or "ERROR" in vi_pattern.stdout:
+        raise SystemExit(
+            "vietnamese ai-pattern gate tests reported failures:\n" + vi_pattern.stdout
+        )
     if process_logic.returncode != 0:
         raise SystemExit(
             "process-logic gate tests failed:\n"
@@ -342,7 +367,7 @@ def main() -> int:
         f"{humanize_count} humanize evals, {len(usage_cases)} usage simulations, "
         f"{len(capability_examples)} capability examples, "
         f"{rejected_mutations + example_mutations} rejected mutations, "
-        "internal-register bilingual scan)"
+        "internal-register + vietnamese ai-pattern bilingual scans)"
     )
     return 0
 

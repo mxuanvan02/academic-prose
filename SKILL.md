@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.4.0"
+  version: "3.5.0"
 ---
 
 # Academic Prose
@@ -149,6 +149,7 @@ Run [`scripts/process_logic_scan.py`](scripts/process_logic_scan.py) on every
 `draft`, `revise`, `translate`, and `audit` delivery. A hit is a candidate for
 the three-proposition test, never an automatic rewrite; a clean scan is a
 partial verification only. See [Process logic gate](references/process-logic-gate.md).
+partial verification only. See [Vietnamese AI-pattern gate](references/vi-ai-pattern-gate.md).
 
 ## Writing Workflow
 
@@ -263,6 +264,7 @@ Read these references as needed:
 - [Writing failure taxonomy](references/writing-failure-taxonomy.md)
 - [Internal register gate](references/internal-register-gate.md)
 - [Process logic gate](references/process-logic-gate.md)
+- [Vietnamese AI-pattern gate](references/vi-ai-pattern-gate.md)
 - [Skill repository maintenance](references/skill-repository-maintenance.md)
 - [Self-narration and config dump](references/self-narration-and-config-dump.md)
 - [Artifact register to scientific register](references/artifact-register-to-scientific-register.md)
