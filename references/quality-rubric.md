@@ -43,6 +43,29 @@ Any occurrence forces `revise` or `human_review`, regardless of average score:
 - `placeholder_residue`: a drafting token (`TODO`, `TBD`, `[…]`, `???`) survived delivery.
 - `internal_artifact_reference`: a local path, working filename, ticket, commit, or sheet column appears in publication-facing prose.
 
+- `uncertainty_omitted`: an estimate is presented with no interval and no statement that uncertainty is unquantified.
+- `denominator_mismatch`: figures drawn from different populations are presented as comparable.
+- `normal_approximation_misuse`: a normal critical value is used where the population standard deviation is unknown and the sample is small.
+- `precision_conflation`: interval width is presented as precision although coverage is not established.
+- `significance_without_magnitude`: a significance claim carries no effect size.
+- `pvalue_misinterpretation`: a p-value is described as the probability of a hypothesis or of chance.
+- `absence_as_equivalence`: a non-significant result is reported as no effect.
+- `exploratory_as_confirmatory`: a post-hoc comparison is presented as planned.
+- `multiplicity_unreported`: multiple comparisons appear without the total count or a declared correction policy.
+- `baseline_parity_unstated`: a comparative claim omits the baseline's data, tuning budget, and protocol.
+- `unbounded_superiority_claim`: uniform superiority is claimed with no failure-region analysis.
+- `best_run_as_result`: a maximum over runs is presented as the result.
+- `comparison_without_basis`: a comparative claim names no comparator.
+- `response_only_claim`: a revision letter argues something the revised manuscript does not contain.
+- `promissory_result`: a result or analysis is promised rather than reported.
+- `deference_capitulation`: a correct claim is weakened to agree with a reviewer, without evidence.
+- `comment_softening`: a reviewer's criticism is paraphrased, abridged, or reordered so that what was asked changes.
+- `fabricated_declaration`: authorship, ethics, funding, conflict, registration, or availability content is invented or inferred.
+- `availability_overstatement`: restricted, on-request, or unavailable data is described as available.
+- `responsibility_deflection`: a disclosure is phrased to transfer accountability for claims to a tool.
+- `coverletter_as_abstract`: a cover letter summarises the paper instead of arguing venue fit.
+- `contribution_count_inflation`: one contribution is presented as several by restating it at different granularities.
+
 `range_notation_corruption` and `required_move_deletion` are surface-rewriting
 traps: a style pass can destroy content without changing a proposition, because
 dashes carry quantitative meaning and genre-mandated moves carry scope.
@@ -53,6 +76,22 @@ the argument depends on.
 are register traps: the text is true and still unusable, because a reader of the
 published artifact cannot act on a conversation, a placeholder, or a path on the
 author's machine.
+
+The thirteen quantitative codes are **inference traps**: every one of them can
+occur in a sentence whose arithmetic is correct, because the defect is in what the
+number is claimed to establish rather than in its value. `uncertainty_omitted`,
+`denominator_mismatch`, and `baseline_parity_unstated` make a result
+unreviewable; the rest license a conclusion the evidence does not support.
+
+`response_only_claim`, `promissory_result`, `deference_capitulation`, and
+`comment_softening` are **peer-review traps**: the letter and the manuscript are
+separate artifacts, so a claim can be true of one and false of the other.
+
+`fabricated_declaration`, `availability_overstatement`,
+`responsibility_deflection`, `coverletter_as_abstract`, and
+`contribution_count_inflation` are **submission traps**: they are assertions only
+the authors and their institution can make, and a wrong one is a
+research-integrity matter rather than a writing defect.
 
 ## Decision
 
@@ -166,3 +205,52 @@ machine tells. Codes and the licensed list are defined in
 `VOICE` cannot score 4 while an unresolved candidate remains. `LANG` cannot
 score 4 while a calque stands. A scan reporting zero candidates is a partial
 verification: hedge deletion and terminology drift have no lexical signature.
+
+## Quantitative reporting gate
+
+Run on every deliverable containing a numeric claim, in either language. Codes are
+defined in [Quantitative reporting standard](quantitative-reporting-standard.md).
+
+1. Every reported estimate carries its denominator and an interval, or an explicit
+   statement that uncertainty is unquantified. Never invent an interval.
+2. Two figures placed adjacently share a denominator, or the populations are named.
+3. Small-sample intervals use the *t* distribution. A normal critical value
+   requires a known population standard deviation or a large sample.
+4. Every significance claim carries an effect size; every comparative claim names
+   its comparator and states baseline parity.
+5. Multiple comparisons declare their count and correction policy; post-hoc
+   comparisons are labelled exploratory.
+6. A superiority claim either bounds its scope or reports where the method fails.
+
+`SEM` cannot score 4 while any of these is unresolved. Supplying a missing number
+is the author's decision, never this skill's inference.
+
+## Revision-response gate
+
+Run on every response letter, cover letter, or rebuttal. Codes are defined in
+[Revision response genres](revision-response-genres.md).
+
+1. Every numbered reviewer comment has exactly one block, quoted verbatim, with an
+   accept / accept-in-part / decline verdict in its first clause.
+2. Every claimed change resolves to a location that exists in the revised
+   manuscript, and every substantive argument in the letter appears there too.
+3. No future-tense commitment stands in for an unrun analysis.
+4. Every accepted comment that weakens a claim was driven by evidence rather than
+   by deference.
+
+`SEM` and `LOGIC` cannot score 4 while a letter–manuscript divergence stands.
+
+## Submission declarations gate
+
+Run before any submission artifact is called ready. Codes are defined in
+[Submission integrity declarations](submission-integrity-declarations.md).
+
+1. No declaration field is completed by inference. Unknown values emit a visible
+   placeholder plus a named blocker, never a plausible value.
+2. Availability statements match what exists and what it contains.
+3. Generative-AI disclosure follows the target venue's own current policy,
+   retrieved from the venue; no tool is named as author or contributor.
+4. Contributions map one-to-one onto research questions and reported results.
+
+`SEM` cannot score 4 while an unsourced declaration stands, and the delivery
+message must list every blocker rather than presenting the artifact as complete.

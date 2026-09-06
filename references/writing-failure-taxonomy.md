@@ -44,6 +44,28 @@ transfer taxonomy.
 | `assistant_residue` | the drafting conversation is visible (`theo yêu cầu của anh`, *as requested*, *the assistant*) | delete; the published text has no addressee inside the production process |
 | `placeholder_residue` | a drafting token survived (`TODO`, `TBD`, `[…]`, `???`) | resolve or delete before delivery |
 | `revision_response_leak` | reviewer-letter register appears in the manuscript (`theo góp ý của phản biện`) | move it to the response letter; the manuscript states the resulting claim |
+| `uncertainty_omitted` | an estimate appears with no interval and no statement that uncertainty is unquantified | supply the interval from the analysis, or state that it is unquantified |
+| `denominator_mismatch` | counts from different populations are presented as comparable | name each population, or drop one figure |
+| `normal_approximation_misuse` | a normal critical value is used although the population SD is unknown and the sample small | use the t distribution with its degrees of freedom |
+| `precision_conflation` | a narrower interval is called more precise although coverage is not established | compare coverage, not width |
+| `significance_without_magnitude` | significance is claimed with no effect size | report the magnitude and whether it matters practically |
+| `pvalue_misinterpretation` | a p-value is described as the probability of a hypothesis or of chance | restate as the probability of data at least this extreme under the null |
+| `absence_as_equivalence` | a non-significant result is reported as no effect | report the interval and state that equivalence was not tested |
+| `exploratory_as_confirmatory` | a post-hoc comparison is presented as planned | label it exploratory and state when it was specified |
+| `multiplicity_unreported` | multiple comparisons appear without their count or a correction policy | report the total and the declared policy |
+| `baseline_parity_unstated` | a comparative claim omits the baseline's data, tuning budget, and protocol | state parity, or withdraw the comparison |
+| `unbounded_superiority_claim` | uniform superiority is claimed with no failure region | bound the scope or report where the method degrades |
+| `best_run_as_result` | a maximum over runs is presented as the result | report the distribution across seeds |
+| `comparison_without_basis` | a comparative adjective appears with no comparator | name the comparator or delete the comparison |
+| `response_only_claim` | the revision letter argues something the revised manuscript does not contain | add it to the manuscript or withdraw the claim |
+| `promissory_result` | a result or analysis is promised rather than reported | run and report it, or decline the request explicitly |
+| `deference_capitulation` | a correct claim is weakened to agree with a reviewer | restore the claim and explain the evidence |
+| `comment_softening` | a reviewer's criticism is paraphrased so that what was asked changes | quote the comment verbatim |
+| `fabricated_declaration` | authorship, ethics, funding, conflict, registration, or availability content is inferred | emit a visible placeholder naming the required author input |
+| `availability_overstatement` | restricted or unavailable data is described as available | state the actual access condition |
+| `responsibility_deflection` | a disclosure transfers accountability for claims to a tool | restore author responsibility |
+| `coverletter_as_abstract` | a cover letter summarises the paper instead of arguing venue fit | rewrite around scope, readership, and fit |
+| `contribution_count_inflation` | one contribution is restated at several granularities to raise the count | merge to the contributions a reviewer would count |
 
 `invented_sample_size`, `causal_overclaim`, `causal_claim`,
 `population_generalization`, `invented_citation`, `fabricated_constraint`,

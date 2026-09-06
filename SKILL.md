@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.5.2"
+  version: "3.6.0"
 ---
 
 # Academic Prose
@@ -279,6 +279,9 @@ Read these references as needed:
 - [Vietnamese AI pattern registry](references/ai-pattern-vietnamese.md)
 - [Cross-language transfer taxonomy](references/cross-language-transfer-taxonomy.md)
 - [Domain profiles](references/domain-profiles.md)
+- [Quantitative reporting standard](references/quantitative-reporting-standard.md)
+- [Revision response genres](references/revision-response-genres.md)
+- [Submission integrity declarations](references/submission-integrity-declarations.md)
 - [Quality rubric](references/quality-rubric.md)
 - [PDF Translate integration](references/pdf-translate-integration.md)
 
@@ -525,6 +528,42 @@ Structural checks that travel with it:
   section most needing their review. A silent 50% cut of an author's own words is
   not a formatting change.
 
+
+## Peer Review, Reporting, and Submission Artifacts
+
+Three genres decide whether Q1 work is accepted, and none of them is the
+manuscript. Each has its own contract because each can fail while the manuscript
+is sound.
+
+**Quantitative reporting.** A number's arithmetic being right does not make its
+claim licensed. Every estimate carries its denominator and an interval; small
+samples take the *t* distribution rather than the 1.96 reflex; significance
+claims carry effect sizes; comparative claims state baseline parity; superiority
+claims either bound their scope or report where the method fails. Thirteen
+blocking codes cover the inference traps, and every one of them can appear in a
+sentence whose figures are correct. See
+[Quantitative reporting standard](references/quantitative-reporting-standard.md).
+
+**Revision responses.** A response letter and its manuscript are separate
+artifacts, so a claim can be true of one and false of the other. Every reviewer
+comment gets exactly one block, quoted verbatim, with an accept /
+accept-in-part / decline verdict in its first clause; every claimed change
+resolves to a location that exists; no future-tense promise substitutes for an
+unrun analysis; and weakening a correct claim to agree with a reviewer is
+`deference_capitulation`, not diplomacy. See
+[Revision response genres](references/revision-response-genres.md).
+
+**Submission declarations.** Authorship, ethics approval, funding, conflicts,
+registration identifiers, availability statements, and generative-AI disclosure
+are assertions only the authors and their institution can make. Never draft,
+complete, or infer them: emit a visible placeholder naming the required input and
+report the blocker. A plausible invented ethics number is a research-integrity
+matter, not a writing defect. See
+[Submission integrity declarations](references/submission-integrity-declarations.md).
+
+These three gates are registered in
+[Quality rubric](references/quality-rubric.md) and their codes in
+[Writing failure taxonomy](references/writing-failure-taxonomy.md).
 
 ## Learning From Feedback
 
