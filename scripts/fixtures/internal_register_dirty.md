@@ -16,3 +16,5 @@ Chúng cũng không bảo đảm nhãn đã được chuyên gia thẩm định.
 Như đã đề cập ở trên, mô hình có sai lệch hệ thống.
 Mục này sẽ mô tả các hạn chế còn lại.
 Bản ghi được lưu ở cột "ghi_chu_noi_bo" của sheet đối soát.
+
+Thiết kế này được chọn nhằm thuyết phục phản biện của một tạp chí thuộc nhóm Q1.

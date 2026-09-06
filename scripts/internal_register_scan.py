@@ -21,7 +21,12 @@ from xml.etree import ElementTree as ET
 
 # --- classes -----------------------------------------------------------------
 
-BLOCKING = {"assistant_residue", "placeholder_residue", "internal_artifact_reference"}
+BLOCKING = {
+    "assistant_residue",
+    "placeholder_residue",
+    "internal_artifact_reference",
+    "venue_ambition_leak",
+}
 
 PATTERNS: dict[str, list[str]] = {
     "self_reminder_prose": [
@@ -94,6 +99,35 @@ PATTERNS: dict[str, list[str]] = {
         r"as\s+the\s+reviewer\s+(?:requested|suggested)",
         r"trong\s+bản\s+(?:sửa|hiệu\s+đính)\s+này,?\s+chúng\s+tôi\s+đã",
     ],
+    # Blocking: the submission strategy is a private matter between the authors
+    # and, at most, the editor. A manuscript that argues its own venue tier is
+    # asking the reader to accept prestige in place of evidence.
+    # Publication strategy: true of the project, never a finding about the world.
+    # Ranking vocabulary only fires when it qualifies a *venue*; `Q1-Q3`,
+    # `first quartile of severity`, `Q1 2023`, and a Scopus *search* are
+    # legitimate scientific prose and must stay silent.
+    "venue_ambition_leak": [
+        r"(?:thuộc\s+)?(?:nhóm|hạng)\s*Q[1-4]\b",
+        r"\bQ[1-4]\s*(?:journal|venue|tạp\s+chí)",
+        r"\b(?:journal|venue|tạp\s+chí)\b[^.;]{0,40}\bQ[1-4]\b",
+        r"\btạp\s+chí\s+(?:uy\s+tín|hàng\s+đầu|top|danh\s+giá)",
+        r"\b(?:top[-\s]?tier|high[-\s]?impact|prestigious|flagship)\s+(?:journal|venue|conference|publication|outlet)",
+        r"\bimpact\s+factor\s+(?:of\s+(?:the\s+)?)?(?:journal|venue)",
+        r"(?:journal|venue)[^.;]{0,30}\bimpact\s+factor\b",
+        r"\bchỉ\s+số\s+ảnh\s+hưởng\s+(?:của\s+)?tạp\s+chí",
+        r"\b(?:Scopus|Web\s+of\s+Science|WoS|ISI)[-\s]?(?:indexed\s+)?(?:journal|venue|tạp\s+chí)",
+        r"\b(?:aim|aims|aiming|intend|intends|plan|plans)\s+to\s+(?:publish|submit)",
+        r"\bmục\s+tiêu\s+(?:công\s+bố|nộp|đăng)",
+        r"\bđủ\s+điều\s+kiện\s+(?:công\s+bố|đăng|nộp)",
+        r"\b(?:submitted|submission)\s+to\s+(?:a\s+)?(?:top|high|Q[1-4])",
+        r"\breviewers?\s+(?:will|would|may|might)\s+(?:likely\s+)?(?:ask|expect|demand|require|object)",
+        r"\bto\s+satisfy\s+(?:the\s+)?reviewers?\b",
+        r"(?:để|nhằm|hòng)\s+(?:thuyết\s+phục|làm\s+hài\s+lòng|xoa\s+dịu|đáp\s+ứng)\s+(?:được\s+)?(?:người\s+)?(?:phản\s+biện|reviewer)",
+        r"\btránh\s+(?:bị\s+)?(?:từ\s+chối|loại)\s+(?:sớm|ngay|từ\s+vòng)",
+        r"\bdesk\s+reject",
+        r"\b(?:avoid|prevent)\s+(?:a\s+)?(?:rejection|desk\s+reject)",
+        r"\btránh\s+bị\s+(?:từ\s+chối|loại)\b",
+    ],
 }
 
 # Claim-denial markers only. A bare `chỉ` or `không` is ordinary Vietnamese; the
@@ -127,7 +161,20 @@ GENRE_LICENSED: dict[str, set[str]] = {
     "report": set(),
     "abstract": set(),
     "response_letter": {"revision_response_leak", "assistant_residue", "document_as_subject"},
-    "revision_notes": {"revision_response_leak", "assistant_residue", "document_as_subject"},
+    # The cover letter argues venue fit to the editor by design, and revision
+    # notes discuss the referees. Neither is publication-facing prose.
+    "cover_letter": {
+        "venue_ambition_leak",
+        "revision_response_leak",
+        "assistant_residue",
+        "document_as_subject",
+    },
+    "revision_notes": {
+        "revision_response_leak",
+        "assistant_residue",
+        "document_as_subject",
+        "venue_ambition_leak",
+    },
     "teaching": {"document_as_subject"},
     "slides": {"document_as_subject"},
     "speaker_notes": {"document_as_subject"},
@@ -147,6 +194,7 @@ THRESHOLDS = {
     "progress_state_limitation": 0,
     "verification_log_prose": 0,
     "revision_response_leak": 0,
+    "venue_ambition_leak": 0,
     "document_as_subject": 1,  # one roadmap per document
     "defensive_disclaimer_stack": 0,
 }

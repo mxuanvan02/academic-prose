@@ -69,6 +69,23 @@ check establishes and, separately, the property it does not.
   the author's machine.
 - **Keep those calibration cases as permanent tests.** They are the only thing
   preventing the same false positive from returning at the next pattern edit.
+- **A code name in an explanation paragraph cannot pin its blocking bullet.** This
+  is the heading-vs-link-text pitfall in a second guise. `assertIn("venue_ambition_leak",
+  rubric)` stayed green after the `- \`venue_ambition_leak\`: …` bullet was deleted,
+  because the same identifier still occurred in the paragraph that groups the code
+  with its trap family. Pin the bullet form — `assertIn("- `code`: ", rubric)` — and
+  mutate by deleting that exact line to confirm red. Every code the rubric declares
+  should be pinned this way; a name that appears twice can lose one occurrence
+  silently.
+- **A word-boundary omission produces a false positive that fixtures miss.** A
+  venue-tier pattern written as `(?:journal|venue)[^.;]{0,40}\bQ[1-4]\b` matched
+  *Re**venue** in Q1 of the observation window* — a fiscal quarter in a Results
+  section. The clean fixture caught it only because the fixture was written to
+  contain deliberately adjacent legitimate uses (interquartile range, first
+  quartile, fiscal Q1, Scopus in Methods, "the impact of"). When adding a lexical
+  class, write the clean fixture from the *near-miss vocabulary* first, then the
+  dirty one; a clean fixture that avoids the danger words tests nothing.
+
 
 - **A mutation harness must prove it mutated.** Three consecutive rounds reported
   "not caught" for assertions that were in fact sound: the harness substituted a
@@ -101,3 +118,23 @@ credentials and should be recognized as such rather than removed.
 
 Bump the version in the `SKILL.md` frontmatter, then reconcile the runtime copy so the
 two locations do not drift apart again.
+
+## 6. Publishing when the host CLI cannot see the repository
+
+`gh` installed as a snap is confined and cannot read a repository under a dotted
+directory such as `~/.hermes/skill_repos/`; it fails with `not a git repository`
+even from inside the worktree. Do not conclude the remote is misconfigured. Push
+over SSH as normal, then create and merge the pull request through the REST API
+with a token that carries repo scope:
+
+```text
+POST /repos/{owner}/{repo}/pulls          -> returns the PR number
+GET  /repos/{owner}/{repo}/commits/{sha}/check-runs   -> wait for conclusion
+PUT  /repos/{owner}/{repo}/pulls/{n}/merge
+```
+
+Read the token from the host's own credential store rather than echoing it, and
+never interpolate it into a shell string — a malformed assignment produced a
+syntax error that leaked the surrounding command into the log. Wait for the CI
+conclusion before merging; a `mergeable: clean` response says nothing about
+whether the checks passed.

@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.6.0"
+  version: "3.7.0"
 ---
 
 # Academic Prose
@@ -119,6 +119,40 @@ reader holding only the published artifact must be able to verify it. Four
 verdicts are licensed (`delete`, `recast`, `relocate`, `license`); **soften is
 forbidden**. Recast preserves the scope the internal sentence was carrying,
 or the repair becomes an overclaim.
+
+### Venue ambition is a separate register, not a strong claim
+
+The publication target — the venue, its tier, its indexing, the referee you expect —
+is a **planning decision between author and collaborator**, and it does not belong
+in the artifact a reader holds. This leak is not bookkeeping and not self-address:
+it is *strategy*, which is fluent and motivating, so ordinary editing preserves it.
+
+Code `venue_ambition_leak`, blocking. Three sub-types: venue tier used as an
+argument (*top-tier journal*, *tạp chí thuộc nhóm Q1*), stated intent to publish
+(*we aim to publish this in…*), and referee anticipation (*reviewers will likely
+ask for an ablation*, *nhằm thuyết phục phản biện*).
+
+Repair by **recasting to the scientific reason, never by deleting the substance**.
+An ablation added to preempt a referee is still an ablation the argument needs —
+say why the argument needs it. `we ablate each stage so reviewers cannot object`
+becomes `each stage is ablated to establish which components carry the result`.
+Softening is not a verdict: the strategy survives and the sentence becomes vague.
+
+Licensing is by **genre**, because the same sentence is required in one artifact
+and prohibited in another. A cover letter argues venue fit to the editor by
+design; revision notes discuss the referees by design. Both are licensed. A
+manuscript, thesis, report, or abstract is not. Run
+[`scripts/internal_register_scan.py`](scripts/internal_register_scan.py) with
+`--genre` set to what the artifact actually is; a cover letter that scores clean
+as a cover letter and blocks as a manuscript is the gate working.
+
+Calibration matters here more than elsewhere, because `Q1`, `quartile`, `impact`,
+`Scopus`, and `venue` all occur in correct scientific prose — an interquartile
+range, a fiscal quarter, a database named in Methods, `Revenue` containing the
+substring `venue`. Every pattern therefore requires co-occurrence with a
+publication-target term and is word-boundaried. A bare tier token is not evidence;
+the claim must be *about* the venue. See
+[Internal register gate](references/internal-register-gate.md) section 11.
 
 Run the gate on every `draft`, `develop`, `revise`, `humanize`, `audit`, and
 `translate` delivery. One confirmed hit requires a whole-document sweep of both
