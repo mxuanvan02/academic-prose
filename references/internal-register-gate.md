@@ -352,6 +352,12 @@ class is licensed by genre rather than by wording:
 | `cover_letter` | licensed | arguing venue fit to the editor is the genre's function |
 | `revision_notes` | licensed | discussing the referees is the genre's function |
 
+The genre must be **declared before the scan runs**, never inferred from the prose.
+A scanner that guesses will either destroy a valid cover letter — whose entire
+function is arguing venue fit — or pass a manuscript that leaks the submission
+plan. Declaration is the author's decision and the one input this class cannot
+derive.
+
 A cover letter that scores clean as a cover letter and blocks as a manuscript is
 the gate working correctly, not an inconsistency. Run the scan with the genre the
 artifact actually is.
