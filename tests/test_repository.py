@@ -38,6 +38,9 @@ class RepositoryContractTests(unittest.TestCase):
             "references/skill-repository-maintenance.md",
             "references/self-narration-and-config-dump.md",
             "references/artifact-register-to-scientific-register.md",
+            "references/quantitative-reporting-standard.md",
+            "references/revision-response-genres.md",
+            "references/submission-integrity-declarations.md",
             "schemas/audit-record.schema.json",
             "schemas/glossary-entry.schema.json",
             "schemas/claim-ledger.schema.json",
@@ -84,6 +87,77 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("humanize", frontmatter.lower())
         self.assertIn("English-to-Vietnamese", frontmatter)
         self.assertIn("Vietnamese-to-English", frontmatter)
+
+    def test_q1_submission_gates_are_registered(self) -> None:
+        """Every code the three Q1 genre files introduce must be enforceable.
+
+        A reference document that declares a blocking failure the rubric does not
+        list, or that the taxonomy cannot explain, is a proposed control rather
+        than an implemented one. Pin the heading form as well as the code: the
+        bare words also occur inside prose links, so a code name alone cannot
+        prove its section survived.
+        """
+        rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")
+        taxonomy = (ROOT / "references/writing-failure-taxonomy.md").read_text(encoding="utf-8")
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        for heading in (
+            "## Quantitative reporting gate",
+            "## Revision-response gate",
+            "## Submission declarations gate",
+        ):
+            with self.subTest(heading=heading):
+                self.assertIn(heading, rubric)
+
+        quantitative = (
+            "uncertainty_omitted",
+            "denominator_mismatch",
+            "normal_approximation_misuse",
+            "precision_conflation",
+            "significance_without_magnitude",
+            "pvalue_misinterpretation",
+            "absence_as_equivalence",
+            "exploratory_as_confirmatory",
+            "multiplicity_unreported",
+            "baseline_parity_unstated",
+            "unbounded_superiority_claim",
+            "best_run_as_result",
+            "comparison_without_basis",
+        )
+        revision = (
+            "response_only_claim",
+            "promissory_result",
+            "deference_capitulation",
+            "comment_softening",
+        )
+        declaration = (
+            "fabricated_declaration",
+            "availability_overstatement",
+            "responsibility_deflection",
+            "coverletter_as_abstract",
+            "contribution_count_inflation",
+        )
+        for code in quantitative + revision + declaration:
+            with self.subTest(code=code):
+                self.assertIn(code, rubric, f"{code} missing from quality-rubric.md")
+                self.assertIn(f"`{code}`", taxonomy, f"{code} missing from the failure taxonomy")
+
+        for reference in (
+            "references/quantitative-reporting-standard.md",
+            "references/revision-response-genres.md",
+            "references/submission-integrity-declarations.md",
+        ):
+            with self.subTest(reference=reference):
+                self.assertTrue((ROOT / reference).is_file())
+                self.assertIn(reference, skill, f"{reference} is unreachable from SKILL.md")
+
+        # Each new reference must own its blocking declarations rather than
+        # duplicating another file's section: overlapping ownership is how a
+        # later edit silently drops a gate from one of the two copies.
+        response = (ROOT / "references/revision-response-genres.md").read_text(encoding="utf-8")
+        declarations = (ROOT / "references/submission-integrity-declarations.md").read_text(encoding="utf-8")
+        self.assertNotIn("### Generative-AI disclosure", response)
+        self.assertIn("## Generative-AI use disclosure", declarations)
 
     def test_rubric_declares_seven_dimensions_and_blocking_failures(self) -> None:
         rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")
