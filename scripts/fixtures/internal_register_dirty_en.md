@@ -13,3 +13,5 @@ As requested, TODO will be completed.
 As the reviewer requested, we added Table 3.
 
 The results only establish X. They do not prove Y. They cannot guarantee Z.
+
+This design was chosen to satisfy reviewers at a top-tier journal.

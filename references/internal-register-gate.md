@@ -309,3 +309,65 @@ self-address and config-dump substitution tables,
 [Artifact register to scientific register](artifact-register-to-scientific-register.md)
 for the eight-site defect table and the future-work rewrite pattern, and the
 internal register gate in [Quality rubric](quality-rubric.md).
+
+## 11. Venue ambition and referee anticipation
+
+The publication target is a **planning decision between the authors**, not a
+property of the object of study. A manuscript that argues from its own submission
+strategy has changed subject: the reader wanted to know what is true, and was told
+where the authors hope to publish.
+
+This class is separate from the rest of the gate because the sentences are not
+bookkeeping and not self-address. They are *strategy*, and strategy is fluent,
+confident, and reads as motivation — which is why it survives ordinary editing.
+
+Three sub-types, one code `venue_ambition_leak`:
+
+| Sub-type | Example | Why it fails |
+| --- | --- | --- |
+| Venue tier as argument | *this contribution is suitable for a top-tier journal*, *tạp chí thuộc nhóm Q1* | prestige is not evidence; the claim's strength does not depend on where it appears |
+| Stated intent to publish | *we aim to publish this in…*, *nhằm công bố trên…* | an intention is not a finding, and it dates the artifact |
+| Referee anticipation | *reviewers will likely ask for an ablation*, *nhằm thuyết phục phản biện* | the ablation is either warranted by the argument or it is not; the referee is not a premise |
+
+The repair is **recast to the scientific reason, never delete the substance**.
+An ablation added to preempt a referee is still an ablation the argument needs;
+state why the argument needs it. Deleting the sentence loses a real
+methodological justification, and softening it (*it may be useful to consider…*)
+leaves the strategy in place and adds vagueness.
+
+| Wrong register | Scientific register |
+| --- | --- |
+| we ablate each stage so reviewers cannot object | each stage is ablated to establish which components carry the result |
+| three datasets, since a top journal expects breadth | three datasets bound whether the estimate is collection-specific |
+| nhằm thuyết phục phản biện, chúng tôi bổ sung kiểm định | kiểm định này xác định liệu khác biệt có vượt biến thiên giữa các lần chạy |
+
+### Genre licensing is the whole point
+
+The same sentence is a defect in one artifact and required in another, so this
+class is licensed by genre rather than by wording:
+
+| Genre | `venue_ambition_leak` | Reason |
+| --- | --- | --- |
+| `manuscript`, `thesis`, `report`, `abstract` | **blocking** | publication-facing; the reader holds only this artifact |
+| `cover_letter` | licensed | arguing venue fit to the editor is the genre's function |
+| `revision_notes` | licensed | discussing the referees is the genre's function |
+
+A cover letter that scores clean as a cover letter and blocks as a manuscript is
+the gate working correctly, not an inconsistency. Run the scan with the genre the
+artifact actually is.
+
+### Calibration: what must not fire
+
+`Q1`, `quartile`, `impact`, `Scopus`, and `venue` all occur in legitimate
+scientific prose, so every pattern requires co-occurrence with a
+publication-target term:
+
+- *the interquartile range is 0.12* — a statistic;
+- *the first quartile falls at 0.79* — a statistic;
+- *Revenue in Q1 of the observation window* — a fiscal quarter, and the substring
+  `venue` inside `Revenue` is why every pattern here is word-boundaried;
+- *records were retrieved from Scopus and Web of Science* — a database, correctly
+  reported in Methods;
+- *the impact of annotator disagreement* — a causal noun, not a metric.
+
+A bare tier token is not evidence of a leak. The claim must be *about* the venue.

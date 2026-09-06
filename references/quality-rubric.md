@@ -65,6 +65,7 @@ Any occurrence forces `revise` or `human_review`, regardless of average score:
 - `responsibility_deflection`: a disclosure is phrased to transfer accountability for claims to a tool.
 - `coverletter_as_abstract`: a cover letter summarises the paper instead of arguing venue fit.
 - `contribution_count_inflation`: one contribution is presented as several by restating it at different granularities.
+- `venue_ambition_leak`: the publication target, venue tier, or an anticipated referee reaction is argued inside publication-facing prose.
 
 `range_notation_corruption` and `required_move_deletion` are surface-rewriting
 traps: a style pass can destroy content without changing a proposition, because
@@ -86,6 +87,11 @@ unreviewable; the rest license a conclusion the evidence does not support.
 `response_only_claim`, `promissory_result`, `deference_capitulation`, and
 `comment_softening` are **peer-review traps**: the letter and the manuscript are
 separate artifacts, so a claim can be true of one and false of the other.
+
+`venue_ambition_leak` is a **strategy trap**: the sentence is fluent and
+motivating, so ordinary editing preserves it. It is licensed in a cover
+letter and blocking in a manuscript, which makes the genre argument part of
+the check rather than a footnote to it.
 
 `fabricated_declaration`, `availability_overstatement`,
 `responsibility_deflection`, `coverletter_as_abstract`, and
@@ -205,6 +211,25 @@ machine tells. Codes and the licensed list are defined in
 `VOICE` cannot score 4 while an unresolved candidate remains. `LANG` cannot
 score 4 while a calque stands. A scan reporting zero candidates is a partial
 verification: hedge deletion and terminology drift have no lexical signature.
+
+## Venue-ambition gate
+
+Run on every publication-facing deliverable, declaring the genre the artifact
+actually is. Codes and the licensing table are in
+[Internal register gate](internal-register-gate.md) section 11.
+
+1. No sentence argues from venue tier, prestige, or an indexing metric.
+2. No sentence states an intention to publish or submit.
+3. No sentence names an anticipated referee reaction as the reason for a
+   methodological choice.
+4. Every hit is recast to the scientific reason. `delete` is permitted only
+   when no methodological justification is being carried; `soften` is not a
+   verdict.
+5. The scan was run with the correct genre. A cover letter scanned as a
+   manuscript reports findings the genre licenses.
+
+`SEM` cannot score 4 while a leak stands, because the paper is asserting a
+reason the evidence does not contain.
 
 ## Quantitative reporting gate
 

@@ -43,6 +43,7 @@ transfer taxonomy.
 | `repo_artifact_reference` | a repository script or data filename appears in body prose outside a data or reproducibility statement | state what the step does; move the filename into the reproducibility statement, where it is a legitimate public identifier |
 | `assistant_residue` | the drafting conversation is visible (`theo yêu cầu của anh`, *as requested*, *the assistant*) | delete; the published text has no addressee inside the production process |
 | `placeholder_residue` | a drafting token survived (`TODO`, `TBD`, `[…]`, `???`) | resolve or delete before delivery |
+| `venue_ambition_leak` | the publication target, venue tier, indexing metric, or an anticipated referee reaction is argued inside publication-facing prose (*top-tier journal*, *nhóm Q1*, *reviewers will ask*) | recast to the scientific reason the choice serves; licensed only in a cover letter or revision notes |
 | `revision_response_leak` | reviewer-letter register appears in the manuscript (`theo góp ý của phản biện`) | move it to the response letter; the manuscript states the resulting claim |
 | `uncertainty_omitted` | an estimate appears with no interval and no statement that uncertainty is unquantified | supply the interval from the analysis, or state that it is unquantified |
 | `denominator_mismatch` | counts from different populations are presented as comparable | name each population, or drop one figure |

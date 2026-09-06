@@ -105,6 +105,7 @@ class RepositoryContractTests(unittest.TestCase):
             "## Quantitative reporting gate",
             "## Revision-response gate",
             "## Submission declarations gate",
+            "## Venue-ambition gate",
         ):
             with self.subTest(heading=heading):
                 self.assertIn(heading, rubric)
@@ -137,9 +138,23 @@ class RepositoryContractTests(unittest.TestCase):
             "coverletter_as_abstract",
             "contribution_count_inflation",
         )
-        for code in quantitative + revision + declaration:
+        # The publication target is the clearest case of a Hermes-and-author
+        # decision that must never reach a reader, so its code is pinned in the
+        # repository contract as well as in the scanner suite. A scanner-only
+        # pin let the rubric entry be deleted without any test going red.
+        venue = ("venue_ambition_leak",)
+        for code in quantitative + revision + declaration + venue:
             with self.subTest(code=code):
-                self.assertIn(code, rubric, f"{code} missing from quality-rubric.md")
+                # Pin the bullet form, not the bare name. Every code is also
+                # named in the rubric's explanatory prose, so `assertIn(code)`
+                # stays green after the blocking bullet itself is deleted --
+                # the same defect this repository already recorded for
+                # heading-shaped assertions.
+                self.assertIn(
+                    f"- `{code}`:",
+                    rubric,
+                    f"{code} has no blocking bullet in quality-rubric.md",
+                )
                 self.assertIn(f"`{code}`", taxonomy, f"{code} missing from the failure taxonomy")
 
         for reference in (
