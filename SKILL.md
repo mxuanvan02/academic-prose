@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.5.1"
+  version: "3.5.2"
 ---
 
 # Academic Prose
@@ -149,7 +149,14 @@ Run [`scripts/process_logic_scan.py`](scripts/process_logic_scan.py) on every
 `draft`, `revise`, `translate`, and `audit` delivery. A hit is a candidate for
 the three-proposition test, never an automatic rewrite; a clean scan is a
 partial verification only. See [Process logic gate](references/process-logic-gate.md).
-partial verification only. See [Vietnamese AI-pattern gate](references/vi-ai-pattern-gate.md).
+
+For Vietnamese deliveries, also run
+[`scripts/vi_ai_pattern_scan.py`](scripts/vi_ai_pattern_scan.py) on every
+`draft`, `revise`, `translate`, `humanize`, and `audit` delivery. The same rule
+holds: a hit is a candidate for the taxonomy verdict in
+[AI pattern taxonomy](references/ai-pattern-taxonomy.md), never an automatic
+rewrite, and a clean scan is a partial verification only. See
+[Vietnamese AI-pattern gate](references/vi-ai-pattern-gate.md).
 
 ## Writing Workflow
 
