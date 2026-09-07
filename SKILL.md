@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.7.0"
+  version: "3.8.0"
 ---
 
 # Academic Prose
@@ -314,6 +314,7 @@ Read these references as needed:
 - [Cross-language transfer taxonomy](references/cross-language-transfer-taxonomy.md)
 - [Domain profiles](references/domain-profiles.md)
 - [Quantitative reporting standard](references/quantitative-reporting-standard.md)
+- [Reviewer recomputation gate](references/reviewer-recomputation-gate.md)
 - [Revision response genres](references/revision-response-genres.md)
 - [Submission integrity declarations](references/submission-integrity-declarations.md)
 - [Quality rubric](references/quality-rubric.md)
@@ -562,6 +563,41 @@ Structural checks that travel with it:
   section most needing their review. A silent 50% cut of an author's own words is
   not a formatting change.
 
+
+## Auditing Someone Else's Numbers
+
+An audit that recomputes an author's quantity introduces a second source of
+error: **the audit's own unstated inputs**. The failure is asymmetric and it
+survives any amount of re-reading, because re-reading examines the document while
+the defect lives in the auditor's assumptions.
+
+Classify every recomputed quantity before writing it:
+
+- **`CLOSED`** — every input is printed in the audited document, or is a
+  universal constant. A count against a stated denominator, an interval derived
+  from that count, a value compared against a range the document itself prints.
+  A `CLOSED` disagreement is evidence.
+- **`OPEN`** — at least one input comes from an external parameter table,
+  convention, or software default the document never states: an atomic-radius or
+  electronegativity table, a rounding convention, a library default, a unit
+  choice. An `OPEN` recomputation yields **one member of a family of defensible
+  values**, so a disagreement is not evidence of author error.
+
+The repair for an `OPEN` disagreement is never "the author's number is wrong". It
+is a request for the unstated parameter source, with an explicit statement that
+the audit asserts no competing value. Where the convention space is small, sweep
+it and report the range: if the author's value is reachable inside it, withdraw
+the finding rather than softening it.
+
+Codes `open_input_recomputation` and `gather_only_verification`, both blocking.
+The second is a **process** defect: a multi-pass audit whose every pass examines
+the document cannot detect an error in its own assumptions, so the pass count is
+not evidence of rigour. At least one pass must vary the audit's own inputs and
+attempt to construct the reading under which the author is correct.
+
+See [Reviewer recomputation gate](references/reviewer-recomputation-gate.md) for
+the classification procedure, the sweep protocol, the falsification pass, and the
+worked case where a swept convention withdrew a finding.
 
 ## Peer Review, Reporting, and Submission Artifacts
 

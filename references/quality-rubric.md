@@ -66,6 +66,8 @@ Any occurrence forces `revise` or `human_review`, regardless of average score:
 - `coverletter_as_abstract`: a cover letter summarises the paper instead of arguing venue fit.
 - `contribution_count_inflation`: one contribution is presented as several by restating it at different granularities.
 - `venue_ambition_leak`: the publication target, venue tier, or an anticipated referee reaction is argued inside publication-facing prose.
+- `open_input_recomputation`: an audit reports a recomputed quantity as the document's error although the recomputation depends on a parameter table, convention, or default the document never states.
+- `gather_only_verification`: every pass of a multi-pass audit examines the audited document, so no pass could falsify the auditor's own assumptions, and the pass count is offered as evidence of rigour.
 
 `range_notation_corruption` and `required_move_deletion` are surface-rewriting
 traps: a style pass can destroy content without changing a proposition, because
@@ -279,3 +281,29 @@ Run before any submission artifact is called ready. Codes are defined in
 
 `SEM` cannot score 4 while an unsourced declaration stands, and the delivery
 message must list every blocker rather than presenting the artifact as complete.
+
+## Reviewer recomputation gate
+
+Run whenever a deliverable reports a number the audited document did not print —
+a peer review, an evidence reconciliation, a reproduction attempt, or any audit
+that recomputes an author's quantity. Each check maps to a code in
+[Reviewer recomputation gate](reviewer-recomputation-gate.md).
+
+1. Every recomputed quantity is classified `CLOSED` or `OPEN` before it is
+   written. `CLOSED` means every input is printed in the audited document or is a
+   universal constant; `OPEN` means at least one input comes from an external
+   parameter table, convention, or software default the document never states.
+2. No `OPEN` recomputation is reported as the document's error. An `OPEN`
+   disagreement becomes a request for the unstated parameter source, and the
+   audit states that it asserts no competing value.
+3. Every `OPEN` quantity was swept across the plausible conventions, and the
+   sweep range is reported. If the document's value is reachable inside that
+   range, the finding is withdrawn.
+4. At least one audit pass varied the audit's own assumptions rather than
+   examining the document again, and the report names which pass did so.
+5. For every finding that the author erred, the audit attempted and reported the
+   strongest reading under which the author is correct.
+
+`SEM` cannot score 4 while an `OPEN` recomputation is presented as an author
+error, and `LOGIC` cannot score 4 while every pass of a multi-pass audit is
+document-directed.

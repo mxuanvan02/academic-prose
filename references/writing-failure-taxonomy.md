@@ -67,6 +67,8 @@ transfer taxonomy.
 | `responsibility_deflection` | a disclosure transfers accountability for claims to a tool | restore author responsibility |
 | `coverletter_as_abstract` | a cover letter summarises the paper instead of arguing venue fit | rewrite around scope, readership, and fit |
 | `contribution_count_inflation` | one contribution is restated at several granularities to raise the count | merge to the contributions a reviewer would count |
+| `open_input_recomputation` | an audit recomputes a quantity using an external parameter table, convention, or default the audited document never states, then reports the difference as the document's error | sweep the plausible conventions; if the document's value is reachable in that range, downgrade to a request for the unstated parameter source and assert no competing value |
+| `gather_only_verification` | a multi-pass audit consists entirely of passes that examine the document, so no pass could detect an error in the auditor's own assumptions, yet the pass count is offered as evidence of rigour | run at least one pass that varies the audit's own assumptions and attempts to construct the reading under which the author is correct; report which pass did so |
 
 `invented_sample_size`, `causal_overclaim`, `causal_claim`,
 `population_generalization`, `invented_citation`, `fabricated_constraint`,
