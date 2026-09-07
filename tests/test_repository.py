@@ -39,6 +39,7 @@ class RepositoryContractTests(unittest.TestCase):
             "references/self-narration-and-config-dump.md",
             "references/artifact-register-to-scientific-register.md",
             "references/quantitative-reporting-standard.md",
+            "references/reviewer-recomputation-gate.md",
             "references/revision-response-genres.md",
             "references/submission-integrity-declarations.md",
             "schemas/audit-record.schema.json",
@@ -173,6 +174,57 @@ class RepositoryContractTests(unittest.TestCase):
         declarations = (ROOT / "references/submission-integrity-declarations.md").read_text(encoding="utf-8")
         self.assertNotIn("### Generative-AI disclosure", response)
         self.assertIn("## Generative-AI use disclosure", declarations)
+
+    def test_reviewer_recomputation_gate_is_registered(self) -> None:
+        """The auditor's own arithmetic is a claim and needs the same gate.
+
+        Every other gate here inspects the audited document. This one inspects
+        the audit: a recomputation that silently depends on a parameter table
+        the document never states is not evidence of the author's error, and a
+        pass count made only of document-reading passes cannot detect it. Both
+        codes are pinned in bullet form for the reason recorded above -- the
+        bare names also occur in explanatory prose.
+        """
+        rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")
+        taxonomy = (ROOT / "references/writing-failure-taxonomy.md").read_text(encoding="utf-8")
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        reference = ROOT / "references/reviewer-recomputation-gate.md"
+
+        self.assertIn("## Reviewer recomputation gate", rubric)
+        self.assertTrue(reference.is_file())
+        self.assertIn(
+            "references/reviewer-recomputation-gate.md",
+            skill,
+            "the reviewer recomputation gate is unreachable from SKILL.md",
+        )
+
+        for code in ("open_input_recomputation", "gather_only_verification"):
+            with self.subTest(code=code):
+                self.assertIn(
+                    f"- `{code}`:",
+                    rubric,
+                    f"{code} has no blocking bullet in quality-rubric.md",
+                )
+                self.assertIn(
+                    f"`{code}`",
+                    taxonomy,
+                    f"{code} missing from the failure taxonomy",
+                )
+
+        # The gate is worthless without its decision procedure: a CLOSED /
+        # OPEN classification of every recomputed quantity, and a named
+        # falsification pass. Pin both so a later edit cannot reduce the file
+        # to a description of the failure it is supposed to prevent.
+        body = reference.read_text(encoding="utf-8")
+        for construct in (
+            "## 1. Every recomputation is CLOSED or OPEN",
+            "## 4. Gathering is not falsification",
+            "## 5. Audit procedure",
+            "GATHER",
+            "FALSIFY",
+        ):
+            with self.subTest(construct=construct):
+                self.assertIn(construct, body)
 
     def test_rubric_declares_seven_dimensions_and_blocking_failures(self) -> None:
         rubric = (ROOT / "references/quality-rubric.md").read_text(encoding="utf-8")

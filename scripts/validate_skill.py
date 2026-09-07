@@ -35,6 +35,7 @@ REQUIRED = (
     "references/self-narration-and-config-dump.md",
     "references/artifact-register-to-scientific-register.md",
     "references/quantitative-reporting-standard.md",
+    "references/reviewer-recomputation-gate.md",
     "references/revision-response-genres.md",
     "references/submission-integrity-declarations.md",
     "schemas/audit-record.schema.json",
