@@ -14,7 +14,12 @@ import argparse
 import json
 import re
 import sys
+import zipfile
 from pathlib import Path
+
+from defusedxml import ElementTree as ET
+
+from ooxml_text import read_text
 
 # A state asserted to precede something the sentence may or may not name.
 PRIOR_STATE = re.compile(
@@ -201,8 +206,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args(argv)
     try:
-        result = scan(args.input.read_text(encoding="utf-8"))
-    except OSError as exc:
+        result = scan(read_text(args.input))
+    except (OSError, KeyError, UnicodeError, zipfile.BadZipFile, ET.ParseError) as exc:
         print(f"input error: {exc}", file=sys.stderr)
         return 3
     if args.json_path:

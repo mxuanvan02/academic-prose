@@ -8,10 +8,12 @@ Run: python3 scripts/test_internal_register_scan.py
 """
 from __future__ import annotations
 
+import tempfile
 import unittest
 from pathlib import Path
 
 from internal_register_scan import BLOCKING, THRESHOLDS, read_input, scan, split_sections, strip_protected
+from test_ooxml_text import minimal_docx
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -132,6 +134,66 @@ class TestFalsePositives(unittest.TestCase):
             "Dữ liệu công bố tại https://doi.org/10.1234/example và bộ SQuAD được dùng để đối chiếu."
         )
         self.assertNotIn("internal_artifact_reference", classes(r))
+
+    def test_public_repository_commit_in_reproducibility_section_is_licensed(self) -> None:
+        r = scan(
+            "# Khả năng tái lập\n\n"
+            "Mã nguồn tại https://github.com/example/legalqa được cố định ở commit abc1234."
+        )
+        commits = [
+            finding for finding in r["findings"]
+            if finding["class"] == "internal_artifact_reference"
+        ]
+        self.assertEqual(len(commits), 1)
+        self.assertTrue(commits[0]["licensable"])
+        self.assertEqual(r["exit_code"], 0)
+
+    def test_docx_data_and_code_label_licenses_public_repository_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "fixture.docx"
+            minimal_docx(
+                path,
+                [
+                    (
+                        "Mã nguồn và dữ liệu. Mã nguồn tại "
+                        "https://github.com/example/legalqa được cố định ở commit abc1234.",
+                        None,
+                        False,
+                    )
+                ],
+            )
+            r = scan(read_input(path))
+        commits = [
+            finding for finding in r["findings"]
+            if finding["class"] == "internal_artifact_reference"
+        ]
+        self.assertEqual(len(commits), 1)
+        self.assertTrue(commits[0]["licensable"])
+        self.assertEqual(r["exit_code"], 0)
+
+    def test_independent_validation_limit_is_scientific_not_progress_state(self) -> None:
+        vi = scan("Nhãn Bloom được gán tự động và chưa được thẩm định độc lập.")
+        en = scan("The automatically assigned Bloom labels have not yet been independently validated.")
+        self.assertNotIn("progress_state_limitation", classes(vi))
+        self.assertNotIn("progress_state_limitation", classes(en))
+
+    def test_bare_commit_outside_reproducibility_section_still_blocks(self) -> None:
+        r = scan("Kết quả được tạo từ commit abc1234.")
+        self.assertIn("internal_artifact_reference", actionable_classes(r))
+        self.assertEqual(r["exit_code"], 1)
+
+    def test_commit_without_public_repository_still_blocks(self) -> None:
+        r = scan("# Khả năng tái lập\n\nPhiên bản phân tích là commit abc1234.")
+        self.assertIn("internal_artifact_reference", actionable_classes(r))
+        self.assertEqual(r["exit_code"], 1)
+
+    def test_local_path_is_not_licensed_by_public_repository_context(self) -> None:
+        r = scan(
+            "# Khả năng tái lập\n\n"
+            "Kho https://github.com/example/legalqa được sao chép từ /home/van/legalqa."
+        )
+        self.assertIn("internal_artifact_reference", actionable_classes(r))
+        self.assertEqual(r["exit_code"], 1)
 
     def test_vietnamese_first_person_in_methods_is_allowed(self) -> None:
         r = scan("Chúng tôi lấy mẫu 500 bản ghi theo phương pháp phân tầng.")

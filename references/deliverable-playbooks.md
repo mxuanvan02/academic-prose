@@ -47,6 +47,19 @@ practice -> independent application -> synthesis. Distinguish established
 knowledge, interpretation, example, and simplification. A pedagogical
 simplification must remain accurate within its stated scope.
 
+For Vietnamese projected teaching slides, apply academic and pedagogical prose at
+the level of every label, phrase, sentence, worked calculation, and speaker note.
+The visible teaching body explains knowledge; it is not a worksheet or a sequence
+of rhetorical prompts. Put questions in the final practice/application block
+unless a specific classroom activity requires an earlier prompt. Delete slogans,
+production commentary, redundant evaluation phrases, and labels that merely
+announce a category already evident from the subtitle or visual. Prefer the plain
+heading `Ví dụ`; identify AI, IoT, mathematics, or physics through the explanatory
+subtitle and content. A topical example must clarify the current concept at the
+learner's level and must not expand into an unrelated specialist mini-lecture.
+Use complete, idiomatic Vietnamese where a fragment would be ambiguous, but keep
+on-slide language concise and move oral elaboration to speaker notes.
+
 For a đề cương, align outcomes, content, learning activities, and assessment.
 Use observable verbs only when the intended learner performance is actually
 assessed. Do not claim that an activity develops or measures a competence

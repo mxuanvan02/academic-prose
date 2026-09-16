@@ -37,6 +37,14 @@ Preserve the source's epistemic force:
 
 Use precise contemporary Vietnamese. Formality does not require archaic wording, excessive Sino-Vietnamese vocabulary, long nominal chains, or pervasive passive voice. Avoid promotional adjectives (`đột phá`, `vượt trội`) unless they are explicitly attributed and evidenced.
 
+### Avoid label-driven prose
+
+Do not turn ordinary argument into a sequence of labels followed by colons, such as `Hướng thứ nhất: ...`, `Giới hạn: ...`, `Câu hỏi nghiên cứu: ...`, or bold lead-ins of the form `**Thứ nhất, ...:**`. State the proposition directly and connect it to the surrounding argument in complete sentences. Likewise, do not compress several substantive points or answer options into an `A–B–C–D` chain separated by semicolons when natural sentences, a table, or a genuine list would be clearer.
+
+This rule concerns prose, not required document structure. Preserve venue-mandated labels such as `Tóm tắt:`, `Từ khóa:`, `Abstract:`, and `Keywords:`, exact titles and quotations, bibliographic punctuation, table syntax, and colons that introduce material naturally. During revision, audit author-written body prose separately from these protected zones; do not alter required labels or source titles merely to make a pattern scan return zero.
+
+When a user rejects label-driven writing, sweep the whole document rather than fixing only the cited sentence. Check headings, overview paragraphs, methods, examples, recommendations, conclusion, and both language versions. Preserve the claim, citation anchor, qualification, and logical relationship while changing only the realization.
+
 ## Publication-Facing Abstraction
 
 In publication-facing prose, express the research object, procedure, and data

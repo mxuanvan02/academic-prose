@@ -89,9 +89,12 @@ và điều kiện áp dụng: [`references/capability-matrix.md`](references/ca
 
 ## Cổng chất lượng
 
-Sản phẩm được đánh giá trên sáu chiều theo thang 0-5: `SEM` toàn vẹn tuyên bố và
+Sản phẩm được đánh giá trên bảy chiều theo thang 0-5: `SEM` toàn vẹn tuyên bố và
 bằng chứng, `TERM` thuật ngữ, `STANCE` lập trường khoa học, `LOGIC` lập luận,
-`LANG` độ tự nhiên của ngôn ngữ đích, `CONS` tính nhất quán.
+`LANG` độ tự nhiên của ngôn ngữ đích, `VOICE` mức độ không còn dấu vết máy móc,
+và `CONS` tính nhất quán. Cổng diễn ngôn cấp đoạn bổ sung thẩm định thủ công cho
+đoạn xoay quanh phần việc còn thiếu, dồn caveat, danh sách nhiệm vụ nghiên cứu và
+câu quá tải mệnh đề; các ngưỡng chỉ tạo ứng viên, không tự kết luận chất lượng.
 
 Quyết định `pass` yêu cầu mọi chiều đạt ít nhất 4/5 và không có lỗi chặn. Điểm
 trung bình cao không bù được lỗi đảo nghĩa, mất phủ định, nâng tương quan thành
@@ -122,6 +125,7 @@ academic-prose/
 python3 scripts/validate_skill.py                  # cổng kiểm định đầy đủ
 python3 -m unittest discover -s tests -v           # kiểm thử kho mã
 python3 scripts/test_internal_register_scan.py     # cổng văn phong nội bộ, song ngữ
+python3 scripts/test_academic_discourse_scan.py    # cổng diễn ngôn cấp đoạn, song ngữ + DOCX
 python3 scripts/run_usage_simulations.py           # riêng mô phỏng usage
 python3 scripts/run_capability_examples.py         # riêng ví dụ năng lực
 ```

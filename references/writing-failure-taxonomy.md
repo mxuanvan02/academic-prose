@@ -23,6 +23,10 @@ transfer taxonomy.
 | `operational_log_prose` | internal build, audit, or QA bookkeeping is written as manuscript content: intermediate candidate tallies, file/column states, checklist confirmations, artifact names, reconciliation notes | keep the finding the check licenses; move the bookkeeping to an appendix, data statement, or repository record |
 | `progress_state_limitation` | a limitation reports the current state of the project's work rather than a bound on inference: unfilled fields, unfinished steps, artifacts not yet produced | restate as the validity, reliability, generalizability, or measurement limit that the missing work leaves open |
 | `todo_future_work` | future work lists tasks the team owes rather than open research questions | restate each item as a question, the design that would answer it, and what it would license |
+| `deficit_centered_paragraph` | several missing-work statements organize a paragraph around unfinished work rather than the inference they bound | begin from the affected conclusion, then state the limiting mechanism and consequence |
+| `caveat_saturation` | adjacent boundary statements bury the positive bounded claim under repeated denials | retain one supported claim and one explicit scope boundary; do not deny claims the paper never made |
+| `research_agenda_as_task_list` | a research agenda accumulates obligations without an open question, feasible design, and inferential payoff | recast each item as question → design → conclusion the design would license |
+| `clause_overload` | a sentence contains enough pivots and nested relations that claim, condition, and consequence cannot be recovered reliably | split the sentence while preserving modality, negation, scope, citations, and logical relations |
 | `results_digest_abstract` | the abstract enumerates counts and closes on caveats, so the aim and contributions are never stated | rebuild as gap → aim → contributions with mechanisms → principal finding → one boundary sentence |
 | `unanswerable_rq` | a research question yields no contribution, typically by asking what limitations must be declared | recast as an empirical question whose answer is the contribution, or delete it and renumber |
 | `activity_as_contribution` | a contribution names work performed rather than the mechanism that makes it novel or usable | add the mechanism: what the step enables that its absence would not |
@@ -90,6 +94,14 @@ visible to a reviewer on a first reading. A lexical scanner raises the floor;
 paraphrases still require a manual pass over Methods, Limitations, Future Work,
 and every integrity subsection. See
 [Internal register gate](internal-register-gate.md).
+
+`deficit_centered_paragraph`, `caveat_saturation`,
+`research_agenda_as_task_list`, and `clause_overload` are revision-level
+paragraph candidates, not blocking findings inferred from counts. Their
+thresholds deliberately require co-occurring signals, and every hit still needs
+manual adjudication of paragraph function, evidence status, and section role.
+Length, negation, or caveat density alone does not establish a failure. See
+[Academic discourse gate](academic-discourse-gate.md).
 
 `overtranslation_of_designator` and `distinction_collapse_by_translation` are
 blocking. Both change what the text refers to rather than how it reads: the first

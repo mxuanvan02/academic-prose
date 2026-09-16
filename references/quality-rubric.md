@@ -56,6 +56,7 @@ Any occurrence forces `revise` or `human_review`, regardless of average score:
 - `unbounded_superiority_claim`: uniform superiority is claimed with no failure-region analysis.
 - `best_run_as_result`: a maximum over runs is presented as the result.
 - `comparison_without_basis`: a comparative claim names no comparator.
+- `unvalidated_instrument_count`: a statistic the agent computed itself is reported without inspecting a sample of the actual matches and without stating the extraction method.
 - `response_only_claim`: a revision letter argues something the revised manuscript does not contain.
 - `promissory_result`: a result or analysis is promised rather than reported.
 - `deference_capitulation`: a correct claim is weakened to agree with a reviewer, without evidence.
@@ -214,6 +215,32 @@ machine tells. Codes and the licensed list are defined in
 score 4 while a calque stands. A scan reporting zero candidates is a partial
 verification: hedge deletion and terminology drift have no lexical signature.
 
+## Academic discourse gate
+
+Run on manuscript-like prose in either language. The four revision-level codes
+and conservative thresholds are defined in
+[Academic discourse gate](academic-discourse-gate.md).
+
+1. Every candidate is adjudicated manually against the paragraph's rhetorical
+   job, admissible subject, claim status, evidence anchor, and section role.
+2. `deficit_centered_paragraph` is repaired from the inference backwards: name
+   the affected conclusion, then the limiting mechanism and consequence.
+3. `caveat_saturation` retains one positive bounded claim and one explicit
+   boundary; repeated denials are not treated as stronger caution.
+4. `research_agenda_as_task_list` becomes question → feasible design →
+   inferential payoff, rather than a list of author obligations.
+5. `clause_overload` is split only when claim boundaries are obscured, while
+   modality, negation, scope, logical relations, numbers, and citations survive.
+6. Length, negation count, caveat count, or a scanner hit alone never determines
+   prose quality. A clean scan remains partial verification and both language
+   versions require an independent manual pass.
+
+`LOGIC` cannot score 4 while paragraph function or claim boundaries remain
+unclear. `VOICE` cannot score 4 while a deficit-centred or task-list paragraph
+still reads as a revision backlog. `CONS` cannot score 4 when only one language
+version has been adjudicated. None of these candidates licenses deleting a
+required limitation or inventing evidence.
+
 ## Venue-ambition gate
 
 Run on every publication-facing deliverable, declaring the genre the artifact
@@ -248,6 +275,10 @@ defined in [Quantitative reporting standard](quantitative-reporting-standard.md)
 5. Multiple comparisons declare their count and correction policy; post-hoc
    comparisons are labelled exploratory.
 6. A superiority claim either bounds its scope or reports where the method fails.
+7. Every statistic the agent computed itself was validated by printing a sample of
+   the actual matches before the figure was reported, and the delivery names the
+   extraction method. An unvalidated self-computed count is
+   `unvalidated_instrument_count`.
 
 `SEM` cannot score 4 while any of these is unresolved. Supplying a missing number
 is the author's decision, never this skill's inference.

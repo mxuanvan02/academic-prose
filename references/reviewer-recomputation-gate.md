@@ -142,3 +142,85 @@ retires most OPEN disagreements.
 - **The same gate applies to an audit of your own draft.** Self-audit is where
   the GATHER-only failure is most likely, because the assumptions under
   examination are the ones that produced the draft.
+
+## 7. Run the source's own verifier before recomputing
+
+When a submission ships a released verification harness — a script that
+recomputes its reported quantities from released records — **run it first**,
+before any independent recomputation. It encodes the authors' conventions: which
+denominators pair with which numerators, which items were excluded and why,
+which grid of thresholds was actually tabulated, and how internal identifiers
+map onto the names used in the prose. An external auditor otherwise has to guess
+all of these, and guessing is where false findings come from.
+
+Measured on first use of this gate: the shipped harness resolved 119 reported
+quantities in one invocation, exit status 0, and **retired three of the four
+discrepancies the auditor had independently "found"**. Independent recomputation
+is not stronger evidence than the authors' own executable check; it is weaker,
+because it substitutes the auditor's assumptions for the authors' declarations.
+
+Two corollaries:
+
+- A recomputation that disagrees with a shipped verifier is a claim about the
+  verifier's conventions, not evidence of an error in the document. Read the
+  verifier's source and its inline notes before concluding anything.
+- Prefer the harness's output as the audit's quantitative backbone and reserve
+  independent recomputation for quantities the harness does **not** cover. State
+  which is which, so a reader knows what was checked by whom.
+
+## 8. Three further auditor-side error classes
+
+Section 1 covers the case where an input is *absent* from the document. These
+three cover inputs that are **present and were discarded or misread**. All are
+CLOSED recomputations that are nonetheless wrong, so the CLOSED/OPEN
+classification alone does not catch them.
+
+**`qualifier_dropped`** — the source states a restriction that narrows a count
+or a set (*"…that both runs tabulate"*, *"…after a declared exclusion of two"*,
+*"…over the same items"*), and the auditor computes the unrestricted version.
+Measured: an auditor assumed a uniform threshold grid and reported a count of
+nine where the manuscript's seven was correct, because it ignored the qualifier
+naming which runs contribute. Fix: re-read the whole sentence containing the
+number, and the sentence before it, for restrictive clauses **before** choosing
+inputs. A number's denominator and its restriction are usually named within a
+line or two of it.
+
+**`documented_discrepancy_as_finding`** — two figures differ, the auditor
+reports an inconsistency, and the authors have already documented why. Measured:
+a κ table spanning every admitted item was flagged against an ablation universe
+two items smaller; the shipped verifier carried an inline note stating exactly
+that the larger n was deliberate and naming the reason. Fix: before asserting an
+inconsistency, search the released code, records, and notes for both figures and
+for explanatory keys (`note`, `why`, `is … and not …`). A deliberate denominator
+difference recorded in a comment is not a manuscript defect — though asking the
+authors to say so **in the prose** remains a legitimate, much smaller request.
+
+**`identifier_mapping_bug`** — released records use internal identifiers
+(run names, arm names, model or condition labels) that differ from the names in
+the manuscript. Comparing counts before building the mapping produces wholesale
+false mismatches, and the volume of them reads as a catastrophic defect.
+Measured: an auditor reported four of five conditions mismatching, entirely
+because internal arm labels had not been mapped to the manuscript's arm names;
+after mapping, all fifteen quantities agreed. Fix: derive the mapping from a
+quantity that **must** agree regardless of naming (a frame size, a grand total,
+a sum of subsets), assert the mapping reproduces it, and only then compare
+per-condition counts. Never report a mismatch rate computed across an unverified
+mapping. This is the `evidence-claim-reconciliation` pitfall of comparing labels
+instead of identities, occurring on the auditor's side of the table.
+
+## 9. Withdrawn findings are reported, not deleted
+
+An audit that silently drops a finding leaves no record that the check ran and
+failed, so the same error recurs and nobody learns the gate worked. State which
+findings were withdrawn and why, in the deliverable, classified by cause:
+
+| Cause of withdrawal | What to report |
+| --- | --- |
+| the source's own verifier reproduced the value | the harness, its exit status, and the quantity count it covers |
+| a qualifier in the source text was missed | the qualifier, quoted, and the corrected reading |
+| the discrepancy was documented as deliberate | where it is documented, and whether the prose should say so too |
+| the input was OPEN and the value is reachable | the sweep range, and the request for the parameter source |
+
+Reporting withdrawals is evidence the falsification pass did real work. An audit
+whose findings list contains only confirmations of its first impressions has not
+falsified anything, whatever its pass count.

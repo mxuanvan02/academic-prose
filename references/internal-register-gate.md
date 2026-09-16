@@ -115,9 +115,11 @@ permitted, and most carry a quota.
   `Ý nghĩa khoa học và thực tiễn`, `Kết luận và kiến nghị`. Repair weak content;
   never delete the slot.
 - **Named artifacts in a data or reproducibility statement**: repository URL, DOI,
-  dataset name, tool with version. These are `keep_source` designators under
+  dataset name, tool with version, and a commit identifier paired with a publicly
+  reachable repository reference. These are `keep_source` designators under
   [Terminology localization policy](terminology-localization.md), not internal
-  leakage. A path on the author's machine is leakage; a public identifier is not.
+  leakage. A bare commit hash without that public repository context remains a
+  candidate, and a path on the author's machine is always leakage.
 - **Response-to-reviewers letters and revision notes**: the genre *is* licensed
   self-narration. `revision_response_leak` fires only when that register appears
   in the manuscript.

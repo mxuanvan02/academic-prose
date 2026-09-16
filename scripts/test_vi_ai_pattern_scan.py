@@ -16,13 +16,16 @@ Three test groups, and each exists for a different reason:
 from __future__ import annotations
 
 import re
+import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 import vi_ai_pattern_scan as module
-from vi_ai_pattern_scan import scan
+from vi_ai_pattern_scan import read_input, scan
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
 
 def codes(result: dict) -> set[str]:
@@ -35,6 +38,31 @@ def actionable(result: dict) -> list[dict]:
 
 def read(name: str) -> str:
     return (FIXTURES / name).read_text(encoding="utf-8")
+
+
+def minimal_docx(path: Path, paragraphs: list[tuple[str, str | None]]) -> None:
+    body: list[str] = []
+    for text, style in paragraphs:
+        safe = (
+            text.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+        )
+        ppr = f'<w:pPr><w:pStyle w:val="{style}"/></w:pPr>' if style else ""
+        body.append(f'<w:p>{ppr}<w:r><w:t xml:space="preserve">{safe}</w:t></w:r></w:p>')
+    document = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        f'<w:document xmlns:w="{W}"><w:body>{"".join(body)}</w:body></w:document>'
+    )
+    content_types = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        '<Default Extension="xml" ContentType="application/xml"/>'
+        '</Types>'
+    )
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("[Content_Types].xml", content_types)
+        archive.writestr("word/document.xml", document)
 
 
 class TestDetection(unittest.TestCase):
@@ -154,6 +182,32 @@ class TestLicensedFalsePositives(unittest.TestCase):
             r"được giữ nguyên, xem $\sigma_{\text{toàn diện}}$."
         )
         self.assertEqual(actionable(result), [])
+
+
+class TestDocxInput(unittest.TestCase):
+    def test_docx_preserves_heading_and_detects_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "fixture.docx"
+            minimal_docx(
+                path,
+                [
+                    ("Kết quả", "Heading1"),
+                    ("Có thể thấy rằng độ trễ tăng khi tải mạng tăng.", None),
+                ],
+            )
+            text = read_input(path)
+            result = scan(text)
+        self.assertIn("# Kết quả", text)
+        self.assertIn("empty_framing", codes(result))
+        finding = next(f for f in result["findings"] if f["class"] == "empty_framing")
+        self.assertEqual(finding["heading"], "Kết quả")
+
+    def test_docx_cli_returns_revision_exit_code(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "fixture.docx"
+            minimal_docx(path, [("Có thể thấy rằng độ trễ tăng.", None)])
+            exit_code = module.main([str(path), "--quiet"])
+        self.assertEqual(exit_code, 2)
 
 
 class TestFixtures(unittest.TestCase):

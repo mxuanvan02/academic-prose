@@ -34,7 +34,12 @@ import argparse
 import json
 import re
 import sys
+import zipfile
 from pathlib import Path
+
+from defusedxml import ElementTree as ET
+
+from ooxml_text import read_text as read_ooxml_text
 
 NUM = "<NUM>"
 CITE = "<CITE>"
@@ -219,6 +224,11 @@ THRESHOLDS = {
 }
 
 VERDICTS = ("replace_with_measurement", "delete", "recast", "license")
+
+
+def read_input(path: Path) -> str:
+    """Read UTF-8 text or DOCX while preserving Heading1--Heading6 boundaries."""
+    return read_ooxml_text(path)
 
 
 def flatten(text: str) -> str:
@@ -447,8 +457,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args(argv)
     try:
-        result = scan(args.input.read_text(encoding="utf-8"), args.genre)
-    except OSError as exc:
+        result = scan(read_input(args.input), args.genre)
+    except (OSError, KeyError, UnicodeError, zipfile.BadZipFile, ET.ParseError) as exc:
         print(f"input error: {exc}", file=sys.stderr)
         return 3
     if args.json_path:

@@ -17,7 +17,16 @@ import re
 import sys
 import zipfile
 from pathlib import Path
-from xml.etree import ElementTree as ET
+
+from defusedxml import ElementTree as ET
+
+from ooxml_text import read_text as read_ooxml_text
+
+PUBLIC_REPOSITORY = re.compile(
+    r"https?://(?:www\.)?(?:github\.com|gitlab\.com|bitbucket\.org)/[^\s<>()]+",
+    re.I,
+)
+PUBLIC_REPOSITORY_MARKER = "PUBLIC_REPOSITORY_URL"
 
 # --- classes -----------------------------------------------------------------
 
@@ -45,12 +54,12 @@ PATTERNS: dict[str, list[str]] = {
         r"as\s+(?:mentioned|discussed)\s+above",
     ],
     "progress_state_limitation": [
-        r"chưa\s+(?:kịp|hoàn\s+tất|bổ\s+sung|thực\s+hiện|được\s+thẩm\s+định)",
+        r"chưa\s+(?:kịp|hoàn\s+tất|bổ\s+sung|thực\s+hiện)",
         r"sẽ\s+(?:bổ\s+sung|hoàn\s+thiện|cập\s+nhật)\s+(?:sau|trong\s+thời\s+gian\s+tới)",
         r"đang\s+trong\s+quá\s+trình",
         r"nhóm\s+(?:nghiên\s+cứu\s+)?chưa\b",
         r"remains?\s+to\s+be\s+done",
-        r"(?:has\s+not|have\s+not|hasn't|haven't)\s+(?:yet\s+)?(?:been\s+)?(?:completed|finished|added|validated|annotated)",
+        r"(?:has\s+not|have\s+not|hasn't|haven't)\s+(?:yet\s+)?(?:been\s+)?(?:completed|finished|added)",
         r"(?:will|is\s+planned\s+to)\s+(?:be\s+)?(?:added|completed|updated)\s+(?:later|in\s+future\s+work|in\s+a\s+future\s+release)",
         r"(?:is|are)\s+still\s+(?:in\s+progress|underway|pending)",
     ],
@@ -149,7 +158,8 @@ DENIAL_EXCLUDE = re.compile(r"không\s+chỉ|not\s+only", re.I)
 
 # Sections where a repo-relative artifact name is the licensed register.
 ARTIFACT_LICENSED_SECTION = re.compile(
-    r"(?:tái\s+lập|khả\s+năng\s+tái\s+lập|tuyên\s+bố\s+dữ\s+liệu|dữ\s+liệu\s+và\s+mã|"
+    r"(?:tái\s+lập|khả\s+năng\s+tái\s+lập|tuyên\s+bố\s+dữ\s+liệu|"
+    r"dữ\s+liệu\s+và\s+mã|mã\s+nguồn\s+và\s+dữ\s+liệu|"
     r"phụ\s+lục|reproducib|data\s+(?:and\s+code\s+)?availab|code\s+availab|"
     r"artifact|appendix|supplementary)",
     re.I,
@@ -201,17 +211,7 @@ THRESHOLDS = {
 
 
 def read_input(path: Path) -> str:
-    if path.suffix.lower() == ".docx":
-        with zipfile.ZipFile(path) as zf:
-            root = ET.fromstring(zf.read("word/document.xml"))
-        parts: list[str] = []
-        for node in root.iter():
-            if node.tag.endswith("}p"):
-                parts.append("\n\n")
-            elif node.tag.endswith("}t"):
-                parts.append(node.text or "")
-        return "".join(parts)
-    return path.read_text(encoding="utf-8")
+    return read_ooxml_text(path, promote_labels=("Mã nguồn và dữ liệu.",))
 
 
 def strip_protected(text: str) -> str:
@@ -236,6 +236,10 @@ def strip_protected(text: str) -> str:
     text = re.sub(r"(?s)~~~.*?~~~", " ", text)
     text = re.sub(r"(?s)\$\$.*?\$\$", " ", text)
     text = re.sub(r"(?<!\\)\$[^$\n]*\$", " ", text)
+    # Keep a non-sensitive marker for a public forge URL. The marker lets the
+    # register gate distinguish a reproducibility-pinned commit from a bare,
+    # machine-internal hash after URLs themselves are removed from scanning.
+    text = PUBLIC_REPOSITORY.sub(f" {PUBLIC_REPOSITORY_MARKER} ", text)
     text = re.sub(r"https?://doi\.org/\S+|\bdoi:\s*\S+|\bDOI\s+10\.\S+", " ", text, flags=re.I)
     text = re.sub(r"https?://\S+", " ", text)
     return text
@@ -281,6 +285,7 @@ def scan(text: str, genre: str = "manuscript") -> dict:
         sentences = [s.strip() for s in SENTENCE.split(section_text) if s.strip()]
         total_sentences += len(sentences)
         artifact_slot = bool(ARTIFACT_LICENSED_SECTION.search(heading))
+        public_repository = PUBLIC_REPOSITORY_MARKER in section_text
         per_section_doc_subject = 0
 
         for local_idx, sentence in enumerate(sentences, 1):
@@ -307,6 +312,13 @@ def scan(text: str, genre: str = "manuscript") -> dict:
                     finding["licensable"] = section_idx <= 1 and per_section_doc_subject == 1
                 elif code == "repo_artifact_reference":
                     finding["licensable"] = artifact_slot
+                elif code == "internal_artifact_reference":
+                    commit_only = all(
+                        "(?:commit|sha)" in pattern for pattern in matched
+                    )
+                    finding["licensable"] = (
+                        artifact_slot and public_repository and commit_only
+                    )
                 findings.append(finding)
 
         for i in range(max(0, len(sentences) - 2)):

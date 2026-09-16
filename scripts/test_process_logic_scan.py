@@ -5,11 +5,14 @@ Run from scripts/: python3 test_process_logic_scan.py
 """
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
 
 from pathlib import Path
 
-from process_logic_scan import scan
+from process_logic_scan import main, scan
+from test_ooxml_text import minimal_docx
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -106,6 +109,30 @@ class TestCalibration(unittest.TestCase):
     def test_anchored_prior_state_is_not_a_candidate(self) -> None:
         text = "Tập lõi đã được hình thành trước khi chạy truy vấn, nên 10 nhánh giữ vai trò kiểm tra độ bao phủ."
         self.assertEqual(scan(text)["findings"], [])
+
+
+class TestDocxCli(unittest.TestCase):
+    def test_docx_cli_uses_safe_ooxml_reader(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "fixture.docx"
+            output = root / "findings.json"
+            minimal_docx(
+                source,
+                [
+                    ("2.1\tQuy trình", None, True),
+                    (
+                        "Tập tham chiếu được hình thành trước qua quá trình đọc chuyên sâu; "
+                        "các truy vấn OpenAlex được dùng bổ sung để kiểm tra độ bao phủ.",
+                        None,
+                        False,
+                    ),
+                ],
+            )
+            exit_code = main([str(source), "--json", str(output), "--quiet"])
+            result = json.loads(output.read_text(encoding="utf-8"))
+        self.assertEqual(exit_code, 2)
+        self.assertIn("chronology_anchor_omitted", codes(result))
 
 
 if __name__ == "__main__":

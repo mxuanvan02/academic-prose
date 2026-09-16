@@ -50,12 +50,21 @@ REQUIRED = (
     "evals/capability-examples.json",
     "scripts/run_usage_simulations.py",
     "scripts/run_capability_examples.py",
+    "scripts/ooxml_text.py",
+    "scripts/test_ooxml_text.py",
     "scripts/internal_register_scan.py",
     "scripts/process_logic_scan.py",
     "scripts/test_process_logic_scan.py",
     "scripts/vi_ai_pattern_scan.py",
     "scripts/test_vi_ai_pattern_scan.py",
     "references/vi-ai-pattern-gate.md",
+    "scripts/academic_discourse_scan.py",
+    "scripts/test_academic_discourse_scan.py",
+    "references/academic-discourse-gate.md",
+    "scripts/fixtures/academic_discourse_dirty.md",
+    "scripts/fixtures/academic_discourse_dirty_en.md",
+    "scripts/fixtures/academic_discourse_clean.md",
+    "scripts/fixtures/academic_discourse_clean_en.md",
     "scripts/fixtures/vi_ai_pattern_dirty.md",
     "scripts/fixtures/vi_ai_pattern_dirty_en.md",
     "scripts/fixtures/vi_ai_pattern_clean.md",
@@ -321,6 +330,13 @@ def main() -> int:
     if example_mutations < 60:
         raise SystemExit("capability examples do not exercise enough atomic mutations")
 
+    ooxml_text = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/test_ooxml_text.py")],
+        cwd=ROOT / "scripts",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
     register_scan = subprocess.run(
         [sys.executable, str(ROOT / "scripts/test_internal_register_scan.py")],
         cwd=ROOT / "scripts",
@@ -342,6 +358,34 @@ def main() -> int:
         capture_output=True,
         check=False,
     )
+    academic_discourse = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/test_academic_discourse_scan.py")],
+        cwd=ROOT / "scripts",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if ooxml_text.returncode != 0:
+        raise SystemExit(
+            "safe OOXML reader tests failed:\n"
+            + ooxml_text.stdout
+            + ooxml_text.stderr
+        )
+    if "FAILED" in ooxml_text.stdout or "ERROR" in ooxml_text.stdout:
+        raise SystemExit(
+            "safe OOXML reader tests reported failures:\n" + ooxml_text.stdout
+        )
+    if academic_discourse.returncode != 0:
+        raise SystemExit(
+            "academic-discourse gate tests failed:\n"
+            + academic_discourse.stdout
+            + academic_discourse.stderr
+        )
+    if "FAILED" in academic_discourse.stdout or "ERROR" in academic_discourse.stdout:
+        raise SystemExit(
+            "academic-discourse gate tests reported failures:\n"
+            + academic_discourse.stdout
+        )
     if vi_pattern.returncode != 0:
         raise SystemExit(
             "vietnamese ai-pattern gate tests failed:\n"
@@ -375,7 +419,7 @@ def main() -> int:
         f"{humanize_count} humanize evals, {len(usage_cases)} usage simulations, "
         f"{len(capability_examples)} capability examples, "
         f"{rejected_mutations + example_mutations} rejected mutations, "
-        "internal-register + vietnamese ai-pattern bilingual scans)"
+        "internal-register + vietnamese ai-pattern + academic-discourse bilingual scans)"
     )
     return 0
 

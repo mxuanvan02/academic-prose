@@ -184,6 +184,45 @@ Both language versions of a bilingual manuscript report the same estimates with
 the same uncertainty. A hedge or an interval present in one and absent in the
 other is a `CONS` failure.
 
+## Numbers the agent computed itself
+
+Everything above governs numbers the *author* supplies. A distinct failure mode
+arises when the agent computes a statistic itself — counting features across a
+corpus, measuring word budgets, tallying item-writing flaws in a sample of exam
+questions — and reports it to the user as a finding. Here the instrument is a
+script the agent just wrote, and the script has not been validated.
+
+Measured case: a regex counting how many multiple-choice items contained an *all
+of the above* option reported **44% (26/59)**. The pattern matched the bare
+Vietnamese word `cả`, which also occurs inside unrelated constructions
+(`cả nước`, `bao gồm cả …`). The true figure was **12% (7/59)** — the first
+number was inflated nearly fourfold and had already been reported to the user as
+evidence for a claim in the manuscript. Retracting it cost more credibility than
+checking would have cost time.
+
+Three rules before any self-computed statistic is reported:
+
+1. **Print the matches, not just the count.** A count is unfalsifiable on its
+   own. Inspect a sample of the actual hits — three is usually enough to expose
+   an over-broad pattern. This single step would have caught the case above.
+2. **Anchor lexical patterns to word boundaries and full phrases.** A short
+   function word appearing inside longer words is the standard over-match. Where
+   the target is a phrase (*all of the above*, *tất cả các phương án trên*),
+   match the phrase, not one of its words.
+3. **State the extraction method alongside the number.** `7/59 items, counted by
+   phrase match on four surface variants` is checkable; `44% of items` is not.
+   When the denominator came from an automated parse, report how many units the
+   parser recovered versus how many the document claims (`59 parsed of 60
+   stated`) so a silent parse failure is visible.
+
+A self-computed number that will enter a manuscript, an abstract, or a claim to
+the user inherits the whole reporting contract above — including its denominator
+and the statement of how it was obtained. Code `unvalidated_instrument_count`.
+Never let a figure produced by an unexamined script become evidence for a
+scholarly claim; and when one has already been reported and turns out wrong,
+correct it explicitly with the corrected value, state that the earlier figure is
+withdrawn, and confirm it was not used anywhere else.
+
 ## Audit procedure
 
 Run on every delivery containing quantitative results:
@@ -233,6 +272,9 @@ Steps 5, 6, and 7 are the ones a fluent draft passes while being wrong.
   region analysis.
 - `best_run_as_result` — a maximum over runs presented as the result.
 - `comparison_without_basis` — a comparative claim with no named comparator.
+- `unvalidated_instrument_count` — a statistic the agent computed itself is
+  reported without inspecting a sample of the actual matches and without stating
+  the extraction method.
 
 ## Verification status of this file
 
