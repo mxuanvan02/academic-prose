@@ -213,7 +213,18 @@ def main() -> int:
         # undecodable, and the validation block in README.md runs test suites before this gate, so
         # a second run used to fail on litter the first run created. Skipping them cannot hide a
         # real binary; that check still applies to every other file.
-        if "__pycache__" in path.parts or path.suffix == ".pyc":
+        #
+        # `.git/` is skipped for the same reason, and it matters more: the standalone repo runs
+        # this gate from its own root, so every packed object and the index itself looked like an
+        # undecodable binary and the gate failed with ~190 findings that said nothing about the
+        # skill. Git's object store is not shipped content; nothing that can be published lives
+        # there, so no real finding is lost by skipping it.
+        if (
+            "__pycache__" in path.parts
+            or path.suffix == ".pyc"
+            or ".git" in path.parts
+            or ".pytest_cache" in path.parts
+        ):
             continue
         try:
             text = path.read_text(encoding="utf-8")

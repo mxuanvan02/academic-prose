@@ -11,6 +11,25 @@ Title construction is not covered here; see
 for the four-slot method, the build order, and the failure signature behind each
 rejection. Apply it before drafting, not after the author rejects a candidate.
 
+Where that companion reference is not shipped alongside this one, the three-question
+standard below is the self-contained version:
+
+1. **Does it name a concrete image or event in the text?** A tree, a meal, a look,
+   a refusal. Not a concept. A title named after its theory label instead of its
+   finding fails here.
+2. **Does it state what the paper claims about that image?** The claim, not the
+   topic. A title that stops at a shared theme fails here.
+3. **Can a reader who has not seen the abstract say what the paper argues about
+   these two works?** A title narrower or wider than the argument fails here.
+
+A colon or a spaced hyphen inside a Vietnamese title is a symptom, not the disease.
+Both appear when the writer had two ideas and no syntax to join them: the first half
+names the topic, the second supplies the claim, because the writer could not compress
+both into one phrase — which is question 2 failing. The repair is compression, not
+punctuation substitution: find the phrase that carries image and claim together, then
+let prepositions (`trong`, `của`, `và`) do the joining work a colon would do in
+English.
+
 ## 0. The standard, not the word list
 
 A word list catches the sentences already seen. A test catches the ones not yet
@@ -37,7 +56,7 @@ true, and they apply to any sentence, including one no table lists.
 | T3 | Delete this clause. What does the sentence lose? | nothing | delete it. A clause that survives deletion was never carrying a claim. This catches every framing move: announcing a point, remarking that something is easy to miss, noting that a detail matters |
 | T4 | Translate it into English. Does the English read naturally? | the English comes out fluent, with the same clause order and the same connectives | the Vietnamese was built on an English frame; rebuild in Vietnamese order, or split one English sentence into two |
 | T5 | Read it aloud. Where do you run out of air? | it cannot be delivered in one breath, or the grammar must be searched for mid-clause | put the full stop at the joint where the logical relation changes, not where the noun phrase ends |
-| T6 | Is any content word (4+ chars) repeated within 5 words? | the repetition is accidental — not emphasis, anaphora, or a locked technical term | find a synonym, recast so the word appears once, or delete the redundant instance. Exception: locked terms (`chức năng tác giả`, `chuỗi thể chế`) repeat by design when each occurrence carries new information |
+| T6 | Is any content word (4+ chars) repeated within 5 words? | the repetition is accidental — not emphasis, anaphora, or a locked technical term | restructure so the concept appears once and governs both predicates, or delete the redundant occurrence. **Never reach for a synonym** — synonym substitution over an empty structure produces inflated prose and manufactures a distinction the argument does not make (see `ai-pattern-vietnamese.md` §5). Exception: locked terms (`chức năng tác giả`, `chuỗi thể chế`) repeat by design when each occurrence carries new information |
 | T7 | What noun does this pronoun (`nó`, `họ`, `điều này`) refer to? | the referent is more than one clause back, or two nouns could both fit | repeat the noun, or recast so the pronoun is unnecessary. Vietnamese tolerates zero-pronoun more than English, but only when the referent is unambiguous |
 | T8 | Is this sentence listing three or more items? | items are separated by semicolons and each contains internal commas or clauses | convert to numbered sentences (`Thứ nhất,... Thứ hai,...`) or a bulleted list. Semicolons are licensed only for short parallel phrases without internal structure |
 
@@ -76,6 +95,30 @@ consequence — the short sentence must carry a claim, not a transition.
 V6 is the one literary agents violate most often: the adjective claims an effect
 the prose has not produced. Delete the adjective and keep the detail that produced
 it; if no detail produced it, the emotion was asserted and the sentence goes.
+
+### Punctuation as structural commitment
+
+Every punctuation mark that alters clause boundaries — question marks, colons,
+semicolons, em dashes — is a structural commitment, not a stylistic choice. The
+mark commits the writer to a specific discourse relation, and the surrounding
+prose must fulfil that relation.
+
+- **Question marks** commit to an interrogative structure: the following
+  discourse must answer the question. A question opening a section and resolved
+  by its claims is licensed; a question mid-argument breaks the claim–evidence
+  chain and signals the writer thinking aloud; a question in the conclusion
+  signals the writer has not decided.
+- **Colons** commit to an explanatory relation: what follows must elaborate,
+  exemplify, or enumerate what precedes. A colon followed by an independent
+  clause that does not explain the preceding one is a structural fault.
+- **Em dashes** commit to a parenthetical or contrastive insertion: the material
+  between dashes must be removable without destroying the main clause's
+  grammaticality. If the dash material is essential to the argument, it belongs
+  in the main clause.
+
+Repair by naming the relation the mark commits to and checking the prose
+fulfils it. If it does not, either restructure the prose or downgrade to a mark
+that commits to a weaker relation (comma, full stop).
 
 ## 1. Calques from English literary criticism
 

@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.21.0"
+  version: "3.23.0"
 ---
 
 # Academic Prose
@@ -14,6 +14,11 @@ metadata:
 — count every variant, query the target venue's published corpus, find the fixed
 technical term that blocks a global replace, recommend rather than apply, then
 verify counts in the PDF text layer after rebuild.
+
+Never write a real project, dataset, paper, or institution identifier into this
+skill — not even as a "real failing case". Name it by class ("a legal-QA revision
+round", "the target venue") and put the lesson in the rule, because this package's
+public-hygiene gate treats such tokens as blocking and the skill is republished.
 
 When revising a manuscript against received peer-review reports for a paper that ships a public code/data artifact, load `references/peer-review-revision-evidence.md` (reproduce-first workflow, code-grounded reviewer responses, targeted re-ablation, figure label-overlap checks without vision, and keeping reviewer identities out of a public reproducibility repo).
 
@@ -1290,6 +1295,23 @@ Reviewer-phrased prose checks (the eight demand→owner mappings) and the
 terminology consistency audit (variant-pair counting, one-direction fix,
 re-scan to zero, page-count invariant) live in
 [Prose checks and terminology audit](references/prose-checks-and-terminology-audit.md).
+
+Two references sit outside the manuscript pipeline and are easy to miss, because
+nothing in §1–§8 sends you to them:
+
+- **Literary and comparative prose** —
+  [Vietnamese prose about literature](references/vietnamese-literary-prose.md)
+  owns Vietnamese prose *about* literature: sentence tests, voice tests, calques
+  from English criticism, `và` chains, the *tertium comparationis*, hedge
+  discipline, punctuation as structural commitment, and the false positives
+  specific to the genre (the colon scan must be judged against a density, not
+  against zero). Load it whenever the object of study is a literary work rather
+  than a dataset.
+- **Contribution statements** —
+  [Contribution statement design](references/contribution-statement-design.md)
+  owns the "ba đóng góp" paragraph: one or two sentences per contribution, a
+  number plus the price paid, never claiming impossibility for the layer the
+  paper then fixes, and stating where the result does *not* reach.
 
 ## Figure-Driven Revision: more graphics, less prose
 

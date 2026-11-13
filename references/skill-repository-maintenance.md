@@ -27,6 +27,48 @@ Protocol:
 3. Treat structural moves and heading changes as first-class diffs; a naive read
    loses them.
 
+**Line-level enumeration reports loss on every reworded tree.** The two copies are
+normally at different versions, so a paragraph present only at the destination is far
+more often a superseded draft than lost content: in one sync four destination-only
+paragraphs were all older wordings whose every concept survived at the source under
+different sentences. Settle it before copying, by probing a distinctive four-word slice
+of each destination-only paragraph against the **union of the whole destination tree**
+(`SKILL.md` plus every `references/*.md`), never against the same filename — relocated
+content lives in a reference, so a same-file probe reports it missing and manufactures a
+loss. Only a paragraph whose concepts are absent from the union is real. Widen the probe
+before believing a miss.
+
+**The same filename on both sides can be a fork, not a relocation — and both size and
+mtime point the wrong way.** A reference present in both trees at very different lengths
+reads as one side being newer, so the bigger or more recently written copy wins. Measured:
+a reference was 32.8k at runtime and 19k in the repository and **neither contained the
+other** — the runtime copy owned calque tables, institutional-provenance chains and a
+hedge inventory; the repository copy owned sentence tests, voice tests, a
+punctuation-commitment section and a title standard. Overwriting in either direction
+destroyed sections that existed nowhere else. Decide by **feature inventory, not size or
+timestamp**: extract every heading from both copies, diff the heading sets, and when each
+side holds headings the other lacks, it is a fork and a port is the only non-destructive
+move. Port the missing sections into the side you keep, then re-diff and require the
+heading sets to be equal or explainably mapped.
+
+Related: the repository is the published source, so its copy legitimately carries
+divergences that must **not** be overwritten — genericized identifiers, self-contained
+replacements for links into sibling packages, repository-only test scaffolding. Read the
+repository-side hunks for those before copying, not after.
+
+**Two clones of the same repository is the normal state, and editing the wrong one
+silently forks the work.** Resolve the target clone before touching a file, by asking
+which side holds unpushed commits rather than which path looks canonical:
+
+```bash
+git -C <clone> rev-list --count origin/<branch>..HEAD   # >0: unpushed work HERE
+git -C <clone> rev-list --count HEAD..origin/<branch>   # >0: this clone is behind
+```
+
+A clone that is clean and strictly behind is safe to fast-forward. A clone with commits
+ahead holds work that exists nowhere else: rebase it onto the remote and push, rather
+than abandoning it in favour of the clone with the tidier path.
+
 ## 2. Adding a mechanism means extending the gate
 
 A new reference document, detector, or threshold is not integrated until this
@@ -163,6 +205,14 @@ check establishes and, separately, the property it does not.
     of its obligations already present in the reference it points at, and that section is 903
     characters. So nearly every move requires authoring new reference content first and then
     verifying nothing was lost. It is a writing project, not a reformatting one.
+  * **The lever that actually clears the ceiling is a whole-section move.** Not a rewrite and not
+    a duplicate: relocate one entire `##` section that no other section depends on, verbatim, into
+    a new reference and leave a two-line pointer. Measured on a section whose body contained zero
+    `references/` links: 7,724 characters out, 7,706 into the reference, `SKILL.md` down 7,358
+    after the pointer; two such moves took 104,655 → 92,943 in one pass. Eligibility is
+    mechanical, not editorial — grep the section body for `references/` and for the headings its
+    siblings cite; zero hits means nothing depends on its position. Try this before
+    sentence-level compression, which recovers 15% of narration at best.
   * Relocation also moves content out of the always-loaded body, so a rule that must fire
     unprompted cannot be relocated at any saving. That is a behaviour decision, not a formatting
     one. Do not try to bound it with a keyword classifier for "is this a trigger section":
@@ -246,6 +296,50 @@ check establishes and, separately, the property it does not.
   Before treating a heading difference as a loss, extract the section BODY from both
   trees and compare the items; accept a renumber, abort on a missing item.
 
+- **Relocating a section orphans the references that section pointed at.** Compressing
+  `SKILL.md` under its ceiling by moving a whole `##` section into a new reference
+  preserves the moved text and loses its **outbound pointers**: when that section was the
+  only place naming other references, those files become unreachable from the always-
+  loaded body, and no check notices because nothing about them changed. Measured: a
+  section moved to clear the ceiling carried the only pointers to a 36 KB reference and a
+  contribution-statement reference, both of which went orphan immediately after a pass
+  that had just repaired exactly that defect. Treat the pointer inventory as part of the
+  move. Before cutting, list every `references/*.md` name the section cites; after
+  cutting, grep `SKILL.md` for each and add a one-line pointer for any that lost their
+  last mention. Make it mechanical — `comm -23` between the directory listing and the
+  names grepped out of `SKILL.md`, expecting an empty set — because the defect returns on
+  every future compression pass.
+
+  **Then walk the graph before believing the mechanical result.** A one-level `comm`
+  reports orphan for any reference reached through another reference, and after a
+  compression pass that consolidates sections into hub references this is the common
+  case, not the exception. Two files flagged as unreachable were both cited from the
+  reference `SKILL.md` had just been pointed at, so a reader did reach them. Close the
+  set properly: start from the references `SKILL.md` names, add every reference those
+  files name, and repeat to a fixed point; only names outside the closure are orphans.
+  A rule that fires on reachable files trains the next session to add redundant pointers
+  or, worse, to delete live content as "unreferenced".
+- **A relative link that climbs out of the tool directory is dead the moment the tool is
+  published alone.** A reference linking to `../../<sibling-skill>/references/<file>.md`
+  resolves inside the runtime skills tree and inside no published artifact, because the
+  monorepo carries only `tools/<this-skill>/`. Verify by walking every markdown link in
+  the package, resolving each target relative to its own file, and asserting it exists
+  inside the package root. Repair by inlining the self-contained minimum the pointer
+  stood for, so a reader of the published package gets the rule; keep the outbound link
+  only as enrichment, phrased so the local copy is sufficient on its own.
+- **Audit package redundancy by set arithmetic, never by reading.** A package of ~60
+  references and a six-figure `SKILL.md` cannot be checked for duplication by eye, and the
+  eye errs in both directions: it reads shared *vocabulary* as repetition and misses
+  near-identical *paragraphs*. Normalise both sides (collapse whitespace, strip code spans
+  and link targets), split on sentence boundaries, keep sentences past a length floor, and
+  compare sets. Measured on 57 references: zero duplicated sentences across the four
+  budget references, the five peer-review references and the three AI-pattern references,
+  and 2 of 430 sentences shared between `SKILL.md` and all references combined — so the
+  "it feels repetitive" impression was vocabulary, not content. Run the same arithmetic
+  between a newly drafted section and the rest of the body before keeping it: a section
+  written to record a lesson overlaps the reference that already owns that lesson far
+  more often than not, and the overlap is invisible while writing it.
+
 - **A gate with no tests can be defeated by a line break, and its PASS is believed.** The
   repo's hygiene gate builds literals by concatenation so it does not flag itself;
   `institution-3` was `"Hue " + "University"`, and the reference text wrapped between the two
@@ -269,6 +363,21 @@ check establishes and, separately, the property it does not.
   the repository the tests must really run (14 result markers `... ok`, 0 `... skipped`), and at
   runtime they must skip cleanly (`OK (skipped=14)`, no `ERROR`, no `FAILED`). A guard that skips
   everywhere is worse than no guard, so the in-repo count is the half that proves the tests exist.
+  **And the guard can be defeated by a coincidental neighbour, which fails worse than either
+  outcome.** The predicate `GATE.is_file() and TOOLS_DIR.is_dir()` is true whenever both exist
+  anywhere along `parents[N]`; the runtime tree's grandparent did carry a `tools/` directory, so
+  the guard passed, all 14 tests ran, and 8 failed against a tree the test was written to skip.
+  Assert that the gate and `tools/` belong to the SAME repository root as the package (one root,
+  and that root a git worktree), or scope the suite to canonical only. Also establish whether the
+  file is even tracked before reading its failures as a regression of the branch being published:
+  this suite was untracked in the clone, so its red run said nothing about the commit.
+- **A gate that walks its own package directory scans `.git/` when the package root IS the
+  repository root.** The same byte-identical gate reported 121 findings, every one of them
+  `binary-file` under `.git/objects/…`, in a standalone clone — and `PASS` in the runtime tree,
+  which has no `.git`, and in the monorepo, where the package sits one level below the root.
+  Read the finding CLASS before debugging content: all-`binary-file`-under-`.git` is a scope
+  artifact, not a leak. Run the gate from the runtime tree, or add `.git` to its exclusions in
+  its own change — it ships byte-identically in every tool, so a local edit diverges the copies.
 - **Count unittest result markers, not substrings — and only with `-v`.** Two opposite failures,
   same cause. A check written as `'skipped' in line` reported a skip that had not happened, because
   this very suite contains a test NAMED `test_pycache_and_pyc_are_skipped`; the name alone tripped
@@ -354,6 +463,10 @@ git rev-list <base>..HEAD | while read s; do git log -1 --format=%B $s; done
 
 Refer to identifiers **by their gate label** in prose that goes public (`codename-4`,
 not the token). The label carries the whole lesson; the token only carries the leak.
+That includes examples written *into the skill while recording the lesson*: an audit
+section naturally opens with "Real failing case (<token> revision)", which is how a
+codename the gate had already purged re-entered `SKILL.md` and reddened the next publish.
+Genericize at write time ("a legal-QA revision round"), not at publish time.
 
 Two consequences worth knowing before you need them:
 
@@ -401,7 +514,11 @@ a runtime test that assumes it is there.
 
 `gh` installed as a snap is confined and cannot read a repository under a dotted
 directory such as `~/.hermes/skill_repos/`; it fails with `not a git repository`
-even from inside the worktree. Do not conclude the remote is misconfigured. Push
+even from inside the worktree. Do not conclude the remote is misconfigured. Every
+subcommand needs an explicit `-R <owner>/<repo>`: `gh run list`, `gh run view` and
+`gh pr view` fail with `failed to determine base repo: … not a git repository` from
+inside the very worktree `git push` just succeeded in, because they resolve the
+repository the same confined way. Push
 over SSH as normal, then create and merge the pull request through the REST API
 with a token that carries repo scope:
 
