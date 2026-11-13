@@ -87,11 +87,37 @@ def _docx_paragraphs(path: Path) -> list[str]:
     return docx_paragraphs(path)
 
 
+MD_TABLE_ROW = re.compile(r"^\s*\|.*\|\s*$")
+MD_TABLE_DELIM = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
+
+
+def _is_table_block(block: str) -> bool:
+    """True when a Markdown block is a pipe table, not prose.
+
+    Table cells are separated by `|` and read as one run-on sentence, so
+    clause_overload fires on every wide table row (measured: 2 false positives
+    on a manuscript whose only two flagged paragraphs were Bảng 2 and Bảng 3).
+    Table content is structured data, not paragraph discourse, and the
+    paragraph-level checks do not apply to it.
+    """
+    lines = [ln for ln in block.splitlines() if ln.strip()]
+    if not lines:
+        return False
+    rows = [ln for ln in lines if MD_TABLE_ROW.match(ln)]
+    if len(rows) >= 2 and len(rows) == len(lines):
+        return True
+    return any(MD_TABLE_DELIM.match(ln) for ln in lines)
+
+
 def read_paragraphs(path: Path) -> list[str]:
     if path.suffix.lower() == ".docx":
         return _docx_paragraphs(path)
     text = path.read_text(encoding="utf-8")
-    return [" ".join(block.split()) for block in re.split(r"\n\s*\n", text) if block.strip()]
+    return [
+        " ".join(block.split())
+        for block in re.split(r"\n\s*\n", text)
+        if block.strip() and not _is_table_block(block)
+    ]
 
 
 def _sentences(paragraph: str) -> list[str]:

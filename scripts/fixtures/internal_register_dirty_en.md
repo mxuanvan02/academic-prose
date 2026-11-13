@@ -6,7 +6,7 @@ The team remains to be done with domain stratification; annotation is still in p
 
 We checked the identifiers and the checksum matched, with 0 errors.
 
-Results in `/Users/van/ket_qua_v9.csv` and `main.tex` show X.
+Results in `/Users/alice/ket_qua_v9.csv` and `main.tex` show X.
 
 As requested, TODO will be completed.
 

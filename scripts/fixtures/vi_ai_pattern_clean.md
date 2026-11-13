@@ -13,3 +13,7 @@ So với TT-MPC, ET-MPC giảm 65,3 phần trăm năng lượng truyền thông 
 Sai số bám tăng khi tỷ lệ mất gói vượt 0,15, đo trên 10 hạt giống ngẫu nhiên.
 
 Các mức trên được tính trong phạm vi mô hình chuẩn hóa và chuỗi kênh tổng hợp.
+
+Quy ước đếm trong nghiên cứu này là độ sâu khai của mỗi lệnh được cộng vào đúng giờ.
+
+Chúng tôi cần phải chuyển đổi chỉ báo của nghiên cứu sang phát thải mê-tan theo phương pháp chuẩn.

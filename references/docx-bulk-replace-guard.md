@@ -1,6 +1,6 @@
 # DOCX Bulk-Replace Guard
 
-Measured failures from HOEIT-LegalQA round-6 DOCX edit (6.6 MB, 85 paras, 4 tables).
+Measured failures from a large Vietnamese DOCX edit (6.6 MB, 85 paras, 4 tables).
 Global `str.replace` produced three classes of regression; guard before applying bulk edits.
 
 ## 1. Language- and zone-scoped terminology

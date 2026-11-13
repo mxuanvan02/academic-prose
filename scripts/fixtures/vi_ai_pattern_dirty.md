@@ -13,3 +13,7 @@ Sự hội tụ của các công nghệ hiện đại đã mở đường cho m�
 Kết quả có thể có khả năng phần nào gợi ý rằng phương pháp này dường như hiệu quả hơn.
 
 Việc tiến hành thực hiện đánh giá được triển khai nhằm mục đích để bảo đảm chất lượng cao.
+
+Người đọc có thể thấy rằng quy ước đếm của bài là độ sâu khai của mỗi lệnh được cộng vào đúng giờ.
+
+Ta cần phải chuyển đổi chỉ báo của bài sang phát thải mê-tan theo phương pháp chuẩn.

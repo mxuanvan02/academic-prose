@@ -236,11 +236,26 @@ language tends to absorb two concepts into one word.
 | equity / equality | công bằng / bình đẳng | both drift to `công bằng` |
 | statistical significance / practical importance | có ý nghĩa thống kê / quan trọng về thực hành | both drift to `đáng kể` |
 | token / word | đơn vị từ (token) / từ | both drift to `từ` |
+| question answering (task family) / multiple-choice QA (instance format) | hỏi–đáp (họ nhiệm vụ) / trắc nghiệm N lựa chọn (dạng cụ thể) | both drift to `trắc nghiệm`, or the family name is used for one format |
 
 When two source terms are separated in the argument, their renderings must be
 separated too, and each carries its source form at first use. Collapsing them is
 `distinction_collapse_by_translation`, a blocking failure, because it changes what
 the text claims rather than how it reads.
+
+**Task-family vs instance-format is the same trap one level up.** A dataset paper
+whose resources are named after a broad task family (TQA, QA, reading
+comprehension) but whose artifact is one narrow format (four-option MCQ) must
+define both at first use and then keep them distinct everywhere — title,
+abstract, contributions, captions, conclusion, dataset card, and repository README. Measured author correction:
+*"TQA không hẳn là trắc nghiệm đâu, phải định nghĩa rõ ràng"* — the draft had
+used `trắc nghiệm` and `hỏi–đáp` interchangeably for a resource that is
+specifically a four-option MCQ instance of the broader textbook-QA family. The
+repair pattern: one definitional sentence in the Introduction
+(`Hỏi–đáp dựa trên giáo trình (textbook question answering, TQA) là họ nhiệm vụ
+rộng, gồm cả dạng trả lời tự do và dạng trắc nghiệm; <dataset> thuộc dạng trắc
+nghiệm bốn lựa chọn, trong đó mỗi câu hỏi kèm bốn phương án và có đúng một đáp
+án đúng`), then sweep every occurrence of both terms against it.
 
 ## 6. Rigid designators
 

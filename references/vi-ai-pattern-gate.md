@@ -40,6 +40,8 @@ carrying a number.
 | `ornamental_triad` | three or more distinct ornamental adjectives in one sentence with no quantity anywhere in it | `replace_with_measurement` |
 | `translation_calque` | registry §4 calques (`mở đường cho`, `nó được phát hiện ra rằng`, `trong điều khoản của`) | `recast` |
 | `hedge_stack` | three or more distinct hedge markers in one sentence (registry §6 stack collapse) | `recast` |
+| `self_reference` | registry §11: the manuscript naming itself as `bài` (`của bài`, `bài +` a finite verb), excluding the licensed compound nouns | `recast` |
+| `bare_first_person` | registry §11: `ta` in a verb slot (`ta cần phải`, `ta đề xuất`), excluding the noun uses | `recast` |
 | `machine_marked_passage` | three or more *distinct* classes inside a three-sentence window (registry §8) | `recast` |
 
 Permitted verdicts: `replace_with_measurement`, `delete`, `recast`, `license`.
@@ -73,6 +75,8 @@ The scanner suppresses these itself; do not re-flag them by hand.
   Vietnamese information structure, not a dummy subject.
 - **Decimal comma and en-dash ranges.** `0,847`, `2015–2025`, `tr. 145–162` are
   correct Vietnamese convention and must survive byte-identical.
+- **Compound nouns naming an object.** `bài báo`, `bài toán`, `bài học`, `bài tập`, `bài nghiên cứu` name an object, not the manuscript. A detector that excludes only `bài báo` reports `Mục tiêu của bài toán` (measured false positive, now a regression test).
+- **`ta` as a noun.** `héc-ta`, `đơn vị ta`, `nhà nghiên cứu ta` are ordinary Vietnamese. The detector requires a following verb from a closed set.
 - **Protected tokens.** `\cite{...}`, `\ref{...}`, `\label{...}`, math,
   `verbatim`/`lstlisting`, URLs, and DOIs are stripped before scanning.
 
@@ -108,6 +112,11 @@ were licensed constructions from §7. Each became a regression test:
 | `khả thi`, `hồi quy` | `test_sino_vietnamese_terminology_is_not_ceremonial` |
 | `Về phương pháp, …` | `test_topic_comment_structure_is_not_a_dummy_subject` |
 | `p < 0,05` | `test_statistical_significance_is_not_padding` |
+| `của bài` / `bài +` verb | `test_self_reference_is_a_candidate` |
+| `ta cần phải` | `test_bare_first_person_ta_is_a_candidate` |
+| `bài toán`, `bài báo` | `test_bai_compound_naming_an_object_is_licensed` |
+| `héc-ta`, `đơn vị ta` | `test_ta_as_a_noun_is_licensed` |
+| `chúng ta` | `test_chung_ta_is_licensed` |
 
 After calibration the same thesis reported **15 real candidates**, all repaired
 by replacing the evaluation with the measurement or deleting the frame.

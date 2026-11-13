@@ -84,6 +84,10 @@ REQUIRED = (
     "scripts/fixtures/internal_register_dirty_en.md",
     "scripts/fixtures/internal_register_clean.md",
     "scripts/fixtures/internal_register_clean_en.md",
+    "scripts/fixtures/internal_register_form_dirty.md",
+    "scripts/fixtures/internal_register_form_dirty_en.md",
+    "scripts/fixtures/internal_register_form_clean.md",
+    "scripts/fixtures/internal_register_form_clean_en.md",
 )
 
 CAPABILITIES = {

@@ -38,6 +38,60 @@ the definition site, not in Limitations.
 | Label-output share | items choosing a label ÷ items evaluated | Independent of correctness, therefore identifies no mechanism for a skew. |
 | Exact-duplicate rate | records in any group of size ≥ 2 ÷ total records | The counting unit decides the number: a key occurring twice contributes two records, not one. This is why a within-split record count and a cross-split key count are not comparable figures. |
 
+## Formula-plus-symbol-list form (Vietnamese manuscripts)
+
+The prose form above is the default for English venues and for statistics reported
+inline. For a methods/theory section in a Vietnamese manuscript carrying many
+formulas, this author prefers the block form and has asked for it explicitly
+("cứ viết toán học thoải mái vào, dư một vài trang không ảnh hưởng"):
+
+```latex
+\begin{equation}
+w_{t+1}=\mathrm{clip}_{\le FC}\!\left(w_t+P_t-RO_t-ET_{c,t}+\eta\,u_t\right)
+\label{eq:bucket}
+\end{equation}
+trong đó:
+\begin{symbolist}
+\item[$w_t$] lượng nước tầng rễ tại giờ $t$ (mm);
+\item[$P_t$] mưa (mm);
+\item[$\eta$] hiệu suất tưới (không thứ nguyên).
+\end{symbolist}
+```
+
+Rules that make it readable:
+
+- **One symbol per line, symbol first, meaning second, unit last.** The vertical
+alignment is what makes it skimmable; a run-on sentence listing five symbols is
+what this form replaces.
+- **Always state the unit or `(không thứ nguyên)`.** A symbol list without units
+reintroduces the ambiguity the list was meant to remove.
+- **Define the environment once in the preamble / class**, as a `description` with
+`\footnotesize\setlength{\itemsep}{0.5pt}\setlength{\parsep}{0pt}`. Put it in the
+class or preamble, never in a `blocks/` file that a number-consistency gate scans —
+the `\setlength` literals get counted as research figures.
+- **One formula per `equation`; split compound definitions** (`\tau(n)=\ldots` and
+`\sigma^2=\ldots` are two equations, not one line). Equations the reader must parse
+in pieces belong in separate numbered displays.
+- **`trong đó:` sits between the display and the list, inside the enclosing
+environment** (proposition, theorem, or plain section body). Placing it after a
+`\end{proof}` detaches the symbol list from the formula it defines.
+- **Keep a two-column build in mind.** The list is fine in one column; the display
+is not. Long displays need `\begin{split}`, and wide figures promoted to `figure*`,
+when the same source also builds a two-column version.
+
+Page cost is the trade: this form adds roughly half a page per five formulas. Accept
+the overage rather than compressing the list back into prose; say so in the delivery
+note instead of trimming science.
+
+## Do not repeat a confidence interval in parentheses at every mention
+
+State the estimate as the fraction with the percentage on first introduction
+(`16/60 (26,7%)`) and drop `(khoảng Wilson 95%: [17,1%; 39,0%])` from every later
+mention. Repeating the interval parenthetically on each restatement is noise the
+author removes on sight; keep the interval for the first full report, a table, or
+the supplement. The fraction carries the sample size, which is what a reader needs
+to judge the estimate at a glance.
+
 ## Placement verification
 
 Rendered reading order is not evidence, and a caption can use a metric before the

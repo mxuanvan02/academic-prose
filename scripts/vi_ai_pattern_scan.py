@@ -21,6 +21,10 @@ Design notes that matter for correctness:
 * Reminder framing (`cần lưu ý rằng`, `đáng chú ý là`) is owned by
   `internal_register_scan.py`; it is deliberately absent here so one sentence is
   not reported twice by two gates.
+* Explanatory colons (registry §2b) are licensed per-position, not per-sentence:
+  venue labels, DOI/URL strings, ratios and times, the bibliography section, and
+  English-only sentences (a bilingual manuscript keeps the English title colon)
+  never count. Only Vietnamese body prose is measured.
 * `tối ưu`, `ngày càng` and `đa dạng` are excluded as standalone ceremonial words:
   in control engineering `điều khiển tối ưu` / `tối ưu hóa` are terminology
   (registry §7), so a standalone rule produces more noise than signal. They are
@@ -180,12 +184,49 @@ HEDGE = [
     r"có\s+xu\s+hướng",
 ]
 
+# Registry §11: Vietnamese self-reference and first-person register.
+#
+# A Vietnamese manuscript that refers to itself as "bài" and speaks in the bare
+# first person "ta" reads as a machine rendering of an English draft. These are
+# STRUCTURAL tells, not a vocabulary list: the detector matches the slot, and
+# the repair table lives in the registry, not here.
+#
+# The "bài" match excludes the compound nouns that legitimately take "bài"
+# ("bài báo", "bài học", "bài toán", "bài tập", ...), because those name an
+# object rather than the manuscript.
+# Compound nouns that legitimately take "bài" and therefore name an OBJECT
+# rather than the manuscript: "bài báo", "bài toán", "bài học", "bài tập",
+# "bài kiểm tra", "bài nghiên cứu", ... A match on one of these is ordinary
+# Vietnamese and must not be reported.
+BAI_COMPOUND = (
+    r"báo|học|toán|tập|viết|phát|thuyết|trình|kiểm|đề|nội\s+dung|quan|"
+    r"trắc|đối|chiếu|song|hát|cổ|sử|thơ|tốn|phụ|lục|văn|nghệ|"
+    r"nghiên\s+cứu"
+)
+
+SELF_REFERENCE = [
+    r"của\s+bài(?!\s+(?:" + BAI_COMPOUND + r"))",
+    r"\bbài(?!\s+(?:" + BAI_COMPOUND + r"))\s+(?:không|chưa|đã|được|có|"
+    r"đặt\s+ra|trình\s+bày|cung\s+cấp|chỉ\s+ra)\b",
+]
+
+# The bare first person "ta" is only a tell in a VERB slot: "ta cần phải",
+# "ta đề xuất", "ta thấy". As a noun ("héc-ta", "đơn vị ta") it is ordinary
+# Vietnamese and must not be flagged. The lookbehind for "chúng " is fixed
+# width because Python's `re` rejects a variable-width lookbehind.
+FIRST_PERSON_TA = [
+    r"(?<!chúng )(?<![\w-])ta\s+(?:cần|phải|thấy|đề\s+xuất|cho\s+rằng|"
+    r"khẳng\s+định|có\s+thể|cho\s+thấy|quyết|định\s+ý)\b",
+]
+
 PATTERNS: dict[str, list[str]] = {
     "ceremonial_padding": CEREMONIAL,
     "unquantified_intensifier": UNQUANTIFIED,
     "empty_framing": EMPTY_FRAMING,
     "translation_calque": CALQUE,
     "symmetric_padding": DECORATIVE_PAIR,
+    "self_reference": SELF_REFERENCE,
+    "bare_first_person": FIRST_PERSON_TA,
 }
 
 # --- licences (registry §7 and measured false positives) ---------------------
@@ -202,13 +243,43 @@ METHOD_TERM = re.compile(
     re.I,
 )
 
+# --- explanatory-colon licences (registry §2b) -------------------------------
+
+VI_DIACRITIC = re.compile(
+    r"[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợ"
+    r"ùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊ"
+    r"ÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴĐ]"
+)
+# A colon that belongs to notation, not to prose structure. The pattern must
+# SPAN the colon itself: `\bdoi\b` protects only the word, so the colon that
+# follows it still looks like prose and gets flagged (measured test failure).
+COLON_NOTATION = re.compile(
+    r"https?\s*:|\bwww\.|\b(?:doi|pmid|ssrn|orcid|isbn|issn|arxiv|id)\s*:"
+    r"|\d\s*:\s*\d",
+    re.I,
+)
+# Venue-mandated labels keep their colon. The author block is one of these
+# zones: `Tác giả liên hệ:` and `Email tác giả chính:` are required front-matter
+# labels, not explanatory prose. Measured false positive before this extension:
+# 2 of 3 hits on a clean manuscript came from the author block alone.
+COLON_LABEL = re.compile(
+    r"(?:từ\s+khóa|keywords?|tóm\s+tắt|abstract|bảng\s+\d+|hình\s+\d+|"
+    r"liên\s+hệ|chú\s+thích|ghi\s+chú|"
+    r"(?:tác\s+giả\s+)?(?:chính|liên\s+hệ|phụ)\s*|"
+    r"corresponding\s+author|lead\s+author|"
+    r"e?[-\s]?mail(?:\s+tác\s+giả)?(?:\s+chính)?|"
+    r"đơn\s+vị\s+công\s+tác|affiliation|\borcid\b)\s*:",
+    re.I,
+)
+BIB_SECTION = re.compile(r"tài\s+liệu\s+tham\s+khảo|references?|bibliography", re.I)
+
 QUANTITY = re.compile(re.escape(NUM) + r"|\d")
 SOURCE = re.compile(re.escape(CITE))
 
 GENRE_LICENSED = {
     "manuscript": set(),
     "thesis": set(),
-    "acknowledgement": {"ceremonial_padding", "symmetric_padding"},
+    "acknowledgement": {"ceremonial_padding", "symmetric_padding", "explanatory_colon"},
     "response_letter": {"empty_framing"},
 }
 
@@ -221,6 +292,9 @@ THRESHOLDS = {
     "ornamental_triad": 0,
     "hedge_stack": 0,
     "machine_marked_passage": 0,
+    "explanatory_colon": 0,
+    "self_reference": 0,
+    "bare_first_person": 0,
 }
 
 VERDICTS = ("replace_with_measurement", "delete", "recast", "license")
@@ -274,6 +348,43 @@ def _licensed(code: str, sentence: str, hit_start: int, in_ack: bool) -> bool:
 
 def _count_distinct(sentence: str, patterns: list[str]) -> int:
     return sum(1 for p in patterns if re.search(p, sentence, re.I))
+
+
+SENT_BOUNDARY = re.compile(r"(?<=[.!?])\s+|\n{2,}")
+
+
+def _explanatory_colons(text: str) -> list[int]:
+    """Positions of colons that structure Vietnamese prose rather than notation.
+
+    Licensed: notation (URL/DOI/ratio/time), venue labels, and English-only
+    text -- a bilingual manuscript keeps the standard English title colon.
+
+    The English licence is applied PER SENTENCE, not per section: a bilingual
+    front matter holds the VN and EN abstracts in one section, so a
+    section-level diacritic test flags the EN title colon (measured: 2 false
+    positives on a real manuscript).
+    """
+    if ":" not in text:
+        return []
+    protected: list[tuple[int, int]] = []
+    for rx in (COLON_NOTATION, COLON_LABEL):
+        protected += [(m.start(), m.end()) for m in rx.finditer(text)]
+    out = []
+    offset = 0
+    for chunk in SENT_BOUNDARY.split(text):
+        start = text.index(chunk, offset) if chunk else offset
+        offset = start + len(chunk)
+        if ":" not in chunk:
+            continue
+        # English-only sentence: standard academic English keeps the title colon.
+        if not VI_DIACRITIC.search(chunk):
+            continue
+        for m in re.finditer(r":", chunk):
+            pos = start + m.start()
+            if any(a <= pos < b for a, b in protected):
+                continue
+            out.append(pos)
+    return out
 
 
 def scan(text: str, genre: str = "manuscript") -> dict:
@@ -353,6 +464,27 @@ def scan(text: str, genre: str = "manuscript") -> dict:
 
             per_sentence_classes.append(classes)
 
+        # Registry §2b: explanatory colons are a document-level density defect,
+        # not a per-sentence lexical hit, so they are audited over each section's
+        # raw text (headings included) rather than over flattened sentences. The
+        # bibliography section is exempt: its colons are bibliographic punctuation.
+        if "explanatory_colon" not in genre_licensed and not in_ack:
+            scope = f"{heading}\n{body}" if heading else body
+            if BIB_SECTION.search(heading or ""):
+                scope = heading or ""
+            for pos in _explanatory_colons(scope):
+                findings.append(
+                    {
+                        "section": section_idx,
+                        "heading": heading,
+                        "sentence": 0,
+                        "class": "explanatory_colon",
+                        "span": scope[max(0, pos - 90) : pos + 90].replace("\n", " ").strip(),
+                        "matched": ["explanatory colon in Vietnamese prose"],
+                        "verdict": "recast",
+                    }
+                )
+
         # Registry §8: a passage is machine-marked only when several independent
         # signals co-occur. One sentence carrying three distinct classes already
         # is co-occurrence, so the window must also cover documents shorter than
@@ -415,7 +547,10 @@ def scan(text: str, genre: str = "manuscript") -> dict:
         "manual_pass_required": True,
         "note": (
             "A lexical hit is a candidate, never a verdict; absence of hits is a partial "
-            "verification only. Hedge deletion and terminology drift are not detectable here."
+            "verification only. Hedge deletion and terminology drift are not detectable here. "
+            "For `explanatory_colon`, registry §2b allows up to one per 1.000 words of body "
+            "prose and none in headings or captions, so adjudicate against that density "
+            "rather than treating every hit as a defect."
         ),
         "exit_code": 2 if findings else 0,
     }

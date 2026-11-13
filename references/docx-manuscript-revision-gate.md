@@ -181,3 +181,29 @@ straddle a page boundary. After inserting, render both copies, locate the captio
 by page, and confirm every cell value appears on that page. In the measured round
 the new table added exactly one page (15 → 16 clean, 17 → 18 tracked); a page
 delta larger than the inserted content is a layout defect, not a page count.
+
+## 8. A builder that locates blocks by content literal silently drops them
+
+A generator that finds a block by a hardcoded prefix — `next(l for l in lines if
+l.startswith("**FROM"))` — falls through to its default the moment the source text
+changes, and the block disappears from the output with no error. Measured: after the
+manuscript was retitled, the entire English title vanished from the DOCX while page
+count, word count, and every prose gate stayed clean.
+
+Rules:
+
+1. Locate blocks by a **structural predicate**, not a content literal. For a bold
+   title line: first line starting with `**` that is not one of the known label
+   prefixes (`**Abstract:**`, `**Keywords:**`). The literal is correct only until the
+   author retitles the work.
+2. After every build, assert each expected block is present **in the rendered
+   output** — title, abstract, keywords, bibliography, the translated section — with
+   its intended size and weight. A paragraph count passes when one block is missing
+   and another grew.
+3. Grep the built PDF for a string unique to each block. A dropped block is invisible
+   to word counts, page counts, and prose scans because the remaining text is still
+   valid prose.
+4. When a source-facing identifier, label, or prefix is changed anywhere in the
+   manuscript, grep the build scripts for the old literal in the same pass. Build
+   scripts carry the manuscript's structure as hardcoded strings and are the last
+   place anyone looks.

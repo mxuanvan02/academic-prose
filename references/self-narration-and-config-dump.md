@@ -4,7 +4,7 @@ Two register leaks distinct from `operational_log_prose`. That failure imports t
 register of a **build log**. These two import the register of the author's own
 **drafting notes** and of the **source code**.
 
-Measured case: the same Vietnamese dataset paper (HOEIT-LegalQA → HUJOS-TT).
+Measured case: the same Vietnamese dataset/benchmark paper.
 Every number was correct, the manuscript hit its page cap, both language versions
 passed the abstract word cap, and the visual gate returned zero findings. The user
 still rejected the prose with: *"toàn là mấy câu tự thuật, tự nhắc nhở..."*

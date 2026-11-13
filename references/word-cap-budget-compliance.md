@@ -41,6 +41,51 @@ Measured cost, Chicago Notes-Bibliography, 37 sources / 60 note markers:
 So: `prose_allowance = cap − footnotes − bibliography − tables`. Compute this number
 **once**, write to it, and stop treating the cap as the prose target.
 
+### The call for papers and its own attached template disagree — read both, take the intersection
+
+Venues routinely publish a number in the notice and a different one in the template they
+attach. Measured case: the notice said `tóm tắt 200–250 chữ`, `4–6 từ khóa`,
+`5.000–7.000 chữ`; the attached template said `tói đa 200 từ`, `tối đa 5 từ khóa`,
+`không quá 9 trang A4`. Four of the five figures conflict, and the binding document is
+the template — it is what the editor will paste the submission into.
+
+Resolve this at intake, before drafting, by intersecting:
+
+| Constraint | Notice | Template | Write to |
+| --- | --- | --- | --- |
+| Abstract | 200–250 | ≤200 | **exactly 200** — the only value in both ranges |
+| Keywords | 4–6 | ≤5 | **4 or 5** |
+| Length | 5.000–7.000 words | ≤9 pages | both; see the floor/ceiling trap below |
+
+A figure that satisfies only one document is a defect the other document's checker will
+flag. Landing the abstract on exactly 200 words cost three rebuilds when discovered late;
+costed at intake it costs one.
+
+Also read the template for requirements the notice omits entirely. The same template
+demanded a full English title plus Abstract and Keywords blocks, and a declaration of AI
+tool use — neither appeared in the notice. A submission missing a required block is
+rejected on format before a reviewer reads a word.
+
+### A word floor with a page ceiling is a trap — measure both after every pass
+
+`5.000–7.000 words` and `≤9 pages` are not redundant statements of one limit. They point
+in opposite directions once the manuscript is dense: at 12 pt single-spaced with 3 cm
+margins, ~6.100 words of Vietnamese fills nine pages, so the floor and the ceiling leave
+a window of a few hundred words and no more.
+
+Consequences that must be planned for:
+
+- **A reviewer fix that restores omitted content can push the page count over.** The
+  restore is not optional and the ceiling is not negotiable, so the space has to come
+  from cutting what the restore made redundant — not from refusing the fix.
+- **Re-measure the rendered page count after every content pass**, not at delivery. A
+  pass that adds three sentences of substance is exactly the pass that breaks the
+  ceiling, and it looks harmless in the word count.
+- **Read the page count from the converter's own line.**
+  `pdfinfo file.pdf | awk '/Pages:/{print $2}'` is unambiguous; a looser pattern like
+  `grep -o '[0-9]*$' | head -1` matches a number out of any trailing field and will
+  report a nine-page document as two.
+
 ## 3. Citation density is a budget decision, not only a quality decision
 
 Chicago NB charges **twice** per source: a full first note (~25–30 words) plus a

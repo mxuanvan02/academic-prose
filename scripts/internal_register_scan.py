@@ -137,6 +137,40 @@ PATTERNS: dict[str, list[str]] = {
         r"\b(?:avoid|prevent)\s+(?:a\s+)?(?:rejection|desk\s+reject)",
         r"\btránh\s+bị\s+(?:từ\s+chối|loại)\b",
     ],
+    # Genre-gated: fires ONLY for a reusable companion artifact (a form, checklist,
+    # worksheet, protocol sheet) shipped beside a paper. Such an artifact must stand
+    # alone: a reader who holds only the form cannot resolve `(Bảng 1)` or `(mục 3.2)`,
+    # because those numbers belong to the parent document's own numbering.
+    #
+    # The same string is REQUIRED prose in the manuscript itself — `Bảng 2 cho thấy
+    # độ chính xác 55,43%` is a legitimate cross-reference there, and an existing test
+    # pins it as clean. So this class cannot be keyed on wording; it is keyed on genre,
+    # exactly like `venue_ambition_leak` is keyed on cover_letter vs manuscript.
+    #
+    # Deliberately narrow, to keep the false-positive rate usable on a form that
+    # numbers its OWN parts: parenthesised `(Bảng N)` / `(mục N.M)`, a dotted section
+    # number `mục 3.2.1`, `khuyến nghị N`, and an explicit «của bài báo». A form that
+    # labels its own blocks with letters (A, B, C, D) never matches.
+    "companion_cross_reference": [
+        r"\(\s*(?:Bảng|Hình|Biểu)\s+\d",
+        r"\(\s*(?:mục|chương|phần)\s+\d",
+        r"\bmục\s+\d+(?:\.\d+)+",
+        r"\b(?:khuyến\s+nghị|kiến\s+nghị)\s+\d+\b",
+        r"\b(?:của|trong)\s+bài\s+(?:báo|viết)\b",
+        r"\(\s*(?:Table|Figure|Fig\.)\s+\d",
+        r"\(\s*(?:Section|Chapter|Appendix)\s+\d",
+        r"\bSection\s+\d+(?:\.\d+)+",
+        r"\bRecommendation\s+\d+\b",
+        r"\b(?:of|in)\s+the\s+(?:paper|article|manuscript)\b",
+    ],
+}
+
+# Classes that exist only for one genre. Keyed here rather than in GENRE_LICENSED so
+# the class still appears in the threshold table (observed=0) for every other genre:
+# licensing a class removes it from `checks`, and an existing test asserts the reported
+# checks are exactly `set(THRESHOLDS)`. Skipping it in the pattern loop keeps both true.
+GENRE_ACTIVE: dict[str, set[str]] = {
+    "companion_cross_reference": {"reusable_form"},
 }
 
 # Claim-denial markers only. A bare `chỉ` or `không` is ordinary Vietnamese; the
@@ -188,6 +222,13 @@ GENRE_LICENSED: dict[str, set[str]] = {
     "teaching": {"document_as_subject"},
     "slides": {"document_as_subject"},
     "speaker_notes": {"document_as_subject"},
+    # A review form's whole function is to record acts of verification and to tell the
+    # filler what must be stated, so `verification_log_prose` is the genre's register,
+    # not production residue. Measured, not assumed: scanning a real one-page review
+    # form as `manuscript` reported exactly one finding — «chưa phải bằng chứng đã xác
+    # nhận» — a legitimate criterion note. Declaring the genre removes the false
+    # positive without weakening the manuscript gate.
+    "reusable_form": {"verification_log_prose"},
 }
 
 SENTENCE = re.compile(r"(?<=[.!?;])\s+|\n{2,}")
@@ -207,6 +248,10 @@ THRESHOLDS = {
     "venue_ambition_leak": 0,
     "document_as_subject": 1,  # one roadmap per document
     "defensive_disclaimer_stack": 0,
+    # Zero tolerance: a form that reaches outside itself is broken for every reader
+    # who does not also hold the paper. Revision-level, not blocking — the fix is a
+    # deletion, and no fabricated claim is involved.
+    "companion_cross_reference": 0,
 }
 
 
@@ -291,6 +336,12 @@ def scan(text: str, genre: str = "manuscript") -> dict:
         for local_idx, sentence in enumerate(sentences, 1):
             for code, patterns in PATTERNS.items():
                 if code in licensed:
+                    continue
+                # Genre-gated class: skip the patterns entirely outside its genre, but
+                # leave it in the threshold table below so the report still shows
+                # `observed 0` rather than silently dropping the check.
+                active = GENRE_ACTIVE.get(code)
+                if active is not None and genre not in active:
                     continue
                 matched = [p for p in patterns if re.search(p, sentence, re.I)]
                 if not matched:

@@ -58,7 +58,7 @@ The implementation is available only when all of the following pass:
 ## 6. LaTeX sources: extract prose before scanning
 
 Running the scanner on a raw `.tex` source counts preamble lines, title
-blocks, and `tabular` rows as sentences. Measured (HOEIT HUJOS build,
+blocks, and `tabular` rows as sentences. Measured (Vietnamese XeLaTeX build,
 2026-09-16): 7 `clause_overload` candidates, **all false positives** — the
 quoted "sentences" were `\documentclass…\usepackage` chains, the bilingual
 author/affiliation block, and table bodies. On prose-only text (preamble,

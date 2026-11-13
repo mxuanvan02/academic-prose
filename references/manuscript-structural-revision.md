@@ -2,6 +2,8 @@
 
 Use this playbook when feedback concerns density, section roles, citation coverage, notation order, or the meaning of the paper—not merely sentence polish.
 
+When the feedback is a received peer-review report on a paper with a public code/data artifact, follow `references/peer-review-revision-evidence.md` first (reproduce → verify tables byte-for-byte → answer from re-executed evidence); this file then governs the structural editing itself.
+
 ## 1. Diagnose by rhetorical function
 
 Build a section map before editing:

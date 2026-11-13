@@ -52,6 +52,14 @@ Do not open a block with gratitude. One thanks at the top of the letter is
 courtesy; thirty are padding, and `symmetric_padding` applies here exactly as it
 does in prose.
 
+**Match the reviewers' own length register.** A review that states each point in
+one or two sentences is answered in one or two sentences: what was measured or
+changed, the numbers, and the locator. The mechanism behind a result belongs in
+the manuscript; a letter that re-argues the analysis reads as defensive and
+invites the editor to re-open points the numbers already settled. Mirroring
+brevity is not weakening an answer -- every number, denominator, and hedge still
+carries over intact.
+
 ### The three verdicts
 
 **Accept.** Make the change, then say precisely what it was. "We have revised the

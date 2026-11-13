@@ -21,3 +21,9 @@ Trong nghiên cứu này, bài toán tối ưu hóa lồi được giải bằng
 Phương án được coi là khả thi khi thỏa đồng thời ràng buộc định lượng và điều kiện phân tầng.
 
 Kết quả có thể gợi ý rằng cơ chế kích hoạt theo sự kiện giảm tải truyền thông.
+
+Bài báo này trình bày phương pháp dựa trên bản sao số FAO-56.
+
+Chúng ta đã biết rằng các bài học từ thực nghiệm trước đó cần được kiểm chứng lại.
+
+Mục tiêu của bài toán là giảm thiểu sai số bám trên toàn tuyến.

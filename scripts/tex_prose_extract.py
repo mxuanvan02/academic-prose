@@ -3,7 +3,7 @@
 
 Why: run on raw `.tex`, `academic_discourse_scan.py` counts preamble lines,
 title blocks, and `tabular` rows as sentences and reports `clause_overload`
-false positives (measured on an 11-page HUJOS build: 7 hits, all markup —
+false positives (measured on an 11-page Vietnamese XeLaTeX build: 7 hits, all markup —
 `\\documentclass…\\usepackage` chains, author blocks, table bodies). The other
 three scanners can fire on macro names too. This filter produces prose-only
 text so scan results are adjudicated on real sentences.

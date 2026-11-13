@@ -203,6 +203,9 @@ machine tells. Codes and the licensed list are defined in
    invent a magnitude to satisfy this check.
 3. `empty_framing`, `translation_calque`, and `symmetric_padding` are deleted or
    recast; the proposition they wrap must survive unchanged.
+3a. `self_reference` and `bare_first_person` are recast into the register the
+   venue uses: "nghiên cứu này" / "công trình này" / "chúng tôi". The claim
+   and its qualification survive the recast unchanged.
 4. `hedge_stack` collapses to exactly one calibrated marker. Reducing hedges to
    zero is `stance_upgrade`, a blocking failure.
 5. `machine_marked_passage` requires several independent signals to co-occur;

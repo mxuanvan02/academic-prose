@@ -208,7 +208,64 @@ per-condition counts. Never report a mismatch rate computed across an unverified
 mapping. This is the `evidence-claim-reconciliation` pitfall of comparing labels
 instead of identities, occurring on the auditor's side of the table.
 
-## 9. Withdrawn findings are reported, not deleted
+## 9. An LLM judge is an instrument, and instruments need a fixture gate
+
+A structured-judgment model (typed `Choice`/`Score`/`Noul` answers, no free
+text) can serve the *adversarial review* step: classify each paragraph's
+register, hedging, soundness and likely referee objection, then combine the
+answers in code. It cannot replace this gate and cannot write the review —
+it emits decisions, not prose. Two rules decide whether its output is usable.
+
+**Rule 1 — run a fixture gate before trusting any of it.** The same standard the
+scanners follow: one deliberately dirty fixture, one clean fixture taken from the
+manuscript under review, and the judge must separate them. Measured case
+(2026-09-22, 48-paragraph English manuscript, five typed questions per
+paragraph):
+
+| fixture | soundness | hedging | objection | revision |
+| --- | --- | --- | --- | --- |
+| deliberate overclaim | 0.00 | overclaim | statistics | 0.95 |
+| a sentence known to be mathematically wrong | 0.51 | overclaim | clarity | 0.75 |
+| the corrected version of that same sentence | 1.31 | balanced | **statistics** | 0.58 |
+
+The raw severity rule combined all five channels and flagged **26 of 48**
+paragraphs, including the clean fixture. The gate failed, so the rule was
+invalid — not the manuscript.
+
+**Rule 2 — drop channels that do not separate dirty from clean; never lower the
+threshold instead.** Per-channel inspection showed `soundness` (0.00 vs 1.31)
+and `hedging` (overclaim vs balanced) separated the fixtures, while
+`objection` answered `statistics` for both and `reproducible` sat at 0.07–0.10
+across the whole paper. Restricting severity to the two discriminating channels
+made the fixture gate pass and cut 26 candidates to **3**, of which one was a
+genuine defect: a sentence asserting `all four Holm-adjusted tests fall below
+α=0.05` *before* the following sentence disclosed that two of the four
+comparisons were below the pre-specified sample-size floor and therefore
+descriptive. That is a **hedge-ordering** defect — no watched-word list and no
+clause-length heuristic flags it, and a manual readability pass had already
+missed it.
+
+Lowering a threshold to rescue a non-discriminating channel manufactures
+findings: the channel carries no information, so any cutoff is noise. Deleting
+the channel is the honest move, and the deletion is itself the evidence that the
+fixture gate was run.
+
+Also record what the judge **cannot** see. It receives one paragraph per call,
+so it has no access to the rest of the paper: a claim properly bounded two
+paragraphs later reads to it as an overclaim, and a paragraph dense with
+formulas scores low on clarity regardless of prose quality. Both were observed
+(clarity mean 0.38 on formula-dense paragraphs vs 0.72 on prose-only ones —
+the vendor documents weak numeric/math handling as a known limitation). Treat
+such a channel as confounded and exclude it from the verdict, exactly as a
+measurement confounded by an unmodelled covariate is excluded from a result.
+
+Finally: the deterministic scanners stay deterministic. An LLM judge adds a
+*third* opinion beside the scanners and the human, and the human still holds the
+four verdicts (`delete`, `recast`, `relocate`, `license`). Softening remains
+forbidden, and a judge's finding is a candidate like any other — never a
+verdict, never an automatic rewrite.
+
+## 10. Withdrawn findings are reported, not deleted
 
 An audit that silently drops a finding leaves no record that the check ran and
 failed, so the same error recurs and nobody learns the gate worked. State which

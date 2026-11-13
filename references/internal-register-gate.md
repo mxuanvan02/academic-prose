@@ -21,7 +21,7 @@ This gate operates in four modes, and all four are mandatory:
 
 ## 1. What counts as internal register
 
-Six classes. They have one cause — the draft was written next to the work
+Seven classes. They have one cause — the draft was written next to the work
 instead of next to the reader — and they need different repairs.
 
 | Class | Code | The sentence is about | Example tell |
@@ -33,10 +33,16 @@ instead of next to the reader — and they need different repairs.
 | internal artifact | `internal_artifact_reference` | a path on the author's machine, a working filename, a ticket, a commit hash, a sheet column | `/Users/…`, `main.tex`, `v9_final`, `commit b4f0a2d`, `#123` |
 | repository artifact | `repo_artifact_reference` | a script or data filename inside the project repository | `scripts/anchored_judge.py`, `all_judged_post_repair_v3.jsonl` |
 | production residue | `assistant_residue`, `placeholder_residue`, `revision_response_leak` | the conversation or the revision that produced the text | `theo yêu cầu của anh`, `TODO`, `như phản biện đã chỉ ra` |
+| companion cross-reference | `companion_cross_reference` | the numbering of a DIFFERENT document: the parent paper a reusable artifact was written next to | `(Bảng 1)`, `mục 3.2.1`, `mỗi khối tương ứng một bảng của bài báo`, `(Table 1)`, `Section 3.2.1` |
 
-`defensive_disclaimer_stack` is the seventh member and the only one with no
+`defensive_disclaimer_stack` is the eighth member and the only one with no
 lexical signature: each of its sentences is licensed alone, and the defect is
 their density.
+
+`companion_cross_reference` is the only member that is a defect in one artifact
+and *required* prose in another: `(Bảng 1)` and `mục 3.2` are how a manuscript
+points at its own tables, and an existing false-positive test pins exactly that
+sentence as clean. It is therefore gated by genre, not by wording — see §11.
 
 ## 2. Three tests, applied to every candidate sentence
 
@@ -142,6 +148,7 @@ A gate needs numbers, otherwise it is advice.
 | project-state sentences in Limitations or Future Work | 0 |
 | negation-of-claim markers (`chỉ`, `không phải`, `không chứng minh`, `không bảo đảm`, `không hàm ý`) | ≤ 2 within any 3 consecutive sentences |
 | divergence between language versions after repair | 0 |
+| cross-reference to the parent paper's numbering inside a reusable companion artifact | 0; revision-level, and **genre-gated** — fires only under `--genre reusable_form` |
 
 `SEM` cannot score 4 while a blocking class is present. `VOICE` cannot score 4
 while any self-address remains. `CONS` cannot score 4 while one language version
@@ -213,7 +220,7 @@ the fixtures. A detector tuned only on its own examples measures nothing.
    package options tripped the artifact patterns. Scan only between
    `\begin{document}` and `\end{document}` when the marker is present.
 3. **A repository filename is not a machine-local path.** `scripts/foo.py` in a
-   reproducibility statement is a legitimate public identifier; `/Users/van/…`
+   reproducibility statement is a legitimate public identifier; `/Users/alice/…`
    never is. Splitting these into two classes moved one manuscript from a false
    `block` to a correct revision-level finding, and left the genuine blocker (a
    bare commit hash in body prose) intact.
@@ -221,6 +228,36 @@ the fixtures. A detector tuned only on its own examples measures nothing.
 The general rule these share: **severity follows what the reader can reach.** A
 public repository path is reachable and belongs in a data statement; a path on
 one machine, a chat turn, and a placeholder are unreachable and block.
+
+### Calibration: the subject matter can be the lexical trigger
+
+A fourth false positive, measured on an English manuscript whose *topic* is
+automated verification (five-arm evaluation of deterministic admission
+conditions, 2026-09-22). `internal_register_scan --genre manuscript` returned two
+`verification_log_prose` hits, both non-blocking, both **licensed**:
+
+1. `every field checked by Eqs.~(7)--(14) was fixed before the item was worded`
+   — the subject is the *paper's own verifier*, which is the object of study.
+2. `leaves the question text unchecked, so a paraphrase passes it` — a stated
+   boundary of condition $G_6$, i.e. a Limitations claim.
+
+The English marker list for this class is
+`we checked / verified / confirmed / reran / compiled`. In a paper *about*
+verification those verbs are the domain vocabulary, so the marker fires on the
+subject matter rather than on the register.
+
+Adjudication rule: apply Test 1 (referent) as usual. If the semantic subject of
+`checked` is **the artifact under study** — a verifier, a test, a grading
+pipeline, a released script — the sentence is scientific prose about the world
+and is licensed. If the subject is **the writing team's own run** (`we reran the
+build and it compiled`), it is operational log and stays a finding.
+
+Do not silence this class by renaming the verb. `every field validated by
+Eqs.~(7)--(14)` still fires (`verified|confirmed` family) and reads worse; the
+technical meaning is carried by the word the pattern was built to find. Record
+the licence instead. This is the same shape as the repository-filename case
+above: **severity follows what the reader can reach**, and a condition the
+reader can inspect in the published paper is reachable.
 
 ### Bilingual symmetry is part of the gate, not an extension of it
 
@@ -297,7 +334,7 @@ Blocking: `assistant_residue`, `placeholder_residue`,
 
 Revision on every occurrence: `self_reminder_prose`, `document_as_subject`,
 `progress_state_limitation`, `operational_log_prose`, `verification_log_prose`,
-`revision_response_leak`, `defensive_disclaimer_stack`.
+`revision_response_leak`, `defensive_disclaimer_stack`, `companion_cross_reference`.
 
 The three blocking classes are blocking because they are unarguable: no reader of
 a published article can act on a path from the author's machine, a placeholder, or
@@ -363,6 +400,41 @@ derive.
 A cover letter that scores clean as a cover letter and blocks as a manuscript is
 the gate working correctly, not an inconsistency. Run the scan with the genre the
 artifact actually is.
+
+### A reusable companion artifact must stand alone: `reusable_form`
+
+A form, checklist, worksheet or protocol sheet published beside a paper is a
+product in its own right: the journal's own instruction is that readers may copy
+and reuse it. Every cross-reference into the parent paper's numbering breaks it,
+because a reader holding only the form cannot resolve `(Bảng 1)` or `mục 3.2.1`.
+
+| Genre | `companion_cross_reference` | `verification_log_prose` | Reason |
+| --- | --- | --- | --- |
+| `manuscript`, `thesis`, `report`, `abstract` | silent | **revision-level** | pointing at one's own tables is required prose |
+| `reusable_form` | **revision-level, threshold 0** | licensed | the form must stand alone; recording verification acts *is* its function |
+
+Measured, not assumed. A real one-page review form shipped as a journal appendix
+carried **nine** reference sites into the paper — `mỗi khối tương ứng một bảng của
+bài báo`, `(Bảng 1)`, `(mục 3.2)`, `(mục 3.2.1)` twice, `(Bảng 2)`, `mục 3.3.2`,
+`(Bảng 3 × Bảng 4)`, `(mục 3.3.4)`, `(khuyến nghị 4)`, `(Bảng 5)`, `(mục 3.4.2)` —
+and `document_as_subject` caught **none** of them: its patterns target meta-prose
+(`phần này sẽ trình bày`, `như đã đề cập ở trên`), not parenthesised
+cross-references. The scanner reported one finding instead, and it was the wrong
+one: `verification_log_prose` on «chưa phải bằng chứng đã xác nhận», a legitimate
+criterion note. That is not a false positive to suppress — it is the signal that
+**the wrong genre was declared**. After the fix the same file gives
+`exit=2, gate=revise, 11 hits` as `reusable_form` and `0 hits` as `manuscript`.
+
+Two calibration lines keep this usable on a form that numbers its OWN parts:
+
+- block letters and internal pointers are legitimate and must never fire:
+  `(ghi ở D)`, `xét tiêu chí 6 ở khối C`;
+- so the patterns require a **digit** (or an explicit `của bài báo`): parenthesised
+  `(Bảng N)` / `(mục N.M)`, a dotted section number `mục 3.2.1`, `khuyến nghị N`.
+
+Prove the gate on the artifact, not only on fixtures: rebuild the pre-fix file from
+version control and require red, then require green on the shipped one. A fixture
+copied out of a grep cannot show that.
 
 ### Calibration: what must not fire
 

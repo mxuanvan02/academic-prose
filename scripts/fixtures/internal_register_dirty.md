@@ -4,7 +4,7 @@ Một giới hạn cần nêu rõ: nhãn chưa được thẩm định.
 Phần này sẽ trình bày quy trình xây dựng dữ liệu.
 Nhóm chưa kịp bổ sung phân tầng theo lĩnh vực.
 Chúng tôi đã kiểm tra và checksum khớp, 0 lỗi.
-Kết quả trong tệp /Users/van/ket_qua_v9.csv và main.tex cho thấy độ chính xác tăng.
+Kết quả trong tệp /Users/alice/ket_qua_v9.csv và main.tex cho thấy độ chính xác tăng.
 Theo yêu cầu của anh, TODO sẽ được hoàn tất trước khi gửi.
 Theo góp ý của phản biện, chúng tôi đã bổ sung Bảng 3.
 Kết quả chỉ thiết lập tính nhất quán nội tại.

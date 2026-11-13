@@ -1,6 +1,6 @@
 # From Project Artifacts to Scientific Register
 
-Measured case: a Vietnamese dataset/benchmark paper (HOEIT-LegalQA → HUJOS-TT) drafted from a
+Measured case: a Vietnamese dataset/benchmark paper drafted from a
 working repository. Every number was correct and every citation resolved; the user still
 rejected a whole section with: *"toàn nội dung kiểu này sao lại đưa vào em? bản thảo chủ yếu
 trình bày mình đã làm gì thôi chứ? Còn hạn chế và hướng tương lai thì phải về mặt khoa học."*

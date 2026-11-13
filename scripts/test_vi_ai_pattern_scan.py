@@ -242,6 +242,64 @@ class TestFixtures(unittest.TestCase):
         self.assertIn("partial verification", result["note"])
 
 
+class TestSelfReferenceRegister(unittest.TestCase):
+    """Registry §11: Vietnamese self-reference and first-person register.
+
+    Every case here was measured on a real Vietnamese manuscript. The
+    "bài toán" case is a measured FALSE POSITIVE: the first draft of the
+    detector excluded only "bài báo", so it flagged "Mục tiêu của bài toán là
+    giảm thiểu sai số bám" — an ordinary Vietnamese compound naming an object,
+    not the manuscript. A retracted finding costs more trust than the defect it
+    hunts, so the compound exclusion is a regression test.
+    """
+
+    def test_self_reference_is_a_candidate(self) -> None:
+        for sentence in (
+            "Quy ước đếm của bài là độ sâu khai của mỗi lệnh.",
+            "Mô phỏng của bài không rơi vào ô thứ hai.",
+            "Bài không có dữ liệu thực địa để hiệu chỉnh vùng này.",
+        ):
+            with self.subTest(sentence=sentence):
+                result = scan(sentence)
+                self.assertIn("self_reference", codes(result))
+                self.assertEqual(result["exit_code"], 2)
+
+    def test_bare_first_person_ta_is_a_candidate(self) -> None:
+        result = scan("Ta cần phải chuyển đổi chỉ báo của bài sang phát thải mê-tan.")
+        self.assertIn("bare_first_person", codes(result))
+
+    def test_bai_compound_naming_an_object_is_licensed(self) -> None:
+        """`bài toán`, `bài báo`, `bài học` name an object, not the manuscript."""
+        for sentence in (
+            "Mục tiêu của bài toán là giảm thiểu sai số bám trên toàn tuyến.",
+            "Bài báo này trình bày phương pháp dựa trên bản sao số FAO-56.",
+            "Các bài học rút ra từ thực nghiệm cần được kiểm chứng lại.",
+        ):
+            with self.subTest(sentence=sentence):
+                result = scan(sentence)
+                self.assertNotIn("self_reference", codes(result))
+
+    def test_ta_as_a_noun_is_licensed(self) -> None:
+        """`héc-ta` and `đơn vị ta` are ordinary Vietnamese, not first person."""
+        for sentence in (
+            "Việt Nam cam kết một triệu héc-ta lúa phát thải thấp vào năm 2030.",
+            "Đơn vị ta không đồng ý với kết luận của nhóm tác giả.",
+        ):
+            with self.subTest(sentence=sentence):
+                result = scan(sentence)
+                self.assertNotIn("bare_first_person", codes(result))
+
+    def test_chung_ta_is_licensed(self) -> None:
+        result = scan("Chúng ta đã biết điều này từ trước.")
+        self.assertNotIn("bare_first_person", codes(result))
+
+    def test_threshold_key_registered(self) -> None:
+        result = scan("Quy ước đếm của bài là độ sâu khai.")
+        checks = {c["check"] for c in result["thresholds"]}
+        self.assertIn("self_reference", checks)
+        self.assertIn("bare_first_person", checks)
+
+
 class TestPatternInventoryIsPinned(unittest.TestCase):
     """Every regex is pinned by identity.
 
@@ -365,6 +423,21 @@ class TestPatternInventoryIsPinned(unittest.TestCase):
         'có\\s+xu\\s+hướng',
     )
 
+    SELF_REFERENCE = (
+        'của\\s+bài(?!\\s+(?:báo|học|toán|tập|viết|phát|thuyết|trình|kiểm|đề|'
+        'nội\\s+dung|quan|trắc|đối|chiếu|song|hát|cổ|sử|thơ|tốn|phụ|lục|'
+        'văn|nghệ|nghiên\\s+cứu))',
+        '\\bbài(?!\\s+(?:báo|học|toán|tập|viết|phát|thuyết|trình|kiểm|đề|'
+        'nội\\s+dung|quan|trắc|đối|chiếu|song|hát|cổ|sử|thơ|tốn|phụ|lục|'
+        'văn|nghệ|nghiên\\s+cứu))\\s+(?:không|chưa|đã|được|có|đặt\\s+ra|'
+        'trình\\s+bày|cung\\s+cấp|chỉ\\s+ra)\\b',
+    )
+
+    FIRST_PERSON_TA = (
+        '(?<!chúng )(?<![\\w-])ta\\s+(?:cần|phải|thấy|đề\\s+xuất|cho\\s+rằng|'
+        'khẳng\\s+định|có\\s+thể|cho\\s+thấy|quyết|định\\s+ý)\\b',
+    )
+
     def test_inventory_matches_module(self) -> None:
         for name in (
             "CEREMONIAL",
@@ -374,6 +447,8 @@ class TestPatternInventoryIsPinned(unittest.TestCase):
             "DECORATIVE_PAIR",
             "ORNAMENT",
             "HEDGE",
+            "SELF_REFERENCE",
+            "FIRST_PERSON_TA",
         ):
             with self.subTest(list=name):
                 self.assertEqual(
@@ -385,10 +460,106 @@ class TestPatternInventoryIsPinned(unittest.TestCase):
 
     def test_every_pattern_compiles(self) -> None:
         for name in ("CEREMONIAL", "UNQUANTIFIED", "EMPTY_FRAMING", "CALQUE",
-                     "DECORATIVE_PAIR", "ORNAMENT", "HEDGE"):
+                     "DECORATIVE_PAIR", "ORNAMENT", "HEDGE", "SELF_REFERENCE",
+                     "FIRST_PERSON_TA"):
             for pattern in getattr(module, name):
                 with self.subTest(list=name, pattern=pattern):
                     re.compile(pattern)
+
+class TestExplanatoryColon(unittest.TestCase):
+    """Registry §2b: explanatory colons are a Vietnamese prose defect."""
+
+    def _hits(self, text: str, genre: str = "manuscript") -> list[dict]:
+        res = module.scan(text, genre)
+        return [f for f in res["findings"] if f["class"] == "explanatory_colon"]
+
+    def test_flags_explanatory_colon_in_vietnamese_prose(self) -> None:
+        text = (
+            "## 1. Đặt vấn đề\n\n"
+            "Cơ chế thứ nhất là hiệu ứng quy mô: máy rút tiền làm giảm số giao dịch "
+            "viên cần cho một chi nhánh nên các ngân hàng mở thêm chi nhánh.\n"
+        )
+        hits = self._hits(text)
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0]["verdict"], "recast")
+
+    def test_flags_colon_in_heading(self) -> None:
+        text = "## 3. Khung phân tích: vòng đời bốn pha của một công cụ lao động\n\nNội dung tiếng Việt ở đây.\n"
+        self.assertEqual(len(self._hits(text)), 1)
+
+    def test_licenses_venue_labels(self) -> None:
+        text = (
+            "**Từ khóa:** trí tuệ nhân tạo, công cụ lao động\n\n"
+            "**Tóm tắt.** Bài viết khảo sát câu hỏi bằng tiếng Việt có dấu.\n"
+        )
+        self.assertEqual(self._hits(text), [])
+
+    def test_licenses_bibliography_section(self) -> None:
+        text = (
+            "## Tài liệu tham khảo\n\n"
+            "1. Allen R. C. Engels' pause. Explorations in Economic History, 46(4), "
+            "418–435, 2009. DOI: 10.1016/j.eeh.2009.04.004\n"
+        )
+        self.assertEqual(self._hits(text), [])
+
+    def test_licenses_url_and_doi_in_body(self) -> None:
+        text = (
+            "## 2. Phương pháp\n\n"
+            "Nguồn được truy xuất tại https://example.org/a và có mã DOI: 10.1000/x "
+            "trong bài viết tiếng Việt này.\n"
+        )
+        self.assertEqual(self._hits(text), [])
+
+    def test_licenses_ratio_and_time(self) -> None:
+        text = "## 2. Kết quả\n\nTỷ lệ pha loãng là 10:1 và ca đo lúc 08:30 trong báo cáo tiếng Việt.\n"
+        self.assertEqual(self._hits(text), [])
+
+    def test_licenses_english_only_sentence(self) -> None:
+        text = (
+            "## Abstract\n\n"
+            "A FRAMEWORK FOR ANALYSIS: COMPARISON AND IMPLICATIONS.\n"
+        )
+        self.assertEqual(self._hits(text), [])
+
+    def test_ignores_english_manuscript_entirely(self) -> None:
+        text = (
+            "## 1. Introduction\n\n"
+            "The mechanism is a scale effect: the machine reduced the number of tellers "
+            "required per branch, so banks opened more branches.\n"
+        )
+        self.assertEqual(self._hits(text), [])
+
+    def test_acknowledgement_genre_is_licensed(self) -> None:
+        text = (
+            "## Lời cảm ơn\n\n"
+            "Nhóm tác giả xin gửi lời cảm ơn đến đơn vị đã hỗ trợ: phòng thí nghiệm "
+            "và quỹ tài trợ đề tài tiếng Việt.\n"
+        )
+        self.assertEqual(self._hits(text, genre="acknowledgement"), [])
+
+    def test_counts_every_colon_not_one_per_sentence(self) -> None:
+        text = (
+            "## 1. Đặt vấn đề\n\n"
+            "Nghịch lý thứ nhất: máy thay người. Nghịch lý thứ hai: người mất kỹ năng.\n"
+        )
+        self.assertEqual(len(self._hits(text)), 2)
+
+    def test_licenses_author_block_labels(self) -> None:
+        """`Tác giả liên hệ:` / `Email tác giả chính:` are venue front-matter labels."""
+        # Fixture uses invented names and a generic affiliation: the point is the
+        # LABELS (`Tác giả liên hệ:`, `Email tác giả chính:`), not any real identity.
+        text = (
+            "Trần Thị A\u00b9, Lê Văn B\u00b2 \u00b3 *\n\n"
+            "\u00b9 Khoa Mẫu, Trường Đại học Mẫu\n"
+            "* Tác giả liên hệ: Lê Văn B. Email: a@b.edu.vn\n"
+            "Email tác giả chính: c@d.edu.vn\n"
+        )
+        self.assertEqual(self._hits(text), [])
+
+    def test_threshold_key_registered(self) -> None:
+        self.assertIn("explanatory_colon", module.THRESHOLDS)
+        self.assertEqual(module.THRESHOLDS["explanatory_colon"], 0)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

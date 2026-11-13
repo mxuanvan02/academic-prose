@@ -94,6 +94,17 @@ After a substantive claim change, sweep:
 
 The same claim must not appear as automatic in Methods, validated in the Abstract, and benchmark-grade in the Conclusion.
 
+Two additions that recur on computational papers:
+
+- **Generated artifacts.** Caption and table text emitted by a script is
+  regenerated on every pipeline run, so patching only the emitted `.tex` is
+  silently reverted. Patch the generator, re-emit, and diff the regenerated file
+  against the copy in the manuscript tree.
+- **Search by claim variant, not by the phrase already fixed.** The copy just
+  edited is the worst place to search from; the duplicates that survive use a
+  different wording of the same claim. Enumerate the variants and sweep each,
+  then confirm the change in the rendered PDF, which is what a referee reads.
+
 ## 8. Deliver separate artifacts
 
 When appropriate, provide:
@@ -126,7 +137,72 @@ When a reviewer returns after an earlier revision, do not restart from the origi
 
 For tracked DOCX delivery, verify the **accepted view**, not raw XML string presence alone: superseded reviewer-language correctly remains inside `w:del`. Check the clean artifact for forbidden prose and inspect insertions/deletions separately in the tracked artifact. Then hand off to the document skill for schema validation and rendered-page inspection; forced `pageBreakBefore` and caption `keepNext` properties should be judged from the PDF, not inferred from paragraph counts.
 
-## 10. Acceptance gate
+## 10. When the author wants convergence before submission, not a single review
+
+Some authors have no reviewer comments yet and do not want a draft — they want the
+manuscript brought to a state that survives review, delivered only once it does. Run
+independent rounds rather than one review pass.
+
+**Round composition.** Split by criterion, one reviewer each, because a reviewer holding
+two criteria spends its effort on the first: (1) domain theory and argument, (2) factual
+and citation verification against primary sources, (3) format and compliance measured by
+command rather than estimated. A fourth for language quality repays itself on Vietnamese
+prose, where register decay is invisible to the other three.
+
+**Independence.** Each round is a reviewer scoped to "audit the current artifact against
+these criteria", with no memory of prior verdicts. A reviewer asked to confirm its own
+earlier finding rationalises the fix instead of re-deriving it. The previous round's
+findings go in as a checklist to **verify**, never as context to agree with — and every
+round also asks what broke while fixing.
+
+**What counts as fixed.** A criterion passes only when the reviewer re-derives the
+judgment from the current artifact. "The author says it was fixed" is not evidence, and
+neither is a pass from the reviewer that raised it.
+
+**A reviewer finding is a candidate, not a verdict.** Independent reviewers produce
+false positives at a steady rate, and applying one costs more than the defect it
+imagined — it edits a passage that was correct, and the next round cannot tell the
+difference. Verify every finding against the artifact before editing. Three shapes recur:
+
+- *"This reference is never cited."* Search the bare surname, not the citation string.
+  A Vietnamese APA manuscript inverts the name (`Nguyễn, T.` in the list, `Nguyễn (2024)`
+  in text) and may use `và nnk.` where the reviewer greps for `et al.`; a reviewer that
+  searches its own English phrasing reports a miss that is not there. Confirm the hit in
+  the rendered file, then discard the finding.
+- *"This number contradicts the source."* Check the version the manuscript actually
+  cites. A preprint and its journal version routinely report different sample sizes and
+different summary statistics for the same study, and a reviewer holding the other
+  version will confidently report the correct figure as wrong. Fix only when the cited
+  version disagrees with the manuscript.
+- *"This claim is asserted too strongly."* Apply it to the sentence, not to the whole
+  thesis. Reviewers escalate from one unhedged sentence to a demand that the central
+  claim be demoted to a hypothesis; the second is a different paper.
+
+Record which findings you rejected and why, in the round summary. An author who sees four
+findings and a silent no-op in the manuscript needs to know the review was weighed, not
+skipped.
+
+**A fix that adds words can break a structural cap.** When the ceiling is measured in
+rendered pages and the floor in words, the two constraints pull against each other: the
+manuscript sits at the page limit, the reviewer demands the omitted step be restored, and
+the restore pushes the document one page over. Neither constraint is negotiable and the
+reviewer will not weigh them. Measure the rendered page count after every expansion pass,
+not only at delivery, and hold the word count inside both bounds by cutting what the
+restore made redundant rather than by rejecting the finding. Read the page count from the
+converter's own report (`pdfinfo | awk '/Pages:/{print $2}'`) — a looser pattern that
+matches any trailing number will read a figure out of an unrelated line and hide the
+overflow.
+
+**Never let the loop manufacture agreement.** If two consecutive rounds return the same
+class of objection, the brief or the architecture is wrong, not the prose. Fix the brief,
+and say that you did.
+
+**Reporting.** Do not present a round that still reports defects as finished unless the
+author asked to see work in progress. Give the round number, what changed, and what
+remains open — a reviewer that caught nothing and a reviewer that caught four things must
+not read the same in the summary.
+
+## 11. Acceptance gate
 
 Before delivery, verify:
 

@@ -10,6 +10,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# The platform rejects a SKILL.md larger than this, in CHARACTERS.
+SKILL_MD_CHAR_CEILING = 100_000
+
 
 class RepositoryContractTests(unittest.TestCase):
     def test_required_files_exist(self) -> None:
@@ -192,6 +195,26 @@ class RepositoryContractTests(unittest.TestCase):
 
         self.assertIn("## Reviewer recomputation gate", rubric)
         self.assertTrue(reference.is_file())
+
+        # Lessons measured on a real manuscript are pinned by heading form, for
+        # the recorded reason: a section name also occurs in prose links, so the
+        # bare words cannot prove the section survived. Delete either heading and
+        # this test must go red.
+        # (a) An LLM judge is an instrument, and instruments need a fixture gate.
+        self.assertIn(
+            "## 9. An LLM judge is an instrument",
+            reference.read_text(encoding="utf-8"),
+            "the LLM-judge fixture-gate lesson lost its heading",
+        )
+        # (b) Internal register: the subject matter can be the lexical trigger.
+        internal_register = (
+            ROOT / "references/internal-register-gate.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "### Calibration: the subject matter can be the lexical trigger",
+            internal_register,
+            "the verification-vocabulary calibration lesson lost its heading",
+        )
         self.assertIn(
             "references/reviewer-recomputation-gate.md",
             skill,
@@ -258,6 +281,8 @@ class RepositoryContractTests(unittest.TestCase):
             "translation_calque",
             "hedge_stack",
             "machine_marked_passage",
+            "self_reference",
+            "bare_first_person",
         ):
             with self.subTest(gate_class=gate_class):
                 self.assertIn(gate_class, rubric)
@@ -551,6 +576,46 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertIn("7 usage simulations", result.stdout)
         self.assertIn("13 capability examples", result.stdout)
         self.assertIn("150 rejected mutations", result.stdout)
+
+
+    def test_skill_md_stays_under_the_platform_character_ceiling(self) -> None:
+        """The platform rejects an oversized SKILL.md, and nothing else in the repository checked.
+
+        Measured when this test was written: 99,990 characters against a 100,000 ceiling,
+        i.e. TEN characters of headroom. The limit was recorded only as prose in
+        references/skill-repository-maintenance.md and enforced nowhere -- not by this suite
+        and not by validate_skill.py. A violation therefore surfaces at publish time, far
+        from the edit that caused it, and reads as a platform failure rather than as a size
+        problem. Ten characters is less than one Vietnamese sentence, so the next lesson
+        anyone appends is the one that breaks the skill.
+
+        This asserts CHARACTERS, not bytes, and that distinction is the reason the near-miss
+        was almost misreported: the file is largely Vietnamese, where UTF-8 costs about
+        1.0095 bytes per character, so its byte length (100,944) is already over the ceiling
+        while the file is perfectly valid. Comparing bytes against a character ceiling
+        produces a defect report for a file that has none.
+
+        No minimum-headroom threshold is asserted on purpose. At the time of writing the real
+        headroom is 10 characters, so any minimum would fail on a valid skill; the honest
+        boundary is the platform's own. Creating headroom means relocating prose into
+        references/, which has no ceiling, and that is a decision about what must stay in the
+        always-loaded body rather than a mechanical cleanup -- measured, no section is
+        already duplicated in a reference file, so relocation moves text rather than merely
+        pointing at a copy.
+        """
+        skill = ROOT / "SKILL.md"
+        self.assertTrue(skill.is_file(), f"{skill} missing")
+        text = skill.read_text(encoding="utf-8")
+        chars = len(text)
+        headroom = SKILL_MD_CHAR_CEILING - chars
+        self.assertLessEqual(
+            chars, SKILL_MD_CHAR_CEILING,
+            f"SKILL.md is {chars:,} characters, {-headroom:,} over the "
+            f"{SKILL_MD_CHAR_CEILING:,}-character ceiling, so the platform will reject it. "
+            f"Move prose into references/ -- which has no ceiling -- and leave a pointer. "
+            f"Count characters, not bytes: this file is largely Vietnamese and its byte "
+            f"length already exceeds the ceiling while the file is valid.",
+        )
 
 
 if __name__ == "__main__":
