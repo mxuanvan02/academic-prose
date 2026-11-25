@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.23.0"
+  version: "3.24.0"
 ---
 
 # Academic Prose
@@ -207,6 +207,16 @@ role; do not delete a scientific limitation or invent missing validation merely
 to obtain a clean scan. See
 [Academic discourse gate](references/academic-discourse-gate.md).
 
+### Unified Automatic Writing Gate
+
+To run all five mechanical gates automatically across every text-producing Writing task (`draft`, `develop`, `compress`, `expand`, `paraphrase`, `revise`, `humanize`, `translate`, `audit`), run:
+
+```bash
+python3 scripts/run_writing_gates.py <path-or-dir> --genre manuscript
+```
+
+It auto-detects language (`--lang auto|vi|en`), extracts prose before `academic_discourse_scan.py` on `.tex` sources, maps `--genre` across `internal_register_scan.py`, `process_logic_scan.py`, `vi_ai_pattern_scan.py`, `academic_discourse_scan.py`, and `veracity_protestation_scan.py`, supports files or directories (`.md`, `.tex`, `.txt`, `.docx`), exits `1` on blocking or `2` on revision findings, and outputs the manual syntactic-realization checklist.
+
 ### Adjudicate scanner hits in immutable citation zones
 
 Automated prose scans also inspect footnotes and bibliographies, where a watched
@@ -247,9 +257,9 @@ Never claim that a manuscript was read “từng câu từng chữ” merely bec
 2. **Claim-evidence ledger**: separate supplied facts, author positions, supported inferences, and claims that still need sources. Never render `needs_source` as established fact.
 3. **Discourse architecture**: arrange the main claim, supporting claims, evidence, warrants, qualifications, counterpositions, and implications according to the section's function.
 4. **Paragraph design**: assign each paragraph one dominant rhetorical job, a controlled sequence of moves, and an **admissible subject** (object of study, data, method, result, cited claim, or licensed inference). A paragraph whose planned subject is the document, the project, a file, or the drafting conversation is rejected at the plan stage.
-5. **Draft**: realize the architecture in contemporary academic prose in the target language, with stable terminology and calibrated stance. Draft from the claim ledger, not from a build log, audit sheet, chat, or task tracker.
-6. **Adversarial review**: test whether every empirical statement has support, every connective is licensed, each paragraph advances the argument, and no fluent sentence hides a logical gap. Run the internal-register tests (referent, permanence, outsider verifiability) on Methods, Limitations, Future Work, and every integrity subsection. See [Internal register gate](references/internal-register-gate.md).
-7. **Revision and gate**: repair evidence, architecture, stance, register, and coherence before surface polish. An internal-register hit is not polishable: recast the subject or relocate the content. Softening is forbidden.
+5. **Draft**: realize the architecture in contemporary academic prose in the target language, applying [Academic Vietnamese standard](references/academic-vietnamese-standard.md) (`Syntactic Realization and Clause Clarity`) or [Academic English standard](references/academic-english-standard.md), with stable terminology and calibrated stance. Draft from the claim ledger, not from a build log, audit sheet, chat, or task tracker.
+6. **Adversarial review and automatic gate**: test whether every empirical statement has support, every connective is licensed, each paragraph advances the argument, and no fluent sentence hides a logical gap. Run `python3 scripts/run_writing_gates.py <target> --genre <genre>`, then run manual syntactic-realization and internal-register checks (referent, permanence, outsider verifiability) on Abstracts, Methods, Results, Limitations, Future Work, and integrity subsections. See [Internal register gate](references/internal-register-gate.md).
+7. **Revision and gate**: repair evidence, architecture, stance, register, syntactic realization, and coherence before surface polish. An internal-register hit is not polishable: recast the subject or relocate the content. Softening is forbidden. Re-run `scripts/run_writing_gates.py` after final edits before delivery.
 
 Read [Composition workflow](references/composition-workflow.md), [Argument and evidence](references/argument-and-evidence.md), and [Genre playbooks](references/genre-playbooks.md) for substantial writing.
 

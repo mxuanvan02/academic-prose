@@ -57,6 +57,8 @@ REQUIRED = (
     "scripts/test_process_logic_scan.py",
     "scripts/vi_ai_pattern_scan.py",
     "scripts/test_vi_ai_pattern_scan.py",
+    "scripts/run_writing_gates.py",
+    "scripts/test_run_writing_gates.py",
     "references/vi-ai-pattern-gate.md",
     "scripts/academic_discourse_scan.py",
     "scripts/test_academic_discourse_scan.py",
@@ -369,6 +371,13 @@ def main() -> int:
         capture_output=True,
         check=False,
     )
+    writing_gates = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/test_run_writing_gates.py")],
+        cwd=ROOT / "scripts",
+        text=True,
+        capture_output=True,
+        check=False,
+    )
     if ooxml_text.returncode != 0:
         raise SystemExit(
             "safe OOXML reader tests failed:\n"
@@ -415,6 +424,16 @@ def main() -> int:
     if "FAILED" in register_scan.stdout or "ERROR" in register_scan.stdout:
         raise SystemExit(
             "internal register scan tests reported failures:\n" + register_scan.stdout
+        )
+    if writing_gates.returncode != 0:
+        raise SystemExit(
+            "unified writing gate tests failed:\n"
+            + writing_gates.stdout
+            + writing_gates.stderr
+        )
+    if "FAILED" in writing_gates.stdout or "ERROR" in writing_gates.stdout:
+        raise SystemExit(
+            "unified writing gate tests reported failures:\n" + writing_gates.stdout
         )
 
     print(

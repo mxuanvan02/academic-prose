@@ -208,6 +208,12 @@ This is why a global word list is the wrong instrument.
 | `benchmark` | surveying, finance | mốc chuẩn; chỉ số tham chiếu |
 | `significant` | statistics | có ý nghĩa thống kê |
 | `significant` | ordinary academic prose | quan trọng, never as a silent stand-in for a test |
+| `budget` | economics, public finance | ngân sách |
+| `budget` | engineering, computing, ecology | hạn mức; quỹ tài nguyên |
+| `certify` | standards, compliance, clinical | chứng nhận |
+| `certify` | mathematics, formal verification | bảo chứng; chứng minh cận |
+| `regime` | political science, history | chế độ |
+| `regime` | physics, engineering, statistics | miền hoạt động; chế độ vận hành |
 
 Each glossary entry therefore carries its `domain`. One document may legitimately
 use two renderings of the same source word when two disciplines are in play,

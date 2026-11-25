@@ -91,6 +91,19 @@ class TestDetection(unittest.TestCase):
         result = scan("Kết quả này đã mở đường cho một hướng nghiên cứu mới.")
         self.assertIn("translation_calque", codes(result))
 
+    def test_structural_transfer_calques_are_candidates(self) -> None:
+        cases = (
+            "Kết quả này đúng dưới các giả định tuyến tính cổ điển.",
+            "Tỷ lệ thất nghiệp tăng mạnh dưới kịch bản lạm phát cao.",
+            "Thỏa thuận này bị vô hiệu dưới ràng buộc pháp lý hiện hành.",
+            "Thiết bị được thử nghiệm dưới điều kiện hạn chế về nguồn nuôi.",
+            "Số liệu ghi nhận sự gia tăng của việc sử dụng kháng sinh.",
+            "Nhóm tiến hành việc thực hiện sự đánh giá tác động chính sách.",
+        )
+        for text in cases:
+            with self.subTest(text=text):
+                self.assertIn("translation_calque", codes(scan(text)))
+
     def test_english_ceremonial_vocabulary_is_a_candidate(self) -> None:
         result = scan("This method plays an important role and is a testament to the design.")
         self.assertIn("ceremonial_padding", codes(result))
@@ -182,6 +195,20 @@ class TestLicensedFalsePositives(unittest.TestCase):
             r"được giữ nguyên, xem $\sigma_{\text{toàn diện}}$."
         )
         self.assertEqual(actionable(result), [])
+
+    def test_physical_under_and_disciplinary_terms_are_clean(self) -> None:
+        clean_cases = (
+            "Thiết bị đạt chứng nhận chất lượng ISO 9001 trước khi xuất xưởng.",
+            "Mẫu mô được quan sát dưới kính hiển vi điện tử.",
+            "Tín hiệu suy giảm dưới tác động của nhiệt độ cao.",
+            "Vấn đề được xem xét dưới góc độ pháp lý.",
+            "Nghiên cứu ghi nhận sự thay đổi của quá trình lên men.",
+            "Ngân sách nhà nước giai đoạn 2020–2025 tăng 4,2%.",
+            "Đời sống nông dân dưới chế độ thực dân có nhiều biến động.",
+        )
+        for text in clean_cases:
+            with self.subTest(text=text):
+                self.assertEqual(actionable(scan(text)), [])
 
 
 class TestDocxInput(unittest.TestCase):
@@ -383,6 +410,9 @@ class TestPatternInventoryIsPinned(unittest.TestCase):
         'mở\\s+đường\\s+cho',
         'bức\\s+tranh\\s+toàn\\s+cảnh\\s+về',
         'theo\\s+cách\\s+mà\\b',
+        'dưới\\s+(?:các\\s+)?(?:giả\\s+định|giả\\s+thiết|kịch\\s+bản|ràng\\s+buộc|thiết\\s+lập)\\b',
+        '(?:vận\\s+hành|hoạt\\s+động|thử\\s+nghiệm|đánh\\s+giá|phân\\s+tích|mô\\s+phỏng)\\s+dưới\\s+(?:các\\s+)?(?:điều\\s+kiện|chế\\s+độ|mô\\s+hình|ngân\\s+sách)\\b',
+        '\\b(?:việc|quá\\s+trình)\\s+(?:thực\\s+hiện|tiến\\s+hành|triển\\s+khai|áp\\s+dụng)\\s+(?:sự|việc|quá\\s+trình)\\b|\\bsự\\s+\\S+(?:\\s+\\S+){0,2}\\s+của\\s+(?:việc|sự)\\b',
     )
 
     DECORATIVE_PAIR = (

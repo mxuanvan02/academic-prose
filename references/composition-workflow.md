@@ -49,11 +49,11 @@ Paragraphs need not follow a rigid template. They must have a recoverable functi
 
 ## 5. Draft
 
-Draft from the ledger and paragraph plan. Prefer clear predicates, stable terms, visible actors, and topic-to-new-information progression. Vary sentence form only when it serves information structure. Never use ornamental variation to rename a construct.
+Draft from the ledger and paragraph plan. Apply the target-language syntactic realization rules (for Vietnamese, all five checks under `Syntactic Realization and Clause Clarity` in [Academic Vietnamese standard](academic-vietnamese-standard.md): verb-modifier binding, explicit subordination linkers, referent-type precision, register/preposition alignment, and proposition-density ceiling). Prefer clear predicates, stable terms, visible actors, and topic-to-new-information progression. Vary sentence form only when it serves information structure. Never use ornamental variation to rename a construct.
 
-## 6. Adversarial review
+## 6. Adversarial review and automatic gate
 
-Review the draft independently:
+Run `python3 scripts/run_writing_gates.py <target> --genre <genre>` automatically across the produced file or directory before manual sign-off, then review the draft independently:
 
 1. Can each empirical statement be traced to supplied evidence or an explicit citation anchor?
 2. Does any sentence turn an inference into an observation or a recommendation into a requirement?
@@ -61,7 +61,8 @@ Review the draft independently:
 4. Are causal, contrastive, and consequential connectives warranted?
 5. Could a reader identify the central claim and its limits without reconstructing the author's intention?
 6. Does every source-language term in the prose have a recorded reason to be there, and does every rendering hold one concept throughout?
+7. Do all clauses satisfy the syntactic-realization checklist in the target-language standard without telegraphic modifier stacks, trailing adverbs, or literal polysemy calques?
 
 ## 7. Revision order
 
-Repair in this order: unsupported content -> claim-evidence mismatch -> architecture -> stance and scope -> paragraph cohesion -> sentence naturalness -> surface editing. Later repairs cannot override earlier constraints.
+Repair in this order: unsupported content -> claim-evidence mismatch -> architecture -> stance and scope -> paragraph cohesion -> syntactic realization and target-language naturalness -> surface editing. Re-run `scripts/run_writing_gates.py` after the final edit; later repairs cannot override earlier constraints.

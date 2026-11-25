@@ -12,6 +12,16 @@ The priority order is: **meaning -> terminology -> scientific stance -> logic ->
 4. **Controlled density**: split a sentence when embedded clauses obscure claim boundaries, but preserve their logical relation.
 5. **Economy**: remove empty frames such as `có một nhu cầu để`, `tiến hành việc thực hiện`, or `mang tính chất`, unless they carry a real distinction.
 
+## Syntactic Realization and Clause Clarity
+
+These criteria govern every academic Writing deliverable and genre (abstracts, manuscript sections, reports, theses, slides, lecture notes, and assessment items):
+
+1. **Predicate-modifier binding (Verb-Proximity Test)**: attach manner, method, or epistemic modifiers directly after the verb they govern (or recast as an explicit `bằng ...`/`theo ...` adjunct) rather than letting them trail behind a long object noun phrase (for example, write `ước lượng phi tham số tác động nhân quả` or `phân lập vô trùng mẫu mô bệnh học`, not a modifier stranded at the end of a heavy noun stack).
+2. **Explicit Vietnamese subordination (Linker-Recovery Test)**: unpack compressed participial, passive, conditional, or negated modifiers with explicit Vietnamese linkers (`được`, `mà`, `khi`, `nếu chưa`, `do`) whenever bare `Noun + Verb/Negation` stacks obscure the actor or condition (for example, `bệnh nhân được điều trị theo phác đồ cũ nhưng chưa được đánh giá lại`).
+3. **Referent-type precision (Ontology Test)**: match the head noun to what the procedure actually operates on — do not confuse a finite sample or record with a theoretical probability distribution, a questionnaire score with a latent construct, or a draft bill with an enacted statute.
+4. **Preposition and register alignment**: reserve `dưới` for physical position or direct causal force (`dưới kính hiển vi`, `dưới tác động của nhiệt độ`); express logical assumptions, analytical models, scenarios, setups, and constraints with idiomatic Vietnamese frames (`khi ...`, `với giả thiết ...`, `theo mô hình ...`, `trong kịch bản ...`, `trong phạm vi ràng buộc ...`). Resolve cross-discipline polysemous terms through [Terminology localization policy](terminology-localization.md) §4 rather than everyday literal equivalents.
+5. **Proposition-density ceiling**: avoid stacking three or more independent claims, findings, or conditions into one heavily nominalized sentence; split along analytical boundaries with explicit logical transitions (`Đồng thời`, `Tuy nhiên`, `Ngược lại`).
+
 ## Paragraph-Level Criteria
 
 - Each paragraph has a discernible function: frame, claim, evidence, interpretation, contrast, limitation, or implication.

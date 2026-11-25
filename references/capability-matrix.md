@@ -39,6 +39,11 @@ primary capability.
   source-language terms for the same reason translated text does, so `draft`,
   `develop`, `revise`, and `audit` all run the localization decision and gate;
   see [Terminology localization policy](terminology-localization.md).
+- Every text-producing or auditing capability (`draft`, `develop`, `compress`,
+  `expand`, `paraphrase`, `revise`, `humanize`, `translate`, `audit`) runs
+  `scripts/run_writing_gates.py` automatically alongside target-language
+  syntactic realization (`academic-vietnamese-standard.md` /
+  `academic-english-standard.md`) and stance verification before delivery.
 - The translation adapter explicitly covers both English-to-Vietnamese and
   Vietnamese-to-English academic transfer. Keep one claim ledger and glossary
   across the pair; direction changes the target-language realization, not the
