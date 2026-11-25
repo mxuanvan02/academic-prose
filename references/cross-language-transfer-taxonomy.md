@@ -52,6 +52,11 @@ figure label copied verbatim.
 | `literal_collocation` | words are correct separately but unnatural together | `chơi vai trò`, `cam kết với trích dẫn` | translate the whole predicate-argument unit |
 | `preposition_transfer` | a copied English relation | `đối chiếu chống lại` | select the Vietnamese semantic relation |
 | `modifier_overload` | a long prenominal chain | referents become ambiguous | unpack modifiers into clauses or postmodifiers |
+| `compressed_clause_calque` | English participial/telegraphic compression glued without explicit linkers | `bệnh nhân điều trị phác đồ cũ chưa đánh giá lại`, `nhóm mẫu thu thập ngoài giờ hành chính` | restore explicit Vietnamese linkers (`được`, `mà`, `khi`, `nếu chưa`, `do`) to make agency and conditions recoverable |
+| `adverb_attachment_shift` | English preverbal adverb moved behind a long object noun phrase | `ước lượng tác động nhân quả phi tham số`, `phân lập mẫu mô bệnh học vô trùng` | bind the manner/method modifier right after the verb (`ước lượng phi tham số tác động nhân quả`) or recast as a clause |
+| `semantic_object_mismatch` | head noun misstates the operational or ontological category of the referent | calling a finite empirical vector a theoretical `phân phối`, a questionnaire sum a latent construct, or a bill an enacted statute | name the exact operational object supported by the method (`tập quan sát thực nghiệm`, `điểm số thang đo`, `dự thảo văn bản`) |
+| `domain_register_calque` | literal English polysemy or preposition transfer ignoring Vietnamese disciplinary register | `dưới giả thiết tuyến tính`, `dưới kịch bản lạm phát cao`, `chế độ` in physics/engineering, financial `ngân sách` for resource limits | select disciplinary frames (`khi giả thiết tuyến tính đúng`, `trong kịch bản lạm phát cao`, `miền hoạt động`, `hạn mức tài nguyên`) via `terminology-localization.md` §4 |
+| `multi_claim_cramming` | three or more independent claims, theorems, or comparisons packed into one heavily nominalized sentence | comma/semicolon overload obscures claim boundaries and attribution | split by analytical unit (method vs. theory, or comparison vs. boundary), keeping explicit transitions |
 
 ## Vietnamese to English
 

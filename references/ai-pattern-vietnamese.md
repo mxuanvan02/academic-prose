@@ -106,6 +106,9 @@ Vietnamese equivalent of §7, sourced from English generation. These are grammat
 | `được thiết kế để` (when purpose is obvious) | designed to | `dùng để`, or delete |
 | `theo cách mà` | in such a way that | restructure the clause |
 | `một cách + adjective` (overused) | adverbial -ly | use the adjective or a verb |
+| `dưới (các) giả định / giả thiết / kịch bản / ràng buộc / thiết lập` | under [the] assumption / scenario / constraint / setting | `khi ...`, `với giả thiết ...`, `trong kịch bản ...`, `trong phạm vi ràng buộc ...`, `ở thiết lập ...` |
+| `vận hành / hoạt động / thử nghiệm / đánh giá / phân tích / mô phỏng dưới` + abstract frame | operate / evaluate under ... | `làm việc trong điều kiện ...`, `đánh giá trong kịch bản ...`, `chịu ràng buộc ...` |
+| stacked `sự` / `việc` / `quá trình` nominalizations (`việc thực hiện sự ...`, `sự X của việc Y`) | chained English nominalizations | restore an active verb and actor (`đánh giá ...`, `tần suất sử dụng tăng`) |
 
 Also watch: `sự` and `việc` stacked across a clause (`việc thực hiện sự đánh giá quá trình cải thiện chất lượng`), pervasive `được`/`bị` with no discourse reason, and long prenominal modifier chains copied from English noun stacks.
 

@@ -70,6 +70,8 @@ class RepositoryContractTests(unittest.TestCase):
             "references/process-logic-gate.md",
             "scripts/vi_ai_pattern_scan.py",
             "scripts/test_vi_ai_pattern_scan.py",
+            "scripts/run_writing_gates.py",
+            "scripts/test_run_writing_gates.py",
             "scripts/fixtures/vi_ai_pattern_dirty.md",
             "scripts/fixtures/vi_ai_pattern_dirty_en.md",
             "scripts/fixtures/vi_ai_pattern_clean.md",
@@ -559,6 +561,37 @@ class RepositoryContractTests(unittest.TestCase):
         match = re.search(r"(\d+) rejected mutations", result.stdout)
         assert match is not None, result.stdout
         self.assertGreaterEqual(int(match.group(1)), 60)
+
+    def test_writing_generalization_and_unified_gate_contract(self) -> None:
+        vi_std = (ROOT / "references/academic-vietnamese-standard.md").read_text(encoding="utf-8")
+        self.assertIn("## Syntactic Realization and Clause Clarity", vi_std)
+
+        for doc in (
+            "SKILL.md",
+            "references/composition-workflow.md",
+            "references/capability-matrix.md",
+        ):
+            with self.subTest(doc=doc):
+                self.assertIn("scripts/run_writing_gates.py", (ROOT / doc).read_text(encoding="utf-8"))
+
+        leaked_tokens = (
+            "dưới giả định Gauss",
+            "mức cải thiện thu hẹp",
+            "tập phần dư huấn luyện",
+            "ngân sách khe",
+        )
+        scan_files = (
+            [ROOT / "SKILL.md"]
+            + sorted((ROOT / "references").glob("*.md"))
+            + sorted((ROOT / "scripts").glob("*.py"))
+        )
+        for path in scan_files:
+            content = path.read_text(encoding="utf-8")
+            for token in leaked_tokens:
+                with self.subTest(path=str(path), token=token):
+                    if path.resolve() == (ROOT / "tests/test_repository.py").resolve():
+                        continue
+                    self.assertNotIn(token, content)
 
     def test_validator_accepts_repository(self) -> None:
         result = subprocess.run(

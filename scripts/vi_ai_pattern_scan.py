@@ -142,6 +142,9 @@ CALQUE = [
     r"mở\s+đường\s+cho",
     r"bức\s+tranh\s+toàn\s+cảnh\s+về",
     r"theo\s+cách\s+mà\b",
+    r"dưới\s+(?:các\s+)?(?:giả\s+định|giả\s+thiết|kịch\s+bản|ràng\s+buộc|thiết\s+lập)\b",
+    r"(?:vận\s+hành|hoạt\s+động|thử\s+nghiệm|đánh\s+giá|phân\s+tích|mô\s+phỏng)\s+dưới\s+(?:các\s+)?(?:điều\s+kiện|chế\s+độ|mô\s+hình|ngân\s+sách)\b",
+    r"\b(?:việc|quá\s+trình)\s+(?:thực\s+hiện|tiến\s+hành|triển\s+khai|áp\s+dụng)\s+(?:sự|việc|quá\s+trình)\b|\bsự\s+\S+(?:\s+\S+){0,2}\s+của\s+(?:việc|sự)\b",
 ]
 
 DECORATIVE_PAIR = [

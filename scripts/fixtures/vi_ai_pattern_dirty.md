@@ -17,3 +17,5 @@ Việc tiến hành thực hiện đánh giá được triển khai nhằm mục
 Người đọc có thể thấy rằng quy ước đếm của bài là độ sâu khai của mỗi lệnh được cộng vào đúng giờ.
 
 Ta cần phải chuyển đổi chỉ báo của bài sang phát thải mê-tan theo phương pháp chuẩn.
+
+Dưới các giả định tuyến tính, mô hình thử nghiệm dưới điều kiện hạn chế cho thấy sự gia tăng của việc sử dụng tài nguyên.
