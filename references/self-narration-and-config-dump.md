@@ -128,3 +128,22 @@ Protocol when the user returns an edited artifact:
 The structural moves are the ones a naive diff loses: a block relocated from 90%
 to 5% of the document shows up as one large deletion plus one large insertion, and
 is easy to read as unrelated churn.
+
+## 4. Parenthetical clutter, code-identifier leakage, and paragraph scannability
+
+Even after technical errors and raw CLI traces are fixed, scholarly prose degrades
+when drafting shortcuts remain visible:
+
+1. **Eliminate stacked or decorative parentheses `(...)`.** Repeated parenthetical
+   asides break clause rhythm and force mental backtracking. Either promote a
+   load-bearing condition into a clean clause/sentence or delete redundant
+   restatements; reserve parentheses strictly for concise notation, citations, or
+   short domain glosses.
+2. **Keep internal code keywords and raw hyperparameters out of prose.** Never copy
+   helper function names, dictionary keys, debug flags, or exhaustive parameter
+   lists into narrative paragraphs. Consolidate parameter settings once inside a
+   compact Methods/Setup table, and refer to mechanisms conceptually in body text.
+3. **Split dense Discussion, Limitations, and Conclusion walls by idea.** Break
+   long paragraphs exceeding one analytical point into short, topic-headed or
+   single-claim paragraphs so reviewers can scan mechanisms, limitations, and
+   takeaways immediately.

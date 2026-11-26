@@ -126,3 +126,31 @@ When the definitions are added to a manuscript that already reports the results:
 4. Re-measure page count and venue caps. A definition subsection adds roughly one
    page; if that breaks a verified cap, report the overage and ask rather than
    deleting definitions or evidence to fit.
+
+## Theorem Statements and Step-by-Step Proofs
+
+When authoring or revising mathematical statements and proofs in research manuscripts
+or appendices, enforce four invariants in both English and Vietnamese:
+
+1. **Clean, split statements.** Keep each Theorem, Lemma, or Proposition statement
+   short with explicit hypotheses and conclusions. Split multi-part claims into
+   `(a)`, `(b)` with displayed equations (`align*` or `\[...\]`). Never pack
+   inline proof justifications (`(since ...)`), `\sum`, or multi-step inequality
+   chains into the italicized statement block.
+2. **Three-beat proof cadence (`Setup -> align* -> Conclusion`).** Structure every
+   proof in three concise steps:
+   - *Setup:* one short sentence introducing symbols and active assumptions;
+   - *Derivation:* a multi-line aligned symbolic chain (`align*` with `&=`, `&\le`,
+     `&\iff`, `&\implies`) showing every intermediate algebraic step explicitly;
+   - *Conclusion:* one short closing sentence tying the final relation back to the
+     claimed bound or theorem.
+   Prohibit inline `\int`, `\sum`, and long inequality walls inside proof prose.
+3. **Verified foundational citations.** Every classical bound, asymptotic expansion,
+   or structural property invoked inside a proof (e.g., Gaussian tail-ratio bounds,
+   mean-excess/extreme-value identities, unichain MDP or LP-relaxation theorems)
+   must cite a verified primary reference — never guess or fabricate citations.
+4. **Two-column fit and numbering invariance.** Wrap long lines in `align*` before
+   relation operators so single-column builds achieve `Overfull \hbox = 0`. Use
+   unnumbered environments (`align*`, `\[...\]`) for intermediate proof steps so
+   existing numbered equations referenced by the main text or revision letters
+   never shift.
