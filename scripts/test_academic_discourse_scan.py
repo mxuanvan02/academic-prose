@@ -121,5 +121,49 @@ class TestContract(unittest.TestCase):
         self.assertEqual(result["paragraphs"], 0)
 
 
+class TestOpeningFrontLoading(unittest.TestCase):
+    def test_dirty_english_intro_notation_triggers(self) -> None:
+        text = (
+            "# Introduction\n\n"
+            "Our method maps $X_i(t)$ to $(\\mu_i(t), \\sigma_i^2(t))$ under budget $B_1$ and $B_2$, "
+            "proving $O(1/\\sqrt{N})$ convergence and $R(\\pi, N) \\le R_{\\mathrm{LP}}$ across runs."
+        )
+        res = scan(text, genre="manuscript")
+        self.assertIn("opening_front_loading", classes(res))
+        self.assertEqual(res["exit_code"], 2)
+
+    def test_dirty_vietnamese_contributions_telemetry_triggers(self) -> None:
+        text = (
+            "# Đóng góp chính\n\n"
+            "Thuật toán giảm 79.8% sai số và 87.8% tổn thất với N=30, p=0.466, chi phí 0.23 ms/khe, "
+            "nhanh hơn 184x và thu hẹp độ lệch 12.75%→1.39%."
+        )
+        res = scan(text, genre="manuscript")
+        self.assertIn("opening_front_loading", classes(res))
+        self.assertEqual(res["exit_code"], 2)
+
+    def test_clean_concise_abstract_stays_silent(self) -> None:
+        text = (
+            "# Abstract\n\n"
+            "This study proposes a two-stage scheduling index that prioritizes threshold exits under "
+            "burst-loss channels and proves worst-case fairness bounds. On held-out multi-site traces, "
+            "the approach reduces missed excursions by 79.8% at real-time gateway speed, though gains "
+            "narrow on quiescent intervals without recalibration."
+        )
+        res = scan(text, genre="abstract")
+        self.assertEqual(res["findings"], [])
+        self.assertEqual(res["exit_code"], 0)
+
+    def test_technical_body_section_heavy_math_stays_silent(self) -> None:
+        text = (
+            "# Methods and Results\n\n"
+            "Given $X_i(t)$ and $(\\mu_i(t), \\sigma_i^2(t))$ with $B_1=4$ and $B_2=4$, the rule "
+            "achieves $O(\\log m)$ complexity, reduces loss by 79.8% and 87.8% at N=30, p=0.0012, "
+            "0.23 ms runtime, 184x speedup, and 12.75%→1.39% gap convergence."
+        )
+        res = scan(text, genre="manuscript")
+        self.assertNotIn("opening_front_loading", classes(res))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

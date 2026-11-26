@@ -43,6 +43,16 @@ def extract_prose(tex: str, keep_captions: bool = True) -> str:
             r"\\begin\{" + re.escape(env) + r"\}.*?\\end\{" + re.escape(env) + r"\}",
             " ", body, flags=re.S)
 
+    # Preserve structural framing/section cues as Markdown headings before
+    # stripping generic TeX commands so downstream discourse scanners know section roles.
+    body = re.sub(r"\\begin\{abstract\}", "\n\n# Abstract\n\n", body)
+    body = re.sub(r"\\end\{abstract\}", "\n\n", body)
+    body = re.sub(
+        r"\\(?:sub)*section\*?\{([^{}]+)\}",
+        lambda m: f"\n\n# {m.group(1).strip()}\n\n",
+        body,
+    )
+
     # drop commands (and their optional/simple-brace args); keep surrounding prose
     body = re.sub(r"\\[a-zA-Z]+\*?(\[[^\]]*\])?(\{[^{}]*\})?", " ", body)
     body = body.replace("\\\\", "\n")

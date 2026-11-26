@@ -57,3 +57,12 @@ interval repeated at every mention. `16/60 (26,7%)` in the body; the Wilson
 interval belongs to the table or the supplement. Stacked parentheses
 (`26,7% (16/60, khoảng Wilson 95%: [17,1%; 39,0%])`) are what the author flags as
 "mở ngoặc lung tung".
+
+## Macro-to-Micro Framing: Conceptual Opening vs. Premature Notation & Telemetry Overload
+
+Unless the genre is an empirical-audit summary where each contribution bullet carries one measured pair, **framing sections** (Abstract, Introduction, Contributions, Discussion, and Conclusion) follow a **macro-to-micro** progression so non-specialist readers grasp the problem, mechanism, and scope before encountering formal machinery:
+
+1. **Defer internal notation:** Keep subscripted state variables, algorithmic hyperparameters, and asymptotic formulas in Model or Methods where each symbol is defined. Naming the concept in plain prose inside Introduction and Contributions improves scanability.
+2. **Keep Contributions free of table and test-statistic dumps:** State the structural advance, theoretical scope, or validation coverage plus a section pointer; leave multi-digit decimals, confidence intervals, and test statistics in Results and Tables.
+3. **Keep Abstracts concise and unstacked:** Stay inside the venue word cap, state the headline gain cleanly without stacked parenthetical pairs, and preserve one explicit scope boundary.
+4. **Prevent cross-section metric echoes:** Do not paste the same block of symbols and numbers across Abstract, Introduction, Discussion, and Conclusion.

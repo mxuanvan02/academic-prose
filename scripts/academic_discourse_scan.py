@@ -75,11 +75,31 @@ PIVOT = re.compile(
     re.I,
 )
 
+FRAMING_HEADING = re.compile(
+    r"(?:abstract|tóm\s+tắt|introduction|giới\s+thiệu|mở\s+đầu|contribution|đóng\s+góp|conclusion|kết\s+luận)",
+    re.I,
+)
+
+INLINE_MATH_OR_NOTATION = re.compile(
+    r"(?:\$[^$\n]{1,120}\$"
+    r"|\b[OΘΩ]\([^)\n]{1,40}\)"
+    r"|\b[A-Za-z](?:_[A-Za-z0-9\\{}]+|\^\{?[A-Za-z0-9\\+-]+\}?))"
+)
+
+TELEMETRY_TOKEN = re.compile(
+    r"(?:\b\d+(?:[.,]\d+)?%"
+    r"|\b[pPnN]\s*[=<>≤≥]\s*[\d.,eE×^-]+"
+    r"|\b\d+(?:[.,]\d+)?%?\s*(?:->|→|–)\s*\d+(?:[.,]\d+)?%?"
+    r"|\b\d+(?:[.,]\d+)?[×x]\b"
+    r"|\b\d+(?:[.,]\d+)?\s*(?:ms|s|Hz|kHz|MHz|GHz|mJ|µW|mW|kbps)\b)"
+)
+
 THRESHOLDS = {
     "deficit_centered_paragraph": 0,
     "caveat_saturation": 0,
     "research_agenda_as_task_list": 0,
     "clause_overload": 0,
+    "opening_front_loading": 0,
 }
 
 
@@ -201,6 +221,20 @@ def scan_paragraphs(paragraphs: list[str], genre: str = "manuscript") -> dict:
                     "span": sentence[:600],
                     "matched": {"words": words, "pivots": pivots},
                     "verdict": "split_preserving_relations",
+                    "licensable": False,
+                })
+
+        if genre == "abstract" or FRAMING_HEADING.search(current_heading):
+            math_hits = _counts(INLINE_MATH_OR_NOTATION, paragraph)
+            telemetry_hits = _counts(TELEMETRY_TOKEN, paragraph)
+            if math_hits >= 5 or telemetry_hits >= 6:
+                findings.append({
+                    "paragraph": index,
+                    "heading": current_heading,
+                    "class": "opening_front_loading",
+                    "span": paragraph[:600],
+                    "matched": {"inline_notation": math_hits, "telemetry_tokens": telemetry_hits},
+                    "verdict": "defer_notation_and_telemetry_to_body",
                     "licensable": False,
                 })
 
