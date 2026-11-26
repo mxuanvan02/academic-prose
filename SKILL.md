@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.24.0"
+  version: "3.25.0"
 ---
 
 # Academic Prose
@@ -244,6 +244,8 @@ A wrong-thread retrieval is a blocking failure: it can produce a fluent, well-su
 A clean build, citation check, scanner result, or successful peer review does not establish readability. For every substantial manuscript revision, perform a separate whole-document **plain-reader pass** from the beginning to the end. Read as an informed non-specialist who understands basic academic language but does not know the project's internal pipeline. At each paragraph ask: who acts, what happened, what does the number measure, why is the sentence here, and can the reader recover the claim without rereading?
 
 Flag sentences that are technically valid but fail ordinary comprehension because they contain noun chains, unexplained abstractions, multiple denominators, compressed procedural history, source-code/configuration language, or a conclusion whose subject is unclear. Prefer a short explicit clause over a compressed label, but preserve every denominator, hedge, limitation, and evidence boundary. Abstracts and conclusions receive an extra pass: they summarize the scientific claim, not the audit log or implementation diary.
+
+For all framing sections (**Abstract, Introduction, Contributions, Discussion, Conclusion**), enforce a **Macro-to-Micro Conceptual Opening**: explain the problem, intuition, and scope in plain prose before introducing formal machinery; defer internal state notation, algorithmic hyperparameters, and table or test-statistic dumps to Model/Methods/Results (`opening_front_loading` in [`scripts/academic_discourse_scan.py`](scripts/academic_discourse_scan.py) and [`references/contribution-statement-design.md`](references/contribution-statement-design.md)); and do not repeat identical symbol/metric blocks across framing slots.
 
 The audit output must distinguish:
 - `technical_gate_issue` — correctness, evidence, logic, or reproducibility defect;

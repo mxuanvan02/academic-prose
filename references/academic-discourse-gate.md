@@ -10,8 +10,9 @@ This gate detects paragraph-level problems that sentence-level style scans canno
 | `caveat_saturation` | several claim boundaries accumulate across adjacent sentences | Does the paragraph preserve a positive bounded claim? | State one supported claim and one scope boundary; do not deny claims the paper never made. |
 | `research_agenda_as_task_list` | future work becomes a list of obligations | Does each item open a research question and name a design and payoff? | Recast as question → feasible design → conclusion the design would license. |
 | `clause_overload` | a long sentence contains enough pivots to obscure claim boundaries | Can each claim, condition, and consequence be recovered unambiguously? | Split while preserving causal, contrastive, and scope relations. |
+| `opening_front_loading` | a framing paragraph (Abstract, Introduction, Contributions, Conclusion) packs dense inline notation or telemetry | Should internal variables, asymptotic bounds, or table statistics wait for Model/Results? | Recast conceptually in plain prose and defer notation and test statistics to Model/Results (`defer_notation_and_telemetry_to_body`). |
 
-All four are revision-level findings. A clean scan is partial verification because paragraph function and evidential sufficiency have no complete lexical signature.
+All five are revision-level findings. A clean scan is partial verification because paragraph function and evidential sufficiency have no complete lexical signature.
 
 ## 2. Quantitative floor
 
@@ -20,7 +21,8 @@ The scanner uses deliberately conservative thresholds:
 - `deficit_centered_paragraph`: at least two independent missing-work markers and at least three combined deficit, boundary, or task markers;
 - `caveat_saturation`: at least three boundary markers across at least two sentences;
 - `research_agenda_as_task_list`: at least three obligation markers in one paragraph;
-- `clause_overload`: at least 65 words and seven structural pivots in one sentence.
+- `clause_overload`: at least 65 words and seven structural pivots in one sentence;
+- `opening_front_loading`: gated to framing sections (Abstract, Introduction, Contributions, Conclusion) or `--genre abstract`, firing when one paragraph contains at least 5 inline notation/math expressions or at least 6 telemetry tokens (percentages, `p =`, `N =`, arrow sweeps, multiplier comparisons, or unit measurements).
 
 Thresholds identify review sites, not verdicts. One legitimate limitation, one bounded claim, or one proposed design must remain silent. Headings, short labels, and bibliography entries are excluded.
 

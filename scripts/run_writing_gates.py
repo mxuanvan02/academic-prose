@@ -63,6 +63,7 @@ MANUAL_PASS_CHECKLIST = [
     "Referent-type precision: verify every head noun matches the operational object (sample vector vs distribution, score vs construct, draft vs enacted statute).",
     "Preposition and polysemy alignment: reserve `dưới` for physical position or causal force and resolve cross-discipline terms via `references/terminology-localization.md` §4.",
     "Proposition-density ceiling: split sentences cramming three or more independent claims or comparisons along natural analytical boundaries.",
+    "Macro-to-micro framing: keep Abstract, Introduction, Contributions, and Conclusion conceptual—defer internal notation and table/p-value dumps to Model/Results and avoid repeating identical metric blocks across framing sections.",
     "Uncaptured semantic checks: inspect hedge survival (no `stance_upgrade`), locked term identity (no `terminology_drift`), and quantitative bounds.",
 ]
 
