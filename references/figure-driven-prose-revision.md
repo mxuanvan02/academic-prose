@@ -230,3 +230,20 @@ the pre-figures baseline, so "more figures, less prose" can actually be checked
 rather than asserted. If review-mandated additions outweigh the compression, say
 so plainly and offer the structural lever (move an illustrative section to
 supplementary) instead of quietly shaving hedges.
+
+## 8. Two-column figure sizing and table/figure takeaway audit
+
+Visual polish fails if readers must zoom in on crowded subplots or decode multi-group
+tables without an explicit thesis:
+
+1. **Promote dense or multi-panel figures to two columns (`figure*`).** In
+   two-column layouts, never squeeze multi-subplot panels or multi-curve comparisons
+   into a single narrow column. Default to `figure*` whenever axis ticks, legend
+   entries, or curve separations require zoom to read on a rendered PDF page, and
+   confirm legibility directly on rendered page images.
+2. **Audit every table and figure for an explicit takeaway and group hierarchy.**
+   Each table and figure must state a concrete, one-sentence scientific takeaway in
+   the surrounding prose ("what claim this visual proves") rather than merely
+   announcing its existence. For tables comparing baselines across multiple
+   categories, separate rows into labeled conceptual groups so readers can grasp the
+   structural contrast before inspecting individual numbers.

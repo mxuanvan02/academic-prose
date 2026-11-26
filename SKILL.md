@@ -3,7 +3,7 @@ name: academic-prose
 description: Think through, structure, write, translate, revise, humanize, and audit academic discourse in Vietnamese and English. Automatically use whenever content serves an academic, scientific, research, higher-education, or scholarly purpose, including prose, manuscripts, reports, slides, teaching content, course materials, speaker notes, assessment items, English-to-Vietnamese and Vietnamese-to-English translation, and removal of AI writing patterns from scholarly text. Do not use to invent evidence, search literature, validate methods, discover citations, or manipulate document layout.
 license: MIT
 metadata:
-  version: "3.25.0"
+  version: "3.26.0"
 ---
 
 # Academic Prose
@@ -1090,6 +1090,8 @@ Adding this subsection introduces no new empirical number. If drafting it reveal
 that a reported quantity has no stateable denominator or no reproducible
 threshold, that is a finding about the result, not a writing problem — surface it
 rather than papering over it with a formula.
+
+For theoretical manuscripts, keep Theorem/Lemma/Proposition statements clean and split multi-part claims without inline proof justifications, write proofs in the three-beat `setup -> aligned derivation (align*) -> conclusion` cadence with zero inline integral/sum/inequality walls, cite verified foundational theorems, maintain two-column fit (`Overfull \hbox = 0`), and keep equation numbers invariant. Pair this with parenthetical/code-clutter trimming (`references/self-narration-and-config-dump.md`) and two-column `figure*` sizing plus one-sentence table/figure takeaways (`references/figure-driven-prose-revision.md`).
 
 See [Metric and formula exposition](references/metric-and-formula-exposition.md)
 for the worked subsection, the concept–formula–boundary pattern per statistic, and
